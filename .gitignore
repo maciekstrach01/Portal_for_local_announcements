@@ -1,0 +1,124 @@
+# System plików operacyjnych
+##############################
+.DS_Store
+Thumbs.db
+
+# Java
+##############################
+*.class
+*.jar
+*.war
+*.ear
+
+# Pliki generowane przez Maven lub Gradle
+##############################
+/target/
+/build/
+
+# Ustawienia IDE
+##############################
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VS Code
+.vscode/
+
+# Logi
+##############################
+*.log
+/logs/
+/*.log
+*.out
+
+# Spring Boot
+##############################
+/*.properties
+/*.yml
+/*.yaml
+/*.env
+/application.properties
+/application.yml
+/application.yaml
+
+# Bazy danych i pliki tymczasowe
+##############################
+*.db
+*.sqlite
+*.sql
+*.pid
+
+# PostgreSQL dump files
+##############################
+*.dump
+*.backup
+
+# Node.js (React frontend)
+##############################
+/node_modules/
+/npm-debug.log
+/yarn-error.log
+
+# Build pliki dla React
+/build/
+/dist/
+
+# React - pliki tymczasowe
+##############################
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testy
+##############################
+/coverage/
+/*.spec.js
+/*.test.js
+
+# Wyjściowe pliki JS i mapy źródeł
+##############################
+*.js.map
+*.js.bundle
+
+# Konfiguracja i cache narzędzi
+##############################
+/package-lock.json
+/yarn.lock
+
+# Pliki związane z narzędziami CI/CD
+##############################
+/*.swp
+/.idea/
+/.github/workflows/
+
+# Jira - pliki cache
+##############################
+/.jira/cache/
+/.jira/config.json
+
+# Pliki konfiguracyjne dla GitHub
+##############################
+/.github/
+
+# Docker
+##############################
+# Pliki specyficzne dla Dockera
+docker-compose.override.yml
+docker-compose.*.yml
+
+# Ignorowanie plików tymczasowych i buildów Dockera
+.dockerignore
+Dockerfile.* 
+docker-compose.yml
+
+# Ignorowanie obrazów Dockera i kontenerów
+**/docker/data/
+**/docker/logs/
+**/docker/tmp/
