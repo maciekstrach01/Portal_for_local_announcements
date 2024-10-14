@@ -10,13 +10,11 @@ Thumbs.db
 *.war
 *.ear
 
-# Pliki generowane przez Maven lub Gradle
+# Maven
 ##############################
-/target/
-/build/
+target/
+build/
 
-# Ustawienia IDE
-##############################
 # IntelliJ IDEA
 .idea/
 *.iml
@@ -30,22 +28,12 @@ Thumbs.db
 # VS Code
 .vscode/
 
-# Logi
+# Logs
 ##############################
 *.log
 /logs/
 /*.log
 *.out
-
-# Spring Boot
-##############################
-/*.properties
-/*.yml
-/*.yaml
-/*.env
-/application.properties
-/application.yml
-/application.yaml
 
 # Bazy danych i pliki tymczasowe
 ##############################
