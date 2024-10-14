@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import Header from '@/components/organisms/layout/Header';
+import Footer from '@/components/organisms/layout/Footer';
 
 const Default = () => (
     <div>
