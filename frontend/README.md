@@ -19,3 +19,6 @@ cp .env.example .env
 # Run frontend
 npm run dev
 ```
+
+## Usage
+Go to http://localhost:8080/ (default settings)
