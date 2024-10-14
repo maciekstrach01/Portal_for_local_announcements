@@ -118,7 +118,6 @@ docker-compose.*.yml
 
 # Ignore all environment files
 .env
-.env.*
 
 # Ignorowanie obrazów Dockera i kontenerów
 **/docker/data/

@@ -17,17 +17,23 @@ First, clone the repository to your local machine
 
 ### 2. Configure Environment Variables
 
-In the database directory, you'll need to create a .env file for the PostgreSQL database configuration. Use the following structure:
+In the database directory, you'll need to create `.env` file for the PostgreSQL database configuration.
+
+You can start by copying the provided .env.example file:
+```
+cp .env.example .env
+```
+
+Then, open the .env file and use the following structure:
 
 ```
 POSTGRES_USER=your_username
 POSTGRES_PASSWORD=your_password
 POSTGRES_DB=your_database_name
 ```
-
 Make sure to customize these values to suit your local setup.
 
-Note: The .env file is listed in .gitignore, so it won’t be committed to version control. Keep this file secure.
+Note: The `.env` file is listed in `.gitignore`, so it won’t be committed to version control. Keep this file secure.
 
 ### 3. Start the Database
 
