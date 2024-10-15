@@ -103,8 +103,9 @@ docker-compose.*.yml
 
 # Ignorowanie plików tymczasowych i buildów Dockera
 .dockerignore
-Dockerfile.* 
-docker-compose.yml
+
+# Ignore all environment files
+.env
 
 # Ignorowanie obrazów Dockera i kontenerów
 **/docker/data/
