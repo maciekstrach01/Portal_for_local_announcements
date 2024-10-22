@@ -19,6 +19,7 @@ const Register = () => {
     // @TODO Submit of form
     // @TODO Deal with BE errors
     // @TODO Success / failure
+    // @TODO Show / hide password
 
     return (
         <>

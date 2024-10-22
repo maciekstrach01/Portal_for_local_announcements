@@ -1,4 +1,4 @@
-import { object, string } from 'yup';
+import { object, string, ref } from 'yup';
 
 const RegisterSchema = object({
     firstName: string()
@@ -15,14 +15,11 @@ const RegisterSchema = object({
     // @TODO Must contain letters, numbers and special values
     password: string()
         .required('This field is required.')
-        .min(8, 'This field must have at least 8 letters.')
-        .max(64, 'This field must have max 64 letters.'),
+        .min(8, 'This field must have at least 8 letters.'),
     // @TODO Must contain letters, numbers and special values
-    // @TODO Must be the same as 'password'
     confirmPassword: string()
         .required('This field is required.')
-        .min(8, 'This field must have at least 8 letters.')
-        .max(64, 'This field must have max 64 letters.')
+        .oneOf([ref('password')], 'Passwords must match.')
 });
 
 export default RegisterSchema;
