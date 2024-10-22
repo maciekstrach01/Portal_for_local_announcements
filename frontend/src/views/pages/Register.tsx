@@ -5,6 +5,11 @@ import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 const Register = () => {
     const areValidationErrors = false;
 
+    // @TODO Form object with data
+    // @TODO FE Validation
+    // @TODO Submit of form
+    // @TODO Success / failure
+
     return (
         <>
             <h1 className="text-3xl">Sign up </h1>
