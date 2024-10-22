@@ -6,14 +6,17 @@ This guide walks you through setting up and running a Spring Boot application lo
 
 Before you begin, ensure you have the following requirements met:
 
-- **Java 23:** Confirm that you have Java 23 installed. You can verify this by running the following command:
+- **JDK 21:** Make sure Java Development Kit (JDK) version 21 is installed. You can verify by running the following command:
 ```
 java -version
 ```
-- **Apache Maven:** Ensure Apache Maven is installed to manage dependencies and build the application. You can check by running:
+If not installed, download and install it from [Oracle JDK 21](https://www.oracle.com/pl/java/technologies/downloads/#java21).
+
+- **Apache Maven 3+:** Maven is required to manage project dependencies and build the application. Verify Maven installation by running:
 ```
 mvn -v
 ```
+If Maven is not installed, refer to [Maven Installation Guide](https://maven.apache.org/install.html).
 
 ## Getting Started
 
@@ -30,13 +33,38 @@ To run the Spring Boot application, use the following Maven command:
 mvn spring-boot:run
 ```
 
-### 3. Building the Project
-If you want to generate a standalone JAR file to deploy elsewhere, you can run:
+## Setting Up Your Project in IntelliJ IDEA
+
+If you’re using IntelliJ IDEA, follow these steps to properly set up your Spring Boot project:
+
+### 1. Open IntelliJ IDEA:
+If you haven’t already installed IntelliJ, you can download it from [here](https://www.jetbrains.com/idea/download/?section=mac). You can use community or enterprise version.
+
+### 2. Import the Project:
+
+- Go to **File > Open.**
+- Navigate to your project directory and select it.
+- IntelliJ will detect the Maven build files (pom.xml) and prompt you to import the Maven project. Select **Yes.**
+- If you were not prompted and your maven project isn't imported, then right-click on the pom.xml file and select **Add as Maven Project**
+
+### 3. Set the Project JDK:
+- Navigate to **File > Project Structure > Project.**
+- In the SDK section, select **JDK 21** and select **Language level** to **21**. If **JDK 21** is not listed, click **Download JDK**, then select the version to 21 and choose vendor e.g. **Amazon Corretto**.
+
+### 4. Run/Debug Configurations:
+To run your Spring Boot application directly from IntelliJ:
+- Go to **Run > Edit Configurations**.
+- Click the **+** button and select **Maven**.
+- Provide desired name e.g. **backend**.
+- In the run field add the following command:
 ```
-mvn clean package
+clean compile spring-boot:run --activate-profiles local
 ```
-The generated JAR will be located in the target directory.
+- Leave the rest options in default.
+- Click Apply and then OK.
+- You can now **run or debug** the application directly by clicking the Run or Debug icons in the toolbar.
+
 
 ### Additional Notes
-* Project is using Java in version 23 and SpringBoot in version 3.3.4
+* Project is using Java in version 21 and SpringBoot in version 3.3.4
 * For the development, you can use tools like [IntelliJ](https://www.jetbrains.com/idea/).
