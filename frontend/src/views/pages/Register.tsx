@@ -12,7 +12,7 @@ const Register = () => {
                     You can{' '}
                     <Link
                         to="/login"
-                        className="text-primary-300 hover:underline hover:text-primary-400"
+                        className="text-primary-500 hover:underline hover:text-primary-600"
                     >
                         Login here!
                     </Link>
@@ -22,36 +22,36 @@ const Register = () => {
             <input
                 type="text"
                 placeholder="First name"
-                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
+                className="block w-full my-8 p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500"
             />
 
             <input
                 type="text"
                 placeholder="Last name"
-                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
+                className="block w-full my-8 p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500"
             />
 
             <input
                 type="email"
                 placeholder="Email"
-                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
+                className="block w-full my-8 p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500"
             />
 
             <input
                 type="password"
                 placeholder="Password"
-                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
+                className="block w-full my-8 p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500"
             />
 
             <input
                 type="password"
                 placeholder="Confirm password"
-                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
+                className="block w-full my-8 p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500"
             />
 
             <button
                 type="submit"
-                className="block w-full my-8 p-4 bg-primary-300 rounded-lg text-white font-medium hover:bg-primary-400"
+                className="block w-full my-8 p-4 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600"
             >
                 Register
             </button>

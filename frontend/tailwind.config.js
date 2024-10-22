@@ -7,10 +7,10 @@ export default {
         colors: {
             ...colors,
             primary: {
-                100: '#F0EFFF',
+                50: '#F0EFFF',
                 200: '#A7A3FF',
-                300: '#4D47C3',
-                400: '#3E38AD'
+                500: '#4D47C3',
+                600: '#37329a'
             }
         },
         extend: {
