@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 
+import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
+
 const Register = () => {
     const areValidationErrors = false;
 
@@ -29,9 +31,7 @@ const Register = () => {
             />
 
             {areValidationErrors && (
-                <div className="text-sm text-red-600 mb-2">
-                    This field is required.
-                </div>
+                <ValidationMessage message="This field is required" />
             )}
 
             <input
@@ -44,9 +44,7 @@ const Register = () => {
             />
 
             {areValidationErrors && (
-                <div className="text-sm text-red-600 mb-2">
-                    This field is required.
-                </div>
+                <ValidationMessage message="This field is required" />
             )}
 
             <input
@@ -59,9 +57,7 @@ const Register = () => {
             />
 
             {areValidationErrors && (
-                <div className="text-sm text-red-600 mb-2">
-                    This field is required.
-                </div>
+                <ValidationMessage message="This field is required" />
             )}
 
             <input
@@ -74,9 +70,7 @@ const Register = () => {
             />
 
             {areValidationErrors && (
-                <div className="text-sm text-red-600 mb-2">
-                    This field is required.
-                </div>
+                <ValidationMessage message="This field is required" />
             )}
 
             <input
@@ -89,9 +83,7 @@ const Register = () => {
             />
 
             {areValidationErrors && (
-                <div className="text-sm text-red-600 mb-2">
-                    This field is required.
-                </div>
+                <ValidationMessage message="This field is required" />
             )}
 
             <button
