@@ -12,7 +12,7 @@ const Register = () => {
                     You can{' '}
                     <Link
                         to="/login"
-                        className="text-[#4D47C3] hover:underline"
+                        className="text-primary-300 hover:underline hover:text-primary-400"
                     >
                         Login here!
                     </Link>
@@ -22,36 +22,36 @@ const Register = () => {
             <input
                 type="text"
                 placeholder="First name"
-                className="block w-full my-8 p-4 bg-[#F0EFFF] rounded-lg text-[#4D47C3] placeholder:text-[#A7A3FF] focus:outline-[#4D47C3]"
+                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
             />
 
             <input
                 type="text"
                 placeholder="Last name"
-                className="block w-full my-8 p-4 bg-[#F0EFFF] rounded-lg text-[#4D47C3] placeholder:text-[#A7A3FF] focus:outline-[#4D47C3]"
+                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
             />
 
             <input
                 type="email"
                 placeholder="Email"
-                className="block w-full my-8 p-4 bg-[#F0EFFF] rounded-lg text-[#4D47C3] placeholder:text-[#A7A3FF] focus:outline-[#4D47C3]"
+                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
             />
 
             <input
                 type="password"
                 placeholder="Password"
-                className="block w-full my-8 p-4 bg-[#F0EFFF] rounded-lg text-[#4D47C3] placeholder:text-[#A7A3FF] focus:outline-[#4D47C3]"
+                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
             />
 
             <input
                 type="password"
                 placeholder="Confirm password"
-                className="block w-full my-8 p-4 bg-[#F0EFFF] rounded-lg text-[#4D47C3] placeholder:text-[#A7A3FF] focus:outline-[#4D47C3]"
+                className="block w-full my-8 p-4 bg-primary-100 rounded-lg text-primary-300 placeholder:text-primary-200 focus:outline-primary-300"
             />
 
             <button
                 type="submit"
-                className="block w-full my-8 p-4 bg-[#4D47C3] rounded-lg text-white font-medium"
+                className="block w-full my-8 p-4 bg-primary-300 rounded-lg text-white font-medium hover:bg-primary-400"
             >
                 Register
             </button>
