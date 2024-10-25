@@ -17,7 +17,7 @@ const Register = () => {
 
     // @TODO Validation - red border on inputs
     // @TODO Submit of form
-    // @TODO Deal with BE errors
+    // @TODO Deal with BE errors - show under the submit btn
     // @TODO Success / failure
     // @TODO Show / hide password
 
