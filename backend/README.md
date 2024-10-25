@@ -20,17 +20,30 @@ If Maven is not installed, refer to [Maven Installation Guide](https://maven.apa
 
 ## Getting Started
 
-### 1. Install dependencies
+### 1. Configure Application Properties
+
+In the backend/src/main/resources directory, you'll need to create `application-local.properties` file for the application configuration.
+
+You can start by copying the provided `application-example.properties` file:
+```
+cp application-example.properties application-local.properties
+```
+
+Make sure to customize values in the `application-local.properties` and `application-local.properties` file to suit your local setup. You can change the port of the application depending on the needs.
+
+Note: The `application-local.properties` file is listed in `.gitignore`, so it won’t be committed to version control. Keep this file secure.
+
+### 2. Install dependencies
 Once inside the project's `backend` directory, install the required dependencies by running:
 ```
 mvn clean install
 ```
 This command will clean up any previous builds, resolve all necessary dependencies, and prepare the application for running.
 
-### 2. Running the Application
+### 3. Running the Application
 To run the Spring Boot application, use the following Maven command:
 ```
-mvn spring-boot:run
+mvn spring-boot:run -Dspring.profiles.active=local
 ```
 
 ## Setting Up Your Project in IntelliJ IDEA
@@ -64,7 +77,25 @@ clean compile spring-boot:run --activate-profiles local
 - Click Apply and then OK.
 - You can now **run or debug** the application directly by clicking the Run or Debug icons in the toolbar.
 
+## Accessing Swagger UI
 
-### Additional Notes
-* Project is using Java in version 21 and SpringBoot in version 3.3.4
-* For the development, you can use tools like [IntelliJ](https://www.jetbrains.com/idea/).
+Once the application is running, you can access the Swagger UI to explore the API documentation and test the available endpoints.
+
+- Swagger UI should be available under http://localhost:8080/swagger-ui/index.html#/.
+- If you changed port of your application, you'll need to adjust the link.
+
+## Additional Notes
+
+### Features
+- User registration and login with JWT authentication
+- Password encryption using BCrypt
+- Role-based authorization with Spring Security
+- Customized access denied handling
+
+### Used Technologies
+- Java 21
+- Maven 3.9.9
+- Spring Boot 3.3.4
+- Spring Security
+- JSON Web Tokens (JWT)
+- BCrypt

@@ -9,6 +9,7 @@ Thumbs.db
 *.jar
 *.war
 *.ear
+application-local.properties
 
 # Maven
 ##############################
