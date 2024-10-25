@@ -4,10 +4,10 @@ import { Form, Formik, Field } from 'formik';
 import RegisterSchema from '@/validators/auth/RegisterSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
-import type { RegisterRequest } from '@/types/api/auth';
+import type { IRegisterRequest } from '@/types/api/auth';
 
 const Register = () => {
-    const initialValues: RegisterRequest = {
+    const initialValues: IRegisterRequest = {
         firstName: '',
         lastName: '',
         email: '',
