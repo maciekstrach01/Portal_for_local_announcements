@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bf619c6f-255d-4faf-8737-cb327467d141",
+		"_postman_id": "617e9651-78fc-4ef9-bf72-a3470c13b609",
 		"name": "local_announcnments",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "35034326"
@@ -21,7 +21,7 @@
 									"",
 									"// Check if the token exists in the response and save it into a collection variable",
 									"if (jsonData.token) {",
-									"    pm.collectionVariables.set(\"authToken\", jsonData.token);",
+									"    pm.collectionVariables.set(\"auth_token\", jsonData.token);",
 									"    console.log(\"Token saved to collection variable: \" + jsonData.token);",
 									"} else {",
 									"    console.log(\"Token not found in response.\");",
@@ -37,7 +37,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"john.asd@example.com\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"password\": \"password\",\n  \"confirmPassword\": \"password\"\n}",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"password\": \"password\",\n  \"confirmPassword\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
