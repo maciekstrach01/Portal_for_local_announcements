@@ -15,26 +15,26 @@ import pl.pk.localannouncements.usermanagement.validator.PasswordMatches;
 public class RegisterUserDto {
 
     @Email(message = "Provide a valid email address")
-    @NotBlank(message = "email field is mandatory")
+    @NotBlank(message = "Email field is mandatory")
     @Schema(description = "User's email address", example = "john.doe@example.com")
     private String email;
 
-    @NotBlank(message = "firstName field is mandatory")
+    @NotBlank(message = "First name field is mandatory")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     @Schema(description = "User's first name", example = "John")
     private String firstName;
 
-    @NotBlank(message = "lastName field is mandatory")
+    @NotBlank(message = "Last name field is mandatory")
     @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
     @Schema(description = "User's last name", example = "Doe")
     private String lastName;
 
-    @NotBlank(message = "Password is mandatory")
+    @NotBlank(message = "Password field is mandatory")
     @Size(min = 8, message = "Password must be at least 8 characters long")
     @Schema(description = "User's password", example = "strongpassword123")
     private String password;
 
-    @NotBlank(message = "Confirm password is mandatory")
+    @NotBlank(message = "Confirm password field is mandatory")
     @Schema(description = "User's password confirmation", example = "strongpassword123")
     private String confirmPassword;
 
