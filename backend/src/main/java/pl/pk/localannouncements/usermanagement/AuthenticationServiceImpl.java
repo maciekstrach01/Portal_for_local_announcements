@@ -23,12 +23,8 @@ class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional
     public AuthenticationDto register(RegisterUserDto registerUserDto) {
         validateUserDoesNotExist(registerUserDto.getEmail());
-        registerUserDto.trimFields();
 
-        User newUser = UserMapper.INSTANCE.toUser(registerUserDto);
-        String hashedPassword = passwordEncoder.encode(registerUserDto.getPassword());
-        newUser.setPassword(hashedPassword);
-
+        User newUser = prepareUserToSave(registerUserDto);
         User createdUser = saveNewUser(newUser);
 
         return createAuthenticationDto(createdUser);
@@ -38,6 +34,14 @@ class AuthenticationServiceImpl implements AuthenticationService {
         if (userRepository.existsByEmail(email)) {
             throw new UserCreationException("User with this email already exists: " + email);
         }
+    }
+
+    private User prepareUserToSave(RegisterUserDto registerUserDto) {
+        registerUserDto.trimFields();
+        User newUser = UserMapper.INSTANCE.toUser(registerUserDto);
+        String hashedPassword = passwordEncoder.encode(registerUserDto.getPassword());
+        newUser.setPassword(hashedPassword);
+        return newUser;
     }
 
     private User saveNewUser(User newUser) {
