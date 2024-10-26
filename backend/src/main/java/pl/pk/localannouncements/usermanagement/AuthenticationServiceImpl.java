@@ -3,6 +3,7 @@ package pl.pk.localannouncements.usermanagement;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pk.localannouncements.usermanagement.exception.UserCreationException;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationDto;
@@ -15,8 +16,8 @@ import pl.pk.localannouncements.usermanagement.model.entity.User;
 class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
-
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -25,6 +26,9 @@ class AuthenticationServiceImpl implements AuthenticationService {
         registerUserDto.trimFields();
 
         User newUser = UserMapper.INSTANCE.toUser(registerUserDto);
+        String hashedPassword = passwordEncoder.encode(registerUserDto.getPassword());
+        newUser.setPassword(hashedPassword);
+
         User createdUser = saveNewUser(newUser);
 
         return createAuthenticationDto(createdUser);

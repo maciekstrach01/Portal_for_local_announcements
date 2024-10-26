@@ -29,7 +29,16 @@ You can start by copying the provided `application-example.properties` file:
 cp application-example.properties application-local.properties
 ```
 
-Make sure to customize values in the `application-local.properties` and `application-local.properties` file to suit your local setup. You can change the port of the application depending on the needs.
+- Make sure to customize values in the `application-local.properties` file to suit your local setup.
+- For the secret key, you should use a strong, randomly generated string. This secret key is critical for JWT (JSON Web Token) signing and verification. To generate a secure key, you can use an online key generator, a terminal command, or a password manager that supports secure key generation. Here are a few options:
+  - Using OpenSSL in your terminal:
+```
+openssl rand -base64 32
+```
+This command generates a 256-bit key in base64 encoding.
+- Alternatively, you can generate a key through websites like [RandomKeygen](https://randomkeygen.com).
+- You can also change the port of the application depending on your needs it is specified in `application.properties` file. The default port is set to 8080.
+- Some values in `application-example.properties` are provided by default, but depending on your needs, you can modify them. 
 
 Note: The `application-local.properties` file is listed in `.gitignore`, so it won’t be committed to version control. Keep this file secure.
 
@@ -43,7 +52,7 @@ This command will clean up any previous builds, resolve all necessary dependenci
 ### 3. Running the Application
 To run the Spring Boot application, use the following Maven command:
 ```
-mvn spring-boot:run -Dspring.profiles.active=local
+mvn spring-boot:run -D spring.profiles.active=local
 ```
 
 ## Setting Up Your Project in IntelliJ IDEA

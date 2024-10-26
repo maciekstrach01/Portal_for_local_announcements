@@ -92,9 +92,6 @@
 			"item": [
 				{
 					"name": "Demo - authorized",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -108,15 +105,6 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"text@asd.asd\",\n  \"firstName\": \"John\",\n  \"lastName\": \"asd\",\n  \"password\": \"password\",\n  \"confirmPassword\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{base_url}}:{{port}}/api/v1/demo",
 							"host": [
@@ -134,9 +122,6 @@
 				},
 				{
 					"name": "Demo - unathorized",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -150,15 +135,6 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"text@asd.asd\",\n  \"firstName\": \"John\",\n  \"lastName\": \"asd\",\n  \"password\": \"password\",\n  \"confirmPassword\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{base_url}}:{{port}}/api/v1/demo",
 							"host": [
