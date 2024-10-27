@@ -16,23 +16,14 @@ export const register = createAsyncThunk(
             }: IRegisterResponse = await axios.post('/v1/auth/register', data);
 
             localStorage.setItem('token', token);
-
-            // @TODO Toast
-            alert('Registered successfully');
         } catch (err) {
             const error = err as AxiosError<IErrorResponse>;
 
             if (error.response?.status === HTTP.BAD_REQUEST) {
-                // @TODO Toast
-                alert('Recheck your form');
-
                 throw rejectWithValue({
                     error: error.response.data.error
                 });
             }
-
-            // @TODO Toast
-            alert('Something went wrong...');
 
             throw err;
         }

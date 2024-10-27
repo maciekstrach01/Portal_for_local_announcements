@@ -1,10 +1,31 @@
-import { Link } from 'react-router-dom';
-import { Form, Formik, Field } from 'formik';
+import { useFormik } from 'formik';
+import { Link, useSubmit } from 'react-router-dom';
 
+import { store } from '@/store';
+import { register } from '@/store/auth/authActions';
 import RegisterSchema from '@/validators/auth/RegisterSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
 import type { IRegisterRequest } from '@/types/api/auth';
+import type { ActionFunctionArgs } from 'react-router-dom';
+
+export const action = async ({
+    request
+}: ActionFunctionArgs<IRegisterRequest>): Promise<void> => {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+
+    // console.log(data);
+
+    try {
+        // @ts-ignore
+        await store.dispatch(register(data));
+    } catch (error) {
+        console.error(error);
+
+        throw error;
+    }
+};
 
 const Register = () => {
     const initialValues: IRegisterRequest = {
@@ -21,6 +42,17 @@ const Register = () => {
     // @TODO Success / failure
     // @TODO Show / hide password
 
+    const submit = useSubmit();
+
+    const formik = useFormik<IRegisterRequest>({
+        initialValues,
+        validationSchema: RegisterSchema,
+        onSubmit: async values => {
+            // @ts-ignore
+            submit(values, { method: 'post' });
+        }
+    });
+
     return (
         <>
             <h1 className="text-3xl">Sign up </h1>
@@ -36,108 +68,108 @@ const Register = () => {
                     Login here!
                 </Link>
             </p>
-
-            <Formik
-                initialValues={initialValues}
-                validationSchema={RegisterSchema}
-                onSubmit={(values, actions) => {
-                    console.log({ values, actions });
-                    alert(JSON.stringify(values, null, 2));
-                    actions.setSubmitting(false);
-                }}
-            >
-                {({ errors, touched }) => (
-                    <Form>
-                        <Field
-                            id="firstName"
-                            name="firstName"
-                            placeholder="First mame"
-                            className={
-                                'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                                (!(errors.firstName && touched.firstName)
-                                    ? 'mb-7'
-                                    : '')
-                            }
-                        />
-                        {errors.firstName && touched.firstName && (
-                            <ValidationMessage message={errors.firstName} />
-                        )}
-
-                        <Field
-                            id="lastName"
-                            name="lastName"
-                            placeholder="Last name"
-                            className={
-                                'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                                (!(errors.lastName && touched.lastName)
-                                    ? 'mb-7'
-                                    : '')
-                            }
-                        />
-                        {errors.lastName && touched.lastName && (
-                            <ValidationMessage message={errors.lastName} />
-                        )}
-
-                        <Field
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Email"
-                            className={
-                                'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                                (!(errors.email && touched.email) ? 'mb-7' : '')
-                            }
-                        />
-                        {errors.email && touched.email && (
-                            <ValidationMessage message={errors.email} />
-                        )}
-
-                        <Field
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Password"
-                            className={
-                                'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                                (!(errors.password && touched.password)
-                                    ? 'mb-7'
-                                    : '')
-                            }
-                        />
-                        {errors.password && touched.password && (
-                            <ValidationMessage message={errors.password} />
-                        )}
-
-                        <Field
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            placeholder="Confirm password"
-                            className={
-                                'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                                (!(
-                                    errors.confirmPassword &&
-                                    touched.confirmPassword
-                                )
-                                    ? 'mb-7'
-                                    : '')
-                            }
-                        />
-                        {errors.confirmPassword && touched.confirmPassword && (
-                            <ValidationMessage
-                                message={errors.confirmPassword}
-                            />
-                        )}
-
-                        <button
-                            type="submit"
-                            className="block w-full p-4 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600"
-                        >
-                            Register
-                        </button>
-                    </Form>
+            <form method="post" onSubmit={formik.handleSubmit}>
+                <input
+                    id="firstName"
+                    name="firstName"
+                    placeholder="First mame"
+                    value={formik.values.firstName}
+                    onChange={formik.handleChange}
+                    className={
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (!(formik.errors.firstName && formik.touched.firstName)
+                            ? 'mb-7'
+                            : '')
+                    }
+                />
+                {formik.errors.firstName && formik.touched.firstName && (
+                    <ValidationMessage message={formik.errors.firstName} />
                 )}
-            </Formik>
+
+                <input
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Last name"
+                    value={formik.values.lastName}
+                    onChange={formik.handleChange}
+                    className={
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (!(formik.errors.lastName && formik.touched.lastName)
+                            ? 'mb-7'
+                            : '')
+                    }
+                />
+                {formik.errors.lastName && formik.touched.lastName && (
+                    <ValidationMessage message={formik.errors.lastName} />
+                )}
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    className={
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (!(formik.errors.email && formik.touched.email)
+                            ? 'mb-7'
+                            : '')
+                    }
+                />
+                {formik.errors.email && formik.touched.email && (
+                    <ValidationMessage message={formik.errors.email} />
+                )}
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    className={
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (!(formik.errors.password && formik.touched.password)
+                            ? 'mb-7'
+                            : '')
+                    }
+                />
+                {formik.errors.password && formik.touched.password && (
+                    <ValidationMessage message={formik.errors.password} />
+                )}
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Confirm password"
+                    value={formik.values.confirmPassword}
+                    onChange={formik.handleChange}
+                    className={
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (!(
+                            formik.errors.confirmPassword &&
+                            formik.touched.confirmPassword
+                        )
+                            ? 'mb-7'
+                            : '')
+                    }
+                />
+                {formik.errors.confirmPassword &&
+                    formik.touched.confirmPassword && (
+                        <ValidationMessage
+                            message={formik.errors.confirmPassword}
+                        />
+                    )}
+
+                <button
+                    type="submit"
+                    className="block w-full p-4 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600"
+                >
+                    Register
+                </button>
+            </form>
         </>
     );
 };
