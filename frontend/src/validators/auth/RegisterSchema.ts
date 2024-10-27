@@ -12,11 +12,9 @@ const RegisterSchema = object({
     email: string()
         .required('This field is required.')
         .email('Wrong email format.'),
-    // @TODO Must contain letters, numbers and special values
     password: string()
         .required('This field is required.')
         .min(8, 'This field must have at least 8 letters.'),
-    // @TODO Must contain letters, numbers and special values
     confirmPassword: string()
         .required('This field is required.')
         .oneOf([ref('password')], 'Passwords must match.')
