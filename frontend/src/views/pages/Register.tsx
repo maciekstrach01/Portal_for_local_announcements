@@ -1,17 +1,18 @@
 import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
 import { Link, Form, useSubmit } from 'react-router-dom';
 
-import { store } from '@/store';
+import { store, RootState } from '@/store';
 import { register } from '@/store/auth/authActions';
 import RegisterSchema from '@/validators/auth/RegisterSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
+import type { IErrorResponse } from '@/types/api/common';
 import type { IRegisterRequest } from '@/types/api/auth';
 import type { ActionFunctionArgs } from 'react-router-dom';
 
-// @TODO form - hasError and getError
-// @TODO Validation - red border on inputs
-// @TODO Deal with BE errors - show under the submit btn
+// @TODO Refactor hasError and getError
+// @TODO Refactor BE error
 export const action = async ({
     request
 }: ActionFunctionArgs<IRegisterRequest>): Promise<null> => {
@@ -63,6 +64,27 @@ const Register = () => {
         }
     });
 
+    const hasError = (
+        field:
+            | 'firstName'
+            | 'lastName'
+            | 'email'
+            | 'password'
+            | 'confirmPassword'
+    ) => formik.touched[field] === true && !!formik.errors[field];
+
+    const getErrorMessage = (
+        field:
+            | 'firstName'
+            | 'lastName'
+            | 'email'
+            | 'password'
+            | 'confirmPassword'
+    ): string => formik.errors[field] || '';
+
+    const { error: rawError } = useSelector((state: RootState) => state.auth);
+    const error = rawError as IErrorResponse;
+
     return (
         <>
             <h1 className="text-3xl">Sign up </h1>
@@ -87,14 +109,12 @@ const Register = () => {
                     value={formik.values.firstName}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                        (!(formik.errors.firstName && formik.touched.firstName)
-                            ? 'mb-7'
-                            : '')
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (hasError('firstName') ? '!border-red-600' : 'mb-7')
                     }
                 />
-                {formik.errors.firstName && formik.touched.firstName && (
-                    <ValidationMessage message={formik.errors.firstName} />
+                {hasError('firstName') && (
+                    <ValidationMessage message={getErrorMessage('firstName')} />
                 )}
 
                 <input
@@ -104,14 +124,12 @@ const Register = () => {
                     value={formik.values.lastName}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                        (!(formik.errors.lastName && formik.touched.lastName)
-                            ? 'mb-7'
-                            : '')
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (hasError('lastName') ? '!border-red-600' : 'mb-7')
                     }
                 />
-                {formik.errors.lastName && formik.touched.lastName && (
-                    <ValidationMessage message={formik.errors.lastName} />
+                {hasError('lastName') && (
+                    <ValidationMessage message={getErrorMessage('lastName')} />
                 )}
 
                 <input
@@ -122,14 +140,12 @@ const Register = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                        (!(formik.errors.email && formik.touched.email)
-                            ? 'mb-7'
-                            : '')
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (hasError('email') ? '!border-red-600' : 'mb-7')
                     }
                 />
-                {formik.errors.email && formik.touched.email && (
-                    <ValidationMessage message={formik.errors.email} />
+                {hasError('email') && (
+                    <ValidationMessage message={getErrorMessage('email')} />
                 )}
 
                 <input
@@ -140,14 +156,12 @@ const Register = () => {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                        (!(formik.errors.password && formik.touched.password)
-                            ? 'mb-7'
-                            : '')
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (hasError('password') ? '!border-red-600' : 'mb-7')
                     }
                 />
-                {formik.errors.password && formik.touched.password && (
-                    <ValidationMessage message={formik.errors.password} />
+                {hasError('password') && (
+                    <ValidationMessage message={getErrorMessage('password')} />
                 )}
 
                 <input
@@ -158,21 +172,17 @@ const Register = () => {
                     value={formik.values.confirmPassword}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                        (!(
-                            formik.errors.confirmPassword &&
-                            formik.touched.confirmPassword
-                        )
-                            ? 'mb-7'
-                            : '')
+                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        (hasError('confirmPassword')
+                            ? '!border-red-600'
+                            : 'mb-7')
                     }
                 />
-                {formik.errors.confirmPassword &&
-                    formik.touched.confirmPassword && (
-                        <ValidationMessage
-                            message={formik.errors.confirmPassword}
-                        />
-                    )}
+                {hasError('confirmPassword') && (
+                    <ValidationMessage
+                        message={getErrorMessage('confirmPassword')}
+                    />
+                )}
 
                 <button
                     type="submit"
@@ -180,6 +190,10 @@ const Register = () => {
                 >
                     Register
                 </button>
+
+                {error?.error && (
+                    <p className="mt-7 text-red-600">{error.error}</p>
+                )}
             </Form>
         </>
     );
