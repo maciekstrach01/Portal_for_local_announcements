@@ -18,7 +18,7 @@ export const register = createAsyncThunk(
 
             localStorage.setItem('token', token);
 
-            toast.success('Registered successfully!');
+            toast.success("You've been registered successfully!");
         } catch (err) {
             const error = err as AxiosError<IErrorResponse>;
 

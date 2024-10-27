@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { Link, useSubmit } from 'react-router-dom';
+import { Link, Form, useSubmit } from 'react-router-dom';
 
 import { store } from '@/store';
 import { register } from '@/store/auth/authActions';
@@ -9,14 +9,30 @@ import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 import type { IRegisterRequest } from '@/types/api/auth';
 import type { ActionFunctionArgs } from 'react-router-dom';
 
+// @TODO form - hasError and getError
+// @TODO Validation - red border on inputs
+// @TODO Deal with BE errors - show under the submit btn
 export const action = async ({
     request
 }: ActionFunctionArgs<IRegisterRequest>): Promise<null> => {
     const formData = await request.formData();
-    const data = Object.fromEntries(formData);
 
+    const firstName = formData.get('firstName') as string;
+    const lastName = formData.get('lastName') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const confirmPassword = formData.get('confirmPassword') as string;
+
+    const data: IRegisterRequest = {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword
+    };
+
+    // @TODO Do not redirect on error!
     try {
-        // @ts-ignore
         await store.dispatch(register(data));
 
         return null;
@@ -35,12 +51,6 @@ const Register = () => {
         password: '',
         confirmPassword: ''
     };
-
-    // @TODO Validation - red border on inputs
-    // @TODO Submit of form
-    // @TODO Deal with BE errors - show under the submit btn
-    // @TODO Success / failure
-    // @TODO Show / hide password
 
     const submit = useSubmit();
 
@@ -68,7 +78,8 @@ const Register = () => {
                     Login here!
                 </Link>
             </p>
-            <form method="post" onSubmit={formik.handleSubmit}>
+
+            <Form method="post" onSubmit={formik.handleSubmit}>
                 <input
                     id="firstName"
                     name="firstName"
@@ -169,7 +180,7 @@ const Register = () => {
                 >
                     Register
                 </button>
-            </form>
+            </Form>
         </>
     );
 };
