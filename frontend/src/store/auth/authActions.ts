@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StatusCodes as HTTP } from 'http-status-codes';
 
@@ -16,14 +17,20 @@ export const register = createAsyncThunk(
             }: IRegisterResponse = await axios.post('/v1/auth/register', data);
 
             localStorage.setItem('token', token);
+
+            toast.success('Registered successfully!');
         } catch (err) {
             const error = err as AxiosError<IErrorResponse>;
 
             if (error.response?.status === HTTP.BAD_REQUEST) {
+                toast.error('Recheck your form');
+
                 throw rejectWithValue({
                     error: error.response.data.error
                 });
             }
+
+            toast.error('Something went wrong...');
 
             throw err;
         }

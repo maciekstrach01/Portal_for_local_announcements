@@ -4,12 +4,15 @@ import {
     createBrowserRouter,
     createRoutesFromElements
 } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import Index from '@/views/pages/Index';
 import Login from '@/views/pages/Login';
 import AuthLayout from '@/views/layouts/Auth';
 import DefaultLayout from '@/views/layouts/Default';
 import Register, { action as registerAction } from '@/views/pages/Register';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -30,6 +33,12 @@ const router = createBrowserRouter(
     )
 );
 
-const App = () => <RouterProvider router={router} />;
+const App = () => (
+    <>
+        <RouterProvider router={router} />
+
+        <ToastContainer position="bottom-center" theme="colored" />
+    </>
+);
 
 export default App;

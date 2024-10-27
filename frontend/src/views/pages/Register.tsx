@@ -11,15 +11,15 @@ import type { ActionFunctionArgs } from 'react-router-dom';
 
 export const action = async ({
     request
-}: ActionFunctionArgs<IRegisterRequest>): Promise<void> => {
+}: ActionFunctionArgs<IRegisterRequest>): Promise<null> => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-
-    // console.log(data);
 
     try {
         // @ts-ignore
         await store.dispatch(register(data));
+
+        return null;
     } catch (error) {
         console.error(error);
 
