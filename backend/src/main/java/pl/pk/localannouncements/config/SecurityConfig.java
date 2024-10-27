@@ -20,8 +20,6 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    @Autowired
-    CorsConfigurationSourceImpl corsConfigurationSource;
 
     private static final String[] WHITE_LIST_URL = {
             "/api/v1/auth/**",
@@ -38,6 +36,7 @@ public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CorsConfigurationSourceImpl corsConfigurationSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
