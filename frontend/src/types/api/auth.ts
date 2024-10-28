@@ -1,6 +1,11 @@
 import type { IResponse } from '@/types/api/common';
 
-type IRegisterRequestFields = 'firstName' | 'lastName' | 'email' | 'password' | 'confirmPassword';
+type IRegisterRequestFields =
+    | 'firstName'
+    | 'lastName'
+    | 'email'
+    | 'password'
+    | 'confirmPassword';
 
 interface IRegisterRequest {
     firstName: string;
