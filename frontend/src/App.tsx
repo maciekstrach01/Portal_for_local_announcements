@@ -9,8 +9,9 @@ import { ToastContainer } from 'react-toastify';
 import Index from '@/views/pages/Index';
 import Login from '@/views/pages/Login';
 import AuthLayout from '@/views/layouts/Auth';
+import Register from '@/views/pages/Register';
 import DefaultLayout from '@/views/layouts/Default';
-import Register, { action as registerAction } from '@/views/pages/Register';
+import { action as registerAction } from '@/views/actions/register.action.ts';
 
 import 'react-toastify/dist/ReactToastify.css';
 
