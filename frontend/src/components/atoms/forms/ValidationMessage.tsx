@@ -3,7 +3,9 @@ type ValidationMessageProps = {
 };
 
 const ValidationMessage = ({ message }: ValidationMessageProps) => (
-    <div className="text-sm text-red-600 mb-2">{message}</div>
+    <div className="text-xs text-red-600 mb-1 sm:mb-2 sm:text-sm">
+        {message}
+    </div>
 );
 
 export default ValidationMessage;

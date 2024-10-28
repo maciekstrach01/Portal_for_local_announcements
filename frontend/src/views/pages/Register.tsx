@@ -40,9 +40,11 @@ const Register = () => {
 
     return (
         <>
-            <h1 className="text-xl text-center font-medium">Sign up</h1>
+            <h1 className="text-lg text-center font-medium sm:text-xl">
+                Sign up
+            </h1>
 
-            <div className="mt-1 mb-7 text-center">
+            <div className="mt-1 mb-5 text-center sm:mb-7">
                 Already have an account?{' '}
                 <Link
                     to="/login"
@@ -60,8 +62,10 @@ const Register = () => {
                     value={formik.values.firstName}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                        (hasError('firstName') ? '!border-red-600' : 'mb-7')
+                        'block w-full p-2 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 sm:p-4 ' +
+                        (hasError('firstName')
+                            ? '!border-red-600'
+                            : 'mb-5 sm:mb-7')
                     }
                 />
                 {hasError('firstName') && (
@@ -75,8 +79,10 @@ const Register = () => {
                     value={formik.values.lastName}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                        (hasError('lastName') ? '!border-red-600' : 'mb-7')
+                        'block w-full p-2 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 sm:p-4 ' +
+                        (hasError('lastName')
+                            ? '!border-red-600'
+                            : 'mb-5 sm:mb-7')
                     }
                 />
                 {hasError('lastName') && (
@@ -91,8 +97,8 @@ const Register = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                        (hasError('email') ? '!border-red-600' : 'mb-7')
+                        'block w-full p-2 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 sm:p-4 ' +
+                        (hasError('email') ? '!border-red-600' : 'mb-5 sm:mb-7')
                     }
                 />
                 {hasError('email') && (
@@ -107,8 +113,10 @@ const Register = () => {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
-                        (hasError('password') ? '!border-red-600' : 'mb-7')
+                        'block w-full p-2 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 sm:p-4 ' +
+                        (hasError('password')
+                            ? '!border-red-600'
+                            : 'mb-5 sm:mb-7')
                     }
                 />
                 {hasError('password') && (
@@ -123,10 +131,10 @@ const Register = () => {
                     value={formik.values.confirmPassword}
                     onChange={formik.handleChange}
                     className={
-                        'block w-full p-4 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 ' +
+                        'block w-full p-2 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 sm:p-4 ' +
                         (hasError('confirmPassword')
                             ? '!border-red-600'
-                            : 'mb-7')
+                            : 'mb-5 sm:mb-7')
                     }
                 />
                 {hasError('confirmPassword') && (
@@ -137,17 +145,17 @@ const Register = () => {
 
                 <button
                     type="submit"
-                    className="block w-full p-4 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600"
+                    className="block w-full p-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 sm:p-4"
                 >
                     Register
                 </button>
 
                 {error?.error ? (
-                    <div className="text-sm mt-4 text-red-600">
+                    <div className="text-xs mt-2 text-red-600 sm:text-sm sm:mt-4">
                         {error.error}
                     </div>
                 ) : (
-                    <div className="mt-9" />
+                    <div className="mt-6 sm:mt-9" />
                 )}
             </Form>
         </>
