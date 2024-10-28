@@ -82,7 +82,7 @@ const Register = () => {
                 <input
                     id="firstName"
                     name="firstName"
-                    placeholder="First mame"
+                    placeholder="First name"
                     value={formik.values.firstName}
                     onChange={formik.handleChange}
                     className={
