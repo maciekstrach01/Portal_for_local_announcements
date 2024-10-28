@@ -1,21 +1,23 @@
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
-import { Link, Form, useSubmit } from 'react-router-dom';
+import { Link, Form, useSubmit, redirect } from 'react-router-dom';
 
 import { store, RootState } from '@/store';
 import { register } from '@/store/auth/authActions';
 import RegisterSchema from '@/validators/auth/RegisterSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
+import type {
+    IRegisterRequest,
+    IRegisterRequestFields
+} from '@/types/api/auth';
 import type { IErrorResponse } from '@/types/api/common';
-import type { IRegisterRequest } from '@/types/api/auth';
 import type { ActionFunctionArgs } from 'react-router-dom';
 
 // @TODO Refactor hasError and getError
-// @TODO Refactor BE error
 export const action = async ({
     request
-}: ActionFunctionArgs<IRegisterRequest>): Promise<null> => {
+}: ActionFunctionArgs<IRegisterRequest>): Promise<Response | null> => {
     const formData = await request.formData();
 
     const firstName = formData.get('firstName') as string;
@@ -32,16 +34,9 @@ export const action = async ({
         confirmPassword
     };
 
-    // @TODO Do not redirect on error!
-    try {
-        await store.dispatch(register(data));
+    const response = await store.dispatch(register(data));
 
-        return null;
-    } catch (error) {
-        console.error(error);
-
-        throw error;
-    }
+    return response.meta.requestStatus === 'fulfilled' ? redirect('/') : null;
 };
 
 const Register = () => {
@@ -59,47 +54,32 @@ const Register = () => {
         initialValues,
         validationSchema: RegisterSchema,
         onSubmit: async values => {
-            // @ts-ignore
-            submit(values, { method: 'post' });
+            submit({ ...values }, { method: 'post' });
         }
     });
 
-    const hasError = (
-        field:
-            | 'firstName'
-            | 'lastName'
-            | 'email'
-            | 'password'
-            | 'confirmPassword'
-    ) => formik.touched[field] === true && !!formik.errors[field];
+    const hasError = (field: IRegisterRequestFields) =>
+        formik.touched[field] === true && !!formik.errors[field];
 
-    const getErrorMessage = (
-        field:
-            | 'firstName'
-            | 'lastName'
-            | 'email'
-            | 'password'
-            | 'confirmPassword'
-    ): string => formik.errors[field] || '';
+    const getErrorMessage = (field: IRegisterRequestFields): string =>
+        formik.errors[field] || '';
 
     const { error: rawError } = useSelector((state: RootState) => state.auth);
     const error = rawError as IErrorResponse;
 
     return (
         <>
-            <h1 className="text-3xl">Sign up </h1>
+            <h1 className="text-xl text-center font-medium">Sign up</h1>
 
-            <p className="mt-1 mb-7">
-                If you already have an account
-                <br />
-                You can{' '}
+            <div className="mt-1 mb-7 text-center">
+                Already have an account?{' '}
                 <Link
                     to="/login"
                     className="text-primary-500 hover:underline hover:text-primary-600"
                 >
                     Login here!
                 </Link>
-            </p>
+            </div>
 
             <Form method="post" onSubmit={formik.handleSubmit}>
                 <input
@@ -191,8 +171,12 @@ const Register = () => {
                     Register
                 </button>
 
-                {error?.error && (
-                    <p className="mt-7 text-red-600">{error.error}</p>
+                {error?.error ? (
+                    <div className="text-sm mt-4 text-red-600">
+                        {error.error}
+                    </div>
+                ) : (
+                    <div className="mt-9" />
                 )}
             </Form>
         </>

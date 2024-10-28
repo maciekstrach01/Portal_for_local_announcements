@@ -1,5 +1,7 @@
 import type { IResponse } from '@/types/api/common';
 
+type IRegisterRequestFields = 'firstName' | 'lastName' | 'email' | 'password' | 'confirmPassword';
+
 interface IRegisterRequest {
     firstName: string;
     lastName: string;
@@ -14,4 +16,4 @@ interface IRegisterResponse extends IResponse {
     };
 }
 
-export type { IRegisterRequest, IRegisterResponse };
+export type { IRegisterRequestFields, IRegisterRequest, IRegisterResponse };
