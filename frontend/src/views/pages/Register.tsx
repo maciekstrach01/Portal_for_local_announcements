@@ -14,7 +14,6 @@ import type {
 import type { IErrorResponse } from '@/types/api/common';
 import type { ActionFunctionArgs } from 'react-router-dom';
 
-// @TODO Refactor hasError and getError
 export const action = async ({
     request
 }: ActionFunctionArgs<IRegisterRequest>): Promise<Response | null> => {
@@ -40,18 +39,16 @@ export const action = async ({
 };
 
 const Register = () => {
-    const initialValues: IRegisterRequest = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    };
-
     const submit = useSubmit();
 
     const formik = useFormik<IRegisterRequest>({
-        initialValues,
+        initialValues: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        },
         validationSchema: RegisterSchema,
         onSubmit: async values => {
             submit({ ...values }, { method: 'post' });
