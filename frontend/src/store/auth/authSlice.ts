@@ -5,12 +5,10 @@ import { register } from '@/store/auth/authActions';
 import type { IErrorResponse } from '@/types/api/common';
 
 interface InitState {
-    loggedIn: boolean;
     error: Pick<IErrorResponse, 'error'> | SerializedError;
 }
 
 const initialState: InitState = {
-    loggedIn: false,
     error: {}
 };
 

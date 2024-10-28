@@ -32,7 +32,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
     private void validateUserDoesNotExist(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new UserCreationException("User with this email already exists.");
+            throw new UserCreationException("User with this email already exists");
         }
     }
 

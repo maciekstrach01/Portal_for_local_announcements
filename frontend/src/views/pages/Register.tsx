@@ -44,7 +44,7 @@ const Register = () => {
                 Sign up
             </h1>
 
-            <div className="mt-1 mb-5 text-center sm:mb-7">
+            <div className="mb-5 text-center sm:mb-7">
                 Already have an account?{' '}
                 <Link
                     to="/login"
