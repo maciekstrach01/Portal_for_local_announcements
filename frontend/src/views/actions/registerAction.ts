@@ -1,11 +1,11 @@
 import { ActionFunctionArgs, redirect } from 'react-router-dom';
 
 import { store } from '@/store';
-import { register } from '@/store/auth/authActions.ts';
+import { register } from '@/store/auth/authActions';
 
-import type { IRegisterRequest } from '@/types/api/auth.ts';
+import type { IRegisterRequest } from '@/types/api/auth';
 
-export const action = async ({
+export const registerAction = async ({
     request
 }: ActionFunctionArgs<IRegisterRequest>): Promise<Response | null> => {
     const formData = await request.formData();
