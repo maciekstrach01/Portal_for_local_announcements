@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import Index from '@/views/pages/Index';
 import Login from '@/views/pages/Login';
 import AuthLayout from '@/views/layouts/Auth';
+import NotFound from '@/views/pages/NotFound';
 import Register from '@/views/pages/Register';
 import DefaultLayout from '@/views/layouts/Default';
 import { registerAction } from '@/views/actions/registerAction';
@@ -20,6 +21,8 @@ const router = createBrowserRouter(
         <>
             <Route path="/" element={<DefaultLayout />}>
                 <Route index element={<Index />} />
+
+                <Route path="*" element={<NotFound />} />
             </Route>
 
             <Route path="/" element={<AuthLayout />}>
