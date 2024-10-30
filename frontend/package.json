@@ -1,5 +1,5 @@
 {
-    "name": "web-app",
+    "name": "local-announcements",
     "private": true,
     "version": "0.0.0",
     "type": "module",
@@ -11,10 +11,17 @@
     },
     "dependencies": {
         "@heroicons/react": "2.1.5",
+        "@reduxjs/toolkit": "2.3.0",
+        "axios": "1.7.7",
+        "formik": "2.4.6",
+        "http-status-codes": "2.3.0",
         "react": "18.3.1",
         "react-dom": "18.3.1",
+        "react-redux": "9.1.2",
         "react-router": "6.27.0",
-        "react-router-dom": "6.27.0"
+        "react-router-dom": "6.27.0",
+        "react-toastify": "10.0.6",
+        "yup": "1.4.0"
     },
     "devDependencies": {
         "@eslint/js": "9.12.0",

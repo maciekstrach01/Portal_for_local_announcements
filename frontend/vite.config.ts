@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
             }
         },
         server: {
-            port: parseInt(env.VITE_PORT) || 8080
+            port: parseInt(env.VITE_PORT) || 3000
         }
     };
 });

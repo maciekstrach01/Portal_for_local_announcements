@@ -25,4 +25,19 @@ npm run dev
 
 ## Usage
 
-Go to http://localhost:8080/ (default settings)
+Go to http://localhost:3000 (default settings)
+
+## Additional Notes
+
+### Features
+
+-   User registration
+
+### Used Technologies
+
+-   React
+-   TypeScript
+-   Vite
+-   Tailwind CSS
+-   ESLint
+-   Prettier
