@@ -24,6 +24,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
+    
     @Value("${application.frontend.url}")
     private String frontendUrl;
 
