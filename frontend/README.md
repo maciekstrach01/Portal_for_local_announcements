@@ -38,6 +38,6 @@ Go to http://localhost:3000 (default settings)
 -   React
 -   TypeScript
 -   Vite
--   TailwindCSS
--   Eslint
+-   Tailwind CSS
+-   ESLint
 -   Prettier

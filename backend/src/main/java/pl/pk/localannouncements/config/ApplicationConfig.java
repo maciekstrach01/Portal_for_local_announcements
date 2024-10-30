@@ -24,20 +24,10 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    @Value("${application.frontend.protocol}")
-    private String frontendProtocol;
-
-    @Value("${application.frontend.host}")
-    private String frontendHost;
-
-    @Value("${application.frontend.port}")
-    private String frontendPort;
+    @Value("${application.frontend.url}")
+    private String frontendUrl;
 
     private final UserService userService;
-
-    public String getFrontendUrl() {
-        return String.format("%s://%s:%s", frontendProtocol, frontendHost, frontendPort);
-    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -51,9 +41,9 @@ public class ApplicationConfig {
     public CorsConfigurationSource corsConfigurationSource(@NonNull HttpServletRequest request) {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         corsConfiguration.setExposedHeaders(List.of("Authorization", "Access-Control-Allow-Origin"));
-        corsConfiguration.setAllowedOriginPatterns(List.of(getFrontendUrl()));
+        corsConfiguration.setAllowedOriginPatterns(List.of(frontendUrl));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
