@@ -25,4 +25,4 @@ npm run dev
 
 ## Usage
 
-Go to http://localhost:8080/ (default settings)
+Go to http://localhost:3000 (default settings)
