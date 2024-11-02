@@ -21,4 +21,17 @@ interface IRegisterResponse extends IResponse {
     };
 }
 
-export type { IRegisterRequestFields, IRegisterRequest, IRegisterResponse };
+type ILoginRequestFields = 'email' | 'password';
+
+interface ILoginRequest {
+    email: string;
+    password: string;
+}
+
+export type {
+    IRegisterRequestFields,
+    IRegisterRequest,
+    IRegisterResponse,
+    ILoginRequestFields,
+    ILoginRequest
+};
