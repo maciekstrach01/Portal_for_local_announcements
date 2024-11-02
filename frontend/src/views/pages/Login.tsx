@@ -1,13 +1,18 @@
 import { useFormik } from 'formik';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, Form, useSubmit } from 'react-router-dom';
 
+import { clearError } from '@/store/auth/authSlice';
 import LoginSchema from '@/validators/auth/LoginSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
+import type { RootState, AppDispatch } from '@/store';
+import type { IErrorResponse } from '@/types/api/common';
 import type { ILoginRequest, ILoginRequestFields } from '@/types/api/auth';
 
 const Login = () => {
     const submit = useSubmit();
+    const dispatch = useDispatch<AppDispatch>();
 
     const formik = useFormik<ILoginRequest>({
         initialValues: {
@@ -25,6 +30,10 @@ const Login = () => {
 
     const getErrorMessage = (field: ILoginRequestFields): string =>
         formik.errors[field] || '';
+
+    dispatch(clearError());
+    const { error: rawError } = useSelector((state: RootState) => state.auth);
+    const error = rawError as IErrorResponse;
 
     return (
         <>
@@ -83,6 +92,14 @@ const Login = () => {
                 >
                     Login
                 </button>
+
+                {error?.error ? (
+                    <div className="text-xs mt-2 text-red-600 sm:text-sm sm:mt-4">
+                        {error.error}
+                    </div>
+                ) : (
+                    <div className="mt-6 sm:mt-9" />
+                )}
             </Form>
         </>
     );
