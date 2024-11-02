@@ -1,6 +1,6 @@
 import { createSlice, SerializedError } from '@reduxjs/toolkit';
 
-import { register } from '@/store/auth/authActions';
+import { login, register } from '@/store/auth/authActions';
 
 import type { IErrorResponse } from '@/types/api/common';
 
@@ -22,6 +22,14 @@ export const authSlice = createSlice({
         });
 
         builder.addCase(register.rejected, (state, action) => {
+            state.error = action.payload ? action.payload : action.error;
+        });
+
+        builder.addCase(login.fulfilled, state => {
+            state.error = {};
+        });
+
+        builder.addCase(login.rejected, (state, action) => {
             state.error = action.payload ? action.payload : action.error;
         });
     }

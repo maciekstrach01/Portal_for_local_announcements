@@ -12,6 +12,7 @@ import AuthLayout from '@/views/layouts/Auth';
 import NotFound from '@/views/pages/NotFound';
 import Register from '@/views/pages/Register';
 import DefaultLayout from '@/views/layouts/Default';
+import { loginAction } from '@/views/actions/loginAction';
 import { registerAction } from '@/views/actions/registerAction';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,7 +27,7 @@ const router = createBrowserRouter(
             </Route>
 
             <Route path="/" element={<AuthLayout />}>
-                <Route path="login" element={<Login />} />
+                <Route path="login" element={<Login />} action={loginAction} />
                 <Route
                     path="register"
                     element={<Register />}

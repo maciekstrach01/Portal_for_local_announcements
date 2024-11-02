@@ -28,10 +28,17 @@ interface ILoginRequest {
     password: string;
 }
 
+interface ILoginResponse extends IResponse {
+    data: {
+        token: string;
+    };
+}
+
 export type {
     IRegisterRequestFields,
     IRegisterRequest,
     IRegisterResponse,
     ILoginRequestFields,
-    ILoginRequest
+    ILoginRequest,
+    ILoginResponse
 };
