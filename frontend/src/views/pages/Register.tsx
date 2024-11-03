@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
-import { Link, Form, useSubmit } from 'react-router-dom';
+import { Link, Form, useSubmit, useNavigation } from 'react-router-dom';
 
 import RegisterSchema from '@/validators/auth/RegisterSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
@@ -14,6 +14,7 @@ import type { IErrorResponse } from '@/types/api/common';
 
 const Register = () => {
     const submit = useSubmit();
+    const { state } = useNavigation();
 
     const formik = useFormik<IRegisterRequest>({
         initialValues: {
@@ -145,9 +146,10 @@ const Register = () => {
 
                 <button
                     type="submit"
-                    className="block w-full p-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 sm:p-4"
+                    disabled={state === 'submitting'}
+                    className="block w-full p-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 disabled:bg-primary-200 disabled:hover:bg-primary-200 sm:p-4"
                 >
-                    Register
+                    {state === 'submitting' ? 'Registering...' : 'Register'}
                 </button>
 
                 {error?.error ? (

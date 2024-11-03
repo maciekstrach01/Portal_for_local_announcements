@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
-import { Link, Form, useSubmit } from 'react-router-dom';
+import { Link, Form, useSubmit, useNavigation } from 'react-router-dom';
 
 import LoginSchema from '@/validators/auth/LoginSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
@@ -11,6 +11,7 @@ import type { ILoginRequest, ILoginRequestFields } from '@/types/api/auth';
 
 const Login = () => {
     const submit = useSubmit();
+    const { state } = useNavigation();
 
     const formik = useFormik<ILoginRequest>({
         initialValues: {
@@ -85,11 +86,13 @@ const Login = () => {
 
                 <button
                     type="submit"
-                    className="block w-full p-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 sm:p-4"
+                    disabled={state === 'submitting'}
+                    className="block w-full p-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 disabled:bg-primary-200 disabled:hover:bg-primary-200 sm:p-4"
                 >
-                    Login
+                    {state === 'submitting' ? 'Logging in...' : 'Login'}
                 </button>
 
+                {/*// @TODO What about it?*/}
                 {error?.error ? (
                     <div className="text-xs mt-2 text-red-600 sm:text-sm sm:mt-4">
                         {error.error}
