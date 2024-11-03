@@ -19,12 +19,20 @@
 									"// Parse the JSON response",
 									"var jsonData = pm.response.json();",
 									"",
-									"// Check if the token exists in the response and save it into a collection variable",
-									"if (jsonData.token) {",
-									"    pm.collectionVariables.set(\"auth_token\", jsonData.token);",
-									"    console.log(\"Token saved to collection variable: \" + jsonData.token);",
+									"// Check if the access token exists in the response and save it into a collection variable",
+									"if (jsonData.accessToken) {",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.accessToken);",
+									"    console.log(\"Access token saved to collection variable: \" + jsonData.accessToken);",
 									"} else {",
-									"    console.log(\"Token not found in response.\");",
+									"    console.log(\"Access token not found in response.\");",
+									"}",
+									"",
+									"// Check if the refresh token exists in the response and save it into a collection variable",
+									"if (jsonData.accessToken) {",
+									"    pm.collectionVariables.set(\"refresh_token\", jsonData.refreshToken);",
+									"    console.log(\"Refresh token saved to collection variable: \" + jsonData.refreshToken);",
+									"} else {",
+									"    console.log(\"Refresh token not found in response.\");",
 									"}"
 								],
 								"type": "text/javascript",
@@ -37,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"password\": \"password\",\n  \"confirmPassword\": \"password\"\n}",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"password\": \"password\",\n  \"confirmPassword\": \"password\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -55,6 +63,166 @@
 								"v1",
 								"auth",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AuthenticateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response",
+									"var jsonData = pm.response.json();",
+									"",
+									"// Check if the access token exists in the response and save it into a collection variable",
+									"if (jsonData.accessToken) {",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.accessToken);",
+									"    console.log(\"Access token saved to collection variable: \" + jsonData.accessToken);",
+									"} else {",
+									"    console.log(\"Access token not found in response.\");",
+									"}",
+									"",
+									"// Check if the refresh token exists in the response and save it into a collection variable",
+									"if (jsonData.refreshToken) {",
+									"    pm.collectionVariables.set(\"refresh_token\", jsonData.refreshToken);",
+									"    console.log(\"Refresh token saved to collection variable: \" + jsonData.refreshToken);",
+									"} else {",
+									"    console.log(\"Refresh token not found in response.\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/auth/authenticate",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RefreshToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response",
+									"var jsonData = pm.response.json();",
+									"",
+									"// Check if the access token exists in the response and save it into a collection variable",
+									"if (jsonData.accessToken) {",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.accessToken);",
+									"    console.log(\"Access token saved to collection variable: \" + jsonData.accessToken);",
+									"} else {",
+									"    console.log(\"Access token not found in response.\");",
+									"}",
+									"",
+									"// Check if the refresh token exists in the response and save it into a collection variable",
+									"if (jsonData.refreshToken) {",
+									"    pm.collectionVariables.set(\"refresh_token\", jsonData.refreshToken);",
+									"    console.log(\"Refresh token saved to collection variable: \" + jsonData.refreshToken);",
+									"} else {",
+									"    console.log(\"Refresh token not found in response.\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/auth/refresh_token",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh_token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
 							]
 						}
 					},
@@ -98,7 +266,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{auth_token}}",
+									"value": "{{access_token}}",
 									"type": "string"
 								}
 							]
@@ -205,7 +373,11 @@
 	],
 	"variable": [
 		{
-			"key": "auth_token",
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
 			"value": ""
 		}
 	]
