@@ -1,12 +1,22 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 const Header = () => {
-    // @TODO Dynamically refresh
-    const loggedIn = !!localStorage.getItem('token');
+    const navigate = useNavigate();
+
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
+        !!localStorage.getItem('token')
+    );
 
     const doLogout = () => {
         localStorage.removeItem('token');
+        setIsLoggedIn(false);
+
+        toast.success("You've been logged out!");
+
+        navigate('/');
     };
 
     return (
@@ -19,8 +29,15 @@ const Header = () => {
                 <h1 className="font-bold text-2xl">Local Announcements</h1>
             </Link>
 
+            <Link
+                to="/demo"
+                className="flex items-center gap-2 hover:text-gray-600"
+            >
+                Demo
+            </Link>
+
             <div className="flex gap-2">
-                {loggedIn ? (
+                {isLoggedIn ? (
                     <button className="hover:text-gray-600" onClick={doLogout}>
                         Logout
                     </button>

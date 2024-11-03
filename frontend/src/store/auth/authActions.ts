@@ -4,13 +4,13 @@ import { StatusCodes as HTTP } from 'http-status-codes';
 
 import axios from '@/plugins/axios';
 
-import type { AxiosError } from 'axios';
-import type { IErrorResponse } from '@/types/api/common';
 import {
     ILoginRequest,
     ITokenResponse,
     IRegisterRequest
 } from '@/types/api/auth';
+import type { AxiosError } from 'axios';
+import type { IErrorResponse } from '@/types/api/common';
 
 export const register = createAsyncThunk(
     'auth/register',
