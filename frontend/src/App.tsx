@@ -12,8 +12,8 @@ import AuthLayout from '@/views/layouts/Auth';
 import NotFound from '@/views/pages/NotFound';
 import Register from '@/views/pages/Register';
 import DefaultLayout from '@/views/layouts/Default';
-import { loginAction } from '@/views/actions/loginAction';
-import { registerAction } from '@/views/actions/registerAction';
+import { loginAction } from '@/utils/actions/loginAction';
+import { registerAction } from '@/utils/actions/registerAction';
 
 import 'react-toastify/dist/ReactToastify.css';
 

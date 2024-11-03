@@ -2,6 +2,13 @@ import { Link } from 'react-router-dom';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 const Header = () => {
+    // @TODO Dynamically refresh
+    const loggedIn = !!localStorage.getItem('token');
+
+    const doLogout = () => {
+        localStorage.removeItem('token');
+    };
+
     return (
         <header className="flex justify-between items-center w-full h-16 p-4">
             <Link
@@ -13,12 +20,20 @@ const Header = () => {
             </Link>
 
             <div className="flex gap-2">
-                <Link to="login" className="hover:text-gray-600">
-                    Login
-                </Link>
-                <Link to="register" className="hover:text-gray-600">
-                    Register
-                </Link>
+                {loggedIn ? (
+                    <button className="hover:text-gray-600" onClick={doLogout}>
+                        Logout
+                    </button>
+                ) : (
+                    <>
+                        <Link to="login" className="hover:text-gray-600">
+                            Login
+                        </Link>
+                        <Link to="register" className="hover:text-gray-600">
+                            Register
+                        </Link>
+                    </>
+                )}
             </div>
         </header>
     );
