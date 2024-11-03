@@ -29,14 +29,14 @@ const Header = () => {
                 <h1 className="font-bold text-2xl">Local Announcements</h1>
             </Link>
 
-            <Link
-                to="/demo"
-                className="flex items-center gap-2 hover:text-gray-600"
-            >
-                Demo
-            </Link>
-
             <div className="flex gap-2">
+                <Link
+                    to="/demo"
+                    className="flex items-center gap-2 hover:text-gray-600"
+                >
+                    Demo
+                </Link>
+
                 {isLoggedIn ? (
                     <button className="hover:text-gray-600" onClick={doLogout}>
                         Logout

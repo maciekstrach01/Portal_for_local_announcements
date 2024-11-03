@@ -6,7 +6,7 @@ export const requireAuth = async (): Promise<null> => {
     const token = localStorage.getItem('token');
 
     if (!token) {
-        throw redirect(`/login?message=You must login first`);
+        throw redirect('/login?message=You must login first');
     }
 
     return null;
