@@ -21,6 +21,8 @@ export const demo = createAsyncThunk('demo/demo', async (): Promise<string> => {
 
         return data;
     } catch (err) {
+        console.log(err);
+
         const error = err as AxiosError<IErrorResponse>;
 
         if (error.response?.status === HTTP.UNAUTHORIZED) {
