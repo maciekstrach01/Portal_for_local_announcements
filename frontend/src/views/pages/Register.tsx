@@ -1,8 +1,7 @@
 import { useFormik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, Form, useSubmit } from 'react-router-dom';
 
-import { clearError } from '@/store/auth/authSlice';
 import RegisterSchema from '@/validators/auth/RegisterSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
@@ -10,12 +9,11 @@ import type {
     IRegisterRequest,
     IRegisterRequestFields
 } from '@/types/api/auth';
-import type { RootState, AppDispatch } from '@/store';
+import type { RootState } from '@/store';
 import type { IErrorResponse } from '@/types/api/common';
 
 const Register = () => {
     const submit = useSubmit();
-    const dispatch = useDispatch<AppDispatch>();
 
     const formik = useFormik<IRegisterRequest>({
         initialValues: {
@@ -37,7 +35,6 @@ const Register = () => {
     const getErrorMessage = (field: IRegisterRequestFields): string =>
         formik.errors[field] || '';
 
-    dispatch(clearError());
     const { error: rawError } = useSelector((state: RootState) => state.auth);
     const error = rawError as IErrorResponse;
 

@@ -8,9 +8,8 @@ import type { AxiosError } from 'axios';
 import type { IErrorResponse } from '@/types/api/common';
 import {
     ILoginRequest,
-    ILoginResponse,
-    IRegisterRequest,
-    IRegisterResponse
+    ITokenResponse,
+    IRegisterRequest
 } from '@/types/api/auth';
 
 export const register = createAsyncThunk(
@@ -19,7 +18,7 @@ export const register = createAsyncThunk(
         try {
             const {
                 data: { token }
-            }: IRegisterResponse = await axios.post('/v1/auth/register', data);
+            }: ITokenResponse = await axios.post('/v1/auth/register', data);
 
             localStorage.setItem('token', token);
 
@@ -48,7 +47,7 @@ export const login = createAsyncThunk(
         try {
             const {
                 data: { token }
-            }: ILoginResponse = await axios.post('/v1/auth/login', data);
+            }: ITokenResponse = await axios.post('/v1/auth/login', data);
 
             localStorage.setItem('token', token);
 
