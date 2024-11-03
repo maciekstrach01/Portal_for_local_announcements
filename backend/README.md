@@ -100,6 +100,8 @@ Once the application is running, you can access the Swagger UI to explore the AP
 - Password encryption using BCrypt
 - Role-based authorization with Spring Security
 - Customized access denied handling
+- Logout mechanism
+- Refresh token 
 
 ### Used Technologies
 - Java 21
