@@ -1,5 +1,6 @@
 package pl.pk.localannouncements.usermanagement;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +15,7 @@ import pl.pk.localannouncements.usermanagement.exception.RefreshTokenValidationE
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticateUserDto;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationResponse;
 import pl.pk.localannouncements.usermanagement.model.dto.RegisterUserDto;
-import pl.pk.localannouncements.usermanagement.model.dto.TokenOperationsDto;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -51,20 +49,19 @@ class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse refreshToken(TokenOperationsDto tokenOperationsDto) {
-        return Optional.ofNullable(jwtService.extractUser(tokenOperationsDto.getRefreshToken()))
-                .filter(user -> jwtService.isTokenValid(tokenOperationsDto.getRefreshToken(), user))
-                .map(user -> generateAuthenticationResponse((User) user))
+    public AuthenticationResponse refreshToken(HttpServletRequest request) {
+        return jwtService.extractAndValidateRefreshToken(request)
+                .map(jwt -> (User) jwtService.extractUser(jwt))
+                .map(this::generateAuthenticationResponse)
                 .orElseThrow(() -> new RefreshTokenValidationException("Invalid refresh token"));
     }
 
     @Override
-    public void logout(TokenOperationsDto tokenOperationsDto) {
-        Optional.ofNullable(jwtService.extractUser(tokenOperationsDto.getRefreshToken()))
-                .filter(user -> jwtService.isTokenValid(tokenOperationsDto.getRefreshToken(), user))
+    public void logout(HttpServletRequest request) {
+        jwtService.extractAndValidateRefreshToken(request)
                 .ifPresentOrElse(
-                        user -> {
-                            jwtService.revokeToken(tokenOperationsDto.getRefreshToken());
+                        jwt -> {
+                            jwtService.revokeToken(jwt);
                             SecurityContextHolder.clearContext();
                         },
                         () -> {

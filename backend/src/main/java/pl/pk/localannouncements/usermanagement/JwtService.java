@@ -14,10 +14,10 @@ public interface JwtService {
 
     String generateRefreshToken(User user);
 
-    boolean isTokenValid(String token, UserDetails userDetails);
+    Optional<String> extractAndValidateAccessToken(HttpServletRequest request);
 
-    Optional<String> extractAndValidateToken(HttpServletRequest request);
-
+    Optional<String> extractAndValidateRefreshToken(HttpServletRequest request);
+    
     void authenticateUser(String jwt, HttpServletRequest request);
 
     void revokeToken(String token);

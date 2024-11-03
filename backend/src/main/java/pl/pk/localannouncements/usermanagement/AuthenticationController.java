@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,6 @@ import pl.pk.localannouncements.exception.ErrorResponse;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticateUserDto;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationResponse;
 import pl.pk.localannouncements.usermanagement.model.dto.RegisterUserDto;
-import pl.pk.localannouncements.usermanagement.model.dto.TokenOperationsDto;
 
 @Validated
 @RestController
@@ -111,9 +111,9 @@ class AuthenticationController {
                     ))
             }
     )
-    @PostMapping(value = "/refresh_token", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationResponse> refreshToken(@Valid @RequestBody TokenOperationsDto tokenOperationsDto) {
-        AuthenticationResponse authenticationResponse = authenticationService.refreshToken(tokenOperationsDto);
+    @PostMapping(value = "/refresh_token", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request) {
+        AuthenticationResponse authenticationResponse = authenticationService.refreshToken(request);
         return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
     }
 
@@ -140,8 +140,8 @@ class AuthenticationController {
             }
     )
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@Valid @RequestBody TokenOperationsDto tokenOperationsDto) {
-        authenticationService.logout(tokenOperationsDto);
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        authenticationService.logout(request);
         return ResponseEntity.noContent().build();
     }
 

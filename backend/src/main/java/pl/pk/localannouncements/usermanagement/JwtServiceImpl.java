@@ -22,6 +22,7 @@ import pl.pk.localannouncements.usermanagement.model.enums.TokenType;
 import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 @RequiredArgsConstructor
@@ -67,26 +68,23 @@ class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        if (isTokenExpired(token)) {
-            return false;
-        }
-        String username = extractUsername(token);
-        return username.equals(userDetails.getUsername());
+    public Optional<String> extractAndValidateAccessToken(HttpServletRequest request) {
+        return extractAndValidateToken(request, this::isAccessToken);
     }
 
     @Override
-    public Optional<String> extractAndValidateToken(HttpServletRequest request) {
-        String jwt = extractJwtFromHeader(request);
-        if (jwt == null) {
-            return Optional.empty();
-        }
+    public Optional<String> extractAndValidateRefreshToken(HttpServletRequest request) {
+        return extractAndValidateToken(request, this::isRefreshToken);
+    }
+
+    private Optional<String> extractAndValidateToken(HttpServletRequest request, Predicate<String> tokenTypeChecker) {
         try {
-            if (!isAccessToken(jwt)) {
-                return Optional.empty();
-            }
-            UserDetails userDetails = extractUser(jwt);
-            return isTokenValid(jwt, userDetails) ? Optional.of(jwt) : Optional.empty();
+            return Optional.ofNullable(extractJwtFromHeader(request))
+                    .filter(tokenTypeChecker)
+                    .flatMap(jwt -> {
+                        UserDetails userDetails = extractUser(jwt);
+                        return isTokenValid(jwt, userDetails) ? Optional.of(jwt) : Optional.empty();
+                    });
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -195,6 +193,18 @@ class JwtServiceImpl implements JwtService {
 
     private boolean isAccessToken(String token) {
         return ACCESS_TOKEN.equals(extractClaim(token, claims -> claims.get("type")));
+    }
+
+    private boolean isRefreshToken(String token) {
+        return REFRESH_TOKEN.equals(extractClaim(token, claims -> claims.get("type")));
+    }
+
+    private boolean isTokenValid(String token, UserDetails userDetails) {
+        if (isTokenExpired(token)) {
+            return false;
+        }
+        String username = extractUsername(token);
+        return username.equals(userDetails.getUsername());
     }
 
 }
