@@ -1,12 +1,19 @@
 package pl.pk.localannouncements.usermanagement;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.pk.localannouncements.usermanagement.exception.UserCreationException;
-import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationDto;
+import pl.pk.localannouncements.usermanagement.exception.AuthValidationException;
+import pl.pk.localannouncements.usermanagement.exception.LogoutValidationException;
+import pl.pk.localannouncements.usermanagement.exception.RefreshTokenValidationException;
+import pl.pk.localannouncements.usermanagement.model.dto.AuthenticateUserDto;
+import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationResponse;
 import pl.pk.localannouncements.usermanagement.model.dto.RegisterUserDto;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
@@ -18,21 +25,68 @@ class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     @Transactional
-    public AuthenticationDto register(RegisterUserDto registerUserDto) {
+    public AuthenticationResponse register(RegisterUserDto registerUserDto) {
         validateUserDoesNotExist(registerUserDto.getEmail());
 
         User newUser = prepareUserToSave(registerUserDto);
         User createdUser = saveNewUser(newUser);
 
-        return createAuthenticationDto(createdUser);
+        return generateAuthenticationResponse(createdUser);
+    }
+
+    @Override
+    @Transactional
+    public AuthenticationResponse authenticate(AuthenticateUserDto authenticateUserDto) {
+        authenticateUser(authenticateUserDto);
+
+        User retrievedUser = getUserFromDatabase(authenticateUserDto.getEmail());
+
+        return generateAuthenticationResponse(retrievedUser);
+    }
+
+    @Override
+    public AuthenticationResponse refreshToken(HttpServletRequest request) {
+        return jwtService.extractAndValidateRefreshToken(request)
+                .map(jwt -> (User) jwtService.extractUser(jwt))
+                .map(this::generateAuthenticationResponse)
+                .orElseThrow(() -> new RefreshTokenValidationException("Invalid refresh token"));
+    }
+
+    @Override
+    public void logout(HttpServletRequest request) {
+        jwtService.extractAndValidateRefreshToken(request)
+                .ifPresentOrElse(
+                        jwt -> {
+                            jwtService.revokeToken(jwt);
+                            SecurityContextHolder.clearContext();
+                        },
+                        () -> {
+                            throw new LogoutValidationException("Invalid refresh token");
+                        }
+                );
+    }
+
+    private void authenticateUser(AuthenticateUserDto authenticateUserDto) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        authenticateUserDto.getEmail(),
+                        authenticateUserDto.getPassword()
+                )
+        );
+    }
+
+    private User getUserFromDatabase(String email) {
+        return userRepository.findUserByEmail(email)
+                .orElseThrow();
     }
 
     private void validateUserDoesNotExist(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new UserCreationException("User with this email already exists");
+            throw new AuthValidationException("User with this email already exists");
         }
     }
 
@@ -51,14 +105,16 @@ class AuthenticationServiceImpl implements AuthenticationService {
             return createdUser;
         } catch (Exception e) {
             log.error("Failed to save new user in repository", e);
-            throw new UserCreationException("Failed to create new user", e);
+            throw new AuthValidationException("Failed to create new user", e);
         }
     }
 
-    private AuthenticationDto createAuthenticationDto(User user) {
-        String jwtToken = jwtService.generateToken(user);
-        return AuthenticationDto.builder()
-                .token(jwtToken)
+    private AuthenticationResponse generateAuthenticationResponse(User user) {
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        return AuthenticationResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
