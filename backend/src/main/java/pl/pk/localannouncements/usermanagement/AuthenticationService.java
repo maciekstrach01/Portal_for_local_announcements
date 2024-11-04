@@ -1,10 +1,18 @@
 package pl.pk.localannouncements.usermanagement;
 
-import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationDto;
+import jakarta.servlet.http.HttpServletRequest;
+import pl.pk.localannouncements.usermanagement.model.dto.AuthenticateUserDto;
+import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationResponse;
 import pl.pk.localannouncements.usermanagement.model.dto.RegisterUserDto;
 
 public interface AuthenticationService {
 
-    AuthenticationDto register(RegisterUserDto registerUserDto);
+    AuthenticationResponse register(RegisterUserDto registerUserDto);
+
+    AuthenticationResponse authenticate(AuthenticateUserDto authenticateUserDto);
+
+    AuthenticationResponse refreshToken(HttpServletRequest request);
+
+    void logout(HttpServletRequest request);
 
 }
