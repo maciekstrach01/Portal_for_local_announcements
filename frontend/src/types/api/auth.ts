@@ -21,7 +21,8 @@ interface IRegisterRequest extends ILoginRequest {
 
 interface ITokenResponse extends IResponse {
     data: {
-        token: string;
+        accessToken: string;
+        refreshToken: string;
     };
 }
 

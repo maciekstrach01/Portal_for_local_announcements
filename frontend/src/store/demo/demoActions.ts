@@ -9,11 +9,11 @@ import type { IErrorResponse } from '@/types/api/common';
 
 export const demo = createAsyncThunk('demo/demo', async (): Promise<string> => {
     try {
-        const token = localStorage.getItem('token') || '';
+        const accessToken = localStorage.getItem('accessToken') || '';
 
         const { data }: { data: string } = await axios.get('/v1/demo', {
             headers: {
-                Authorization: 'Bearer ' + token
+                Authorization: 'Bearer ' + accessToken
             }
         });
 

@@ -17,10 +17,11 @@ export const register = createAsyncThunk(
     async (data: IRegisterRequest, { rejectWithValue }): Promise<void> => {
         try {
             const {
-                data: { token }
+                data: { accessToken, refreshToken }
             }: ITokenResponse = await axios.post('/v1/auth/register', data);
 
-            localStorage.setItem('token', token);
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
 
             toast.success("You've been registered successfully!");
         } catch (err) {
@@ -46,10 +47,11 @@ export const login = createAsyncThunk(
     async (data: ILoginRequest): Promise<void> => {
         try {
             const {
-                data: { token }
+                data: { accessToken, refreshToken }
             }: ITokenResponse = await axios.post('/v1/auth/login', data);
 
-            localStorage.setItem('token', token);
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
 
             toast.success("You've been logged in successfully!");
         } catch (err) {

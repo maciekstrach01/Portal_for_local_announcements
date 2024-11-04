@@ -5,12 +5,14 @@ import { login, register } from '@/store/auth/authActions';
 import type { IErrorResponse } from '@/types/api/common';
 
 interface InitState {
-    token: string | null;
+    accessToken: string | null;
+    refreshToken: string | null;
     error: Pick<IErrorResponse, 'error'> | SerializedError;
 }
 
 const initialState: InitState = {
-    token: localStorage.getItem('token') || null,
+    accessToken: localStorage.getItem('accessToken') || null,
+    refreshToken: localStorage.getItem('accessToken') || null,
     error: {}
 };
 
@@ -19,10 +21,12 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setCredentials: (state, action) => {
-            state.token = action.payload.token;
+            state.accessToken = action.payload.accessToken;
+            state.refreshToken = action.payload.refreshToken;
         },
         logout: state => {
-            state.token = null;
+            state.accessToken = null;
+            state.refreshToken = null;
         },
         clearError: state => {
             state.error = {};

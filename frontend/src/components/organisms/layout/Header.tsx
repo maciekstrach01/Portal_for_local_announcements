@@ -7,11 +7,12 @@ const Header = () => {
     const navigate = useNavigate();
 
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-        !!localStorage.getItem('token')
+        !!localStorage.getItem('accessToken')
     );
 
     const doLogout = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         setIsLoggedIn(false);
 
         toast.success("You've been logged out!");
