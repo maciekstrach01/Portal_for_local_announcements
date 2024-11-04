@@ -31,7 +31,7 @@ class AuthenticationController {
     @Operation(operationId = "register", summary = "Register a User", tags = {"Auth"},
             description = "Service used to register a new user in the system.",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Created", content = @Content(
+                    @ApiResponse(responseCode = "201", description = "User registered", content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = AuthenticationResponse.class)
                     )),
@@ -58,7 +58,7 @@ class AuthenticationController {
     @Operation(operationId = "authenticate", summary = "Authenticate a User", tags = {"Auth"},
             description = "Service used to authenticate an existing user in the system.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Created", content = @Content(
+                    @ApiResponse(responseCode = "200", description = "User authenticated", content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = AuthenticationResponse.class)
                     )),
@@ -86,7 +86,7 @@ class AuthenticationController {
         return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
     }
 
-    @Operation(operationId = "refreshToken", summary = "Refresh token", tags = {"Auth"},
+    @Operation(operationId = "refresh-token", summary = "Refresh token", tags = {"Auth"},
             description = "Generates a new access and refresh tokens using a valid refresh token. This allows users to stay authenticated without needing to re-login.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "New access token generated successfully", content = @Content(
@@ -111,7 +111,7 @@ class AuthenticationController {
                     ))
             }
     )
-    @PostMapping(value = "/refresh_token", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/refresh-token", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request) {
         AuthenticationResponse authenticationResponse = authenticationService.refreshToken(request);
         return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);

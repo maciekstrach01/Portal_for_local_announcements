@@ -1,23 +1,26 @@
 package pl.pk.localannouncements.usermanagement.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import pl.pk.localannouncements.usermanagement.model.enums.TokenType;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "token")
-@Setter
 @Builder
-@RequiredArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
+@Table(name = "token")
 public class Token {
 
     @Id
     @GeneratedValue
-    public Long id;
+    public UUID id;
 
     @Column(name = "token", nullable = false, unique = true)
     public String token;

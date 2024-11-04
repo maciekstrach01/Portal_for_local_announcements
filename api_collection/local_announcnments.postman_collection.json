@@ -172,7 +172,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}:{{port}}/api/v1/auth/refresh_token",
+							"raw": "{{base_url}}:{{port}}/api/v1/auth/refresh-token",
 							"host": [
 								"{{base_url}}"
 							],
@@ -181,7 +181,7 @@
 								"api",
 								"v1",
 								"auth",
-								"refresh_token"
+								"refresh-token"
 							]
 						}
 					},
