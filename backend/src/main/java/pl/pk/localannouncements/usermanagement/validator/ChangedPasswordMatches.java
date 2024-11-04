@@ -9,9 +9,9 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PasswordMatchesValidator.class)
-public @interface PasswordMatches {
-    String message() default "Passwords do not match";
+@Constraint(validatedBy = ChangedPasswordMatchesValidator.class)
+public @interface ChangedPasswordMatches {
+    String message() default "New password and confirmation password do not match";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
