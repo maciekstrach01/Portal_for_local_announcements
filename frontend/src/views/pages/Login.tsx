@@ -5,7 +5,7 @@ import { Link, Form, useSubmit, useNavigation } from 'react-router-dom';
 import LoginSchema from '@/validators/auth/LoginSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
-import type { RootState } from '@/store';
+import type { RootState } from '@/redux';
 import type { IErrorResponse } from '@/types/api/common';
 import type { ILoginRequest, ILoginRequestFields } from '@/types/api/auth';
 

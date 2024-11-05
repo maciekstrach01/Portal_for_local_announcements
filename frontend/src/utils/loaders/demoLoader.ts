@@ -1,15 +1,29 @@
-import { defer } from 'react-router-dom';
+// import { defer, redirect } from 'react-router-dom';
 
-import { store } from '@/store';
-import { demo } from '@/store/demo/demoActions.ts';
+import { store } from '@/redux';
+import { toast } from 'react-toastify';
+import { demoApiSlice } from '@/redux/demo/demoApiSlice';
 
-// @TODO Proper type!
-export const demoLoader = async (): Promise<any> => {
+export const demoLoader = async (): Promise<null> => {
     console.log('demoLoader');
 
-    const response = await store.dispatch(demo());
+    try {
+        const response = await store.dispatch(
+            demoApiSlice.endpoints.demo.initiate(null, { forceRefetch: true })
+        );
 
-    console.log(response);
+        console.log(response);
 
-    return defer({ message: response.payload });
+        if ('error' in response) {
+            // @TODO
+            toast.error('Error response!');
+
+            return null;
+        }
+
+        return null;
+    } catch {
+        // @TODO
+        return null;
+    }
 };

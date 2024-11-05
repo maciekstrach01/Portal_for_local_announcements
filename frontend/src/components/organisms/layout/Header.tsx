@@ -1,23 +1,39 @@
-import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
+import { store, RootState } from '@/redux';
+
+import { useLogoutMutation } from '@/redux/auth/authApiSlice';
+import { adjustUsedToken, logoutUser } from '@/redux/auth/authSlice';
+
 const Header = () => {
+    const [logout] = useLogoutMutation();
+    const dispatch = useDispatch();
+    const { loggedIn } = useSelector((state: RootState) => state.auth);
+
     const navigate = useNavigate();
 
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-        !!localStorage.getItem('accessToken')
-    );
+    // @TODO Refactor
+    const doLogout = async () => {
+        try {
+            const authState = (store.getState() as RootState).auth;
 
-    const doLogout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        setIsLoggedIn(false);
+            dispatch(adjustUsedToken(authState.refreshToken));
 
-        toast.success("You've been logged out!");
+            const result = await logout({}).unwrap();
 
-        navigate('/');
+            console.log(result);
+
+            dispatch(logoutUser());
+
+            toast.success("You've been logged out!");
+
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -38,8 +54,11 @@ const Header = () => {
                     Demo
                 </Link>
 
-                {isLoggedIn ? (
-                    <button className="hover:text-gray-600" onClick={doLogout}>
+                {loggedIn ? (
+                    <button
+                        className="hover:text-gray-600"
+                        onClick={async () => doLogout()}
+                    >
                         Logout
                     </button>
                 ) : (

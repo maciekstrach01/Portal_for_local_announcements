@@ -9,9 +9,10 @@ import type {
     IRegisterRequest,
     IRegisterRequestFields
 } from '@/types/api/auth';
-import type { RootState } from '@/store';
+import type { RootState } from '@/redux';
 import type { IErrorResponse } from '@/types/api/common';
 
+// @TODO Show error from BE
 const Register = () => {
     const submit = useSubmit();
     const { state } = useNavigation();

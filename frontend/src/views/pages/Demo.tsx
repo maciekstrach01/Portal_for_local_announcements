@@ -1,9 +1,10 @@
-import { useLoaderData } from 'react-router';
+// import { useLoaderData } from 'react-router';
 
 const Demo = () => {
-    const loaderData = useLoaderData();
-
-    console.log(loaderData);
+    // @TODO Show data from Demo
+    // const loaderData = useLoaderData();
+    //
+    // console.log(loaderData);
 
     return (
         <>
