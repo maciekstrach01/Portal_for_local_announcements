@@ -26,7 +26,7 @@ class UserProfileController {
 
     private final UserProfileService userProfileService;
 
-    @Operation(operationId = "change-password", summary = "Change User's password", tags = {"User Profile"},
+    @Operation(operationId = "change-password", summary = "Change User's password", tags = {"User profile"},
             description = "Service used to change password of an existing user.",
             responses = {
                     @ApiResponse(responseCode = "204", description = "User's password changed successfully"),
