@@ -34,27 +34,17 @@ const baseQueryWithReauth: BaseQueryFn<
     unknown,
     FetchBaseQueryError
 > = async (args, store, extraOptions) => {
-    console.log('baseQueryWithReauth');
-
     let result = await baseQuery(args, store, extraOptions);
 
     const authState = (store.getState() as RootState).auth;
 
     if (result?.error?.status === HTTP.UNAUTHORIZED) {
-        console.log('Reauth');
-
         if (!authState.accessToken || !authState.refreshToken) {
             return result;
         }
 
-        console.log('Do reauth');
-
         store.dispatch(adjustUsedToken(authState.refreshToken));
 
-        console.log({ extraOptions });
-
-        // @TODO SET POST METHOD!
-        // @TODO What about extraOptions?
         const refreshResult = await baseQuery(
             {
                 url: '/v1/auth/refresh-token',
@@ -63,8 +53,6 @@ const baseQueryWithReauth: BaseQueryFn<
             store,
             extraOptions
         );
-
-        console.log({ refreshResult });
 
         if (refreshResult?.data) {
             store.dispatch(setCredentials(refreshResult.data));
@@ -80,8 +68,7 @@ const baseQueryWithReauth: BaseQueryFn<
     return result;
 };
 
-// @TODO What about builder?
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReauth,
-    endpoints: builder => ({})
+    endpoints: () => ({})
 });
