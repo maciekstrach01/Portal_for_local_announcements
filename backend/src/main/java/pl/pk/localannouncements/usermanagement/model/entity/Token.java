@@ -25,6 +25,7 @@ public class Token {
     @Column(name = "token", nullable = false, unique = true)
     private String token;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "token_type", nullable = false)
     private TokenType tokenType = TokenType.BEARER;

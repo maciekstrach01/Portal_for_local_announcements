@@ -3,10 +3,12 @@ package pl.pk.localannouncements.usermanagement.model.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 import pl.pk.localannouncements.usermanagement.validator.ChangedPasswordMatches;
 
 @Data
+@Builder
+@AllArgsConstructor
 @Schema(description = "Data Transfer Object for changing password of an existing user")
 @ChangedPasswordMatches()
 public class ChangePasswordDto {
