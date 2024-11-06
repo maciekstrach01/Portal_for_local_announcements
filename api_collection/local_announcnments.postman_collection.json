@@ -194,7 +194,16 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"// Check if the response status is 204 No Content",
+									"if (pm.response.code === 204) {",
+									"    // List of variables to clear",
+									"    const variablesToClear = [\"access_token\", \"refresh_token\"];",
+									"",
+									"    // Clear each variable in the list",
+									"    variablesToClear.forEach(variable => pm.collectionVariables.unset(variable));",
+									"",
+									"    console.log(\"Variables cleared due to 204 response.\");",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -450,16 +459,6 @@
 					""
 				]
 			}
-		}
-	],
-	"variable": [
-		{
-			"key": "access_token",
-			"value": ""
-		},
-		{
-			"key": "refresh_token",
-			"value": ""
 		}
 	]
 }

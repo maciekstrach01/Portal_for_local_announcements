@@ -17,12 +17,19 @@ class UserProfileServiceImpl implements UserProfileService {
     @Override
     public void changePassword(User user, ChangePasswordDto changePasswordDto) {
         validateCurrentPassword(user, changePasswordDto.getCurrentPassword());
+        validateNewPasswordIsNotSameAsOld(changePasswordDto.getNewPassword(), user.getPassword());
         updatePassword(user, changePasswordDto.getNewPassword());
     }
 
     private void validateCurrentPassword(User user, String currentPassword) {
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new InvalidPasswordException("Current password is incorrect");
+        }
+    }
+
+    private void validateNewPasswordIsNotSameAsOld(String newPassword, String currentEncodedPassword) {
+        if (passwordEncoder.matches(newPassword, currentEncodedPassword)) {
+            throw new InvalidPasswordException("New password cannot be the same as the old password");
         }
     }
 

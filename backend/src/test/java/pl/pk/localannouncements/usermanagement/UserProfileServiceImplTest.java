@@ -62,7 +62,31 @@ class UserProfileServiceImplTest {
         when(passwordEncoder.matches(changePasswordDto.getCurrentPassword(), user.getPassword())).thenReturn(false);
 
         // Expect InvalidPasswordException to be thrown
-        assertThrows(InvalidPasswordException.class, () -> userProfileService.changePassword(user, changePasswordDto));
+        InvalidPasswordException exception = assertThrows(
+                InvalidPasswordException.class,
+                () -> userProfileService.changePassword(user, changePasswordDto)
+        );
+
+        assertEquals("Current password is incorrect", exception.getMessage());
+    }
+
+    @Test
+    void changePassword_NewPasswordSameAsCurrent_ThrowsInvalidPasswordException() {
+        // Mock required objects
+        User user = mockUser();
+        ChangePasswordDto changePasswordDto = mockChangePasswordDto();
+
+        // Simulate matching current password and new password being the same as the current password
+        when(passwordEncoder.matches(changePasswordDto.getCurrentPassword(), user.getPassword())).thenReturn(true);
+        when(passwordEncoder.matches(changePasswordDto.getNewPassword(), user.getPassword())).thenReturn(true);
+
+        // Expect InvalidPasswordException to be thrown with specific message
+        InvalidPasswordException exception = assertThrows(
+                InvalidPasswordException.class,
+                () -> userProfileService.changePassword(user, changePasswordDto)
+        );
+
+        assertEquals("New password cannot be the same as the old password", exception.getMessage());
     }
 
     private User mockUser() {
