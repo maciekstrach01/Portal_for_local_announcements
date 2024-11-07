@@ -22,7 +22,7 @@ const Header = () => {
 
             dispatch(adjustUsedToken(authState.refreshToken));
 
-            await logout({}).unwrap();
+            await logout().unwrap();
 
             dispatch(logoutUser());
 

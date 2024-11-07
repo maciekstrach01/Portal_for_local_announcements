@@ -15,6 +15,7 @@ import {
 import config from '@/config';
 
 import type { RootState } from '@/redux';
+import { ITokenResponse } from '@/types/api/auth.ts';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: config.apiUrl,
@@ -54,8 +55,10 @@ const baseQueryWithReauth: BaseQueryFn<
             extraOptions
         );
 
-        if (refreshResult?.data) {
-            store.dispatch(setCredentials(refreshResult.data));
+        if (refreshResult.data) {
+            const tokenData = refreshResult.data as ITokenResponse;
+
+            store.dispatch(setCredentials(tokenData));
 
             result = await baseQuery(args, store, extraOptions);
         } else {

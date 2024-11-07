@@ -1,29 +1,19 @@
-import { createSlice, SerializedError } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import type { IErrorResponse } from '@/types/api/common';
+import type { ITokenResponse } from '@/types/api/auth';
 
-interface InitState {
-    loggedIn: boolean;
-    usedToken: string | null;
-    accessToken: string | null;
-    refreshToken: string | null;
-    error: Pick<IErrorResponse, 'error'> | SerializedError;
-}
-
-const initialState: InitState = {
+const initialState = {
     loggedIn: !!localStorage.getItem('accessToken'),
     accessToken: localStorage.getItem('accessToken'),
     refreshToken: localStorage.getItem('refreshToken'),
-    usedToken: localStorage.getItem('accessToken'),
-    // @TODO Do I still need it?
-    error: {}
+    usedToken: localStorage.getItem('accessToken')
 };
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setCredentials: (state, action) => {
+        setCredentials: (state, action: PayloadAction<ITokenResponse>) => {
             localStorage.setItem('accessToken', action.payload.accessToken);
             localStorage.setItem('refreshToken', action.payload.refreshToken);
             state.loggedIn = true;
@@ -39,17 +29,13 @@ export const authSlice = createSlice({
             state.refreshToken = null;
             state.usedToken = null;
         },
-        adjustUsedToken: (state, action) => {
+        adjustUsedToken: (state, action: PayloadAction<string | null>) => {
             state.usedToken = action.payload;
-        },
-        // @TODO Do I still need it?
-        clearError: state => {
-            state.error = {};
         }
     }
 });
 
-export const { setCredentials, logoutUser, adjustUsedToken, clearError } =
+export const { setCredentials, logoutUser, adjustUsedToken } =
     authSlice.actions;
 
 export default authSlice.reducer;

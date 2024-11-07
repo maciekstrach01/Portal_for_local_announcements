@@ -9,7 +9,9 @@ export const demoLoader = async (): Promise<null> => {
 
     try {
         const response = await store.dispatch(
-            demoApiSlice.endpoints.demo.initiate(null, { forceRefetch: true })
+            demoApiSlice.endpoints.demo.initiate(undefined, {
+                forceRefetch: true
+            })
         );
 
         console.log(response);

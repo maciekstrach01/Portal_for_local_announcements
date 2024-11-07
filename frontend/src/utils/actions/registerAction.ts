@@ -31,7 +31,7 @@ export const registerAction = async ({
             authApiSlice.endpoints.register.initiate(data)
         );
 
-        console.log(response);
+        console.log({ response });
 
         if ('error' in response) {
             // @TODO

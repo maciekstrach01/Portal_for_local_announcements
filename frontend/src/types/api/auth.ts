@@ -1,5 +1,3 @@
-import type { IResponse } from '@/types/api/common';
-
 type ILoginRequestFields = 'email' | 'password';
 
 interface ILoginRequest {
@@ -19,11 +17,9 @@ interface IRegisterRequest extends ILoginRequest {
     confirmPassword: string;
 }
 
-interface ITokenResponse extends IResponse {
-    data: {
-        accessToken: string;
-        refreshToken: string;
-    };
+interface ITokenResponse {
+    accessToken: string;
+    refreshToken: string;
 }
 
 export type {
