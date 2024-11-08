@@ -11,7 +11,6 @@ interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "authorities", ignore = true)
-    User toUser(RegisterUserDto createUserDto);
+    User toUser(RegisterUserDto registerUserDto);
 
 }
