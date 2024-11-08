@@ -1,6 +1,5 @@
 package pl.pk.localannouncements.usermanagement;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +9,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pk.localannouncements.usermanagement.exception.AuthValidationException;
-import pl.pk.localannouncements.usermanagement.exception.LogoutValidationException;
 import pl.pk.localannouncements.usermanagement.exception.RefreshTokenValidationException;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticateUserDto;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationResponse;
+import pl.pk.localannouncements.usermanagement.model.dto.RefreshTokenOperationsDto;
 import pl.pk.localannouncements.usermanagement.model.dto.RegisterUserDto;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
@@ -49,25 +48,24 @@ class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse refreshToken(HttpServletRequest request) {
-        return jwtService.extractAndValidateRefreshToken(request)
-                .map(jwt -> (User) jwtService.extractUser(jwt))
-                .map(this::generateAuthenticationResponse)
-                .orElseThrow(() -> new RefreshTokenValidationException("Invalid refresh token"));
+    public AuthenticationResponse refreshToken(RefreshTokenOperationsDto refreshTokenOperationsDto) {
+        User user = validateAndExtractUserFromToken(refreshTokenOperationsDto.getRefreshToken());
+        return generateAuthenticationResponse(user);
     }
 
     @Override
-    public void logout(HttpServletRequest request) {
-        jwtService.extractAndValidateRefreshToken(request)
-                .ifPresentOrElse(
-                        jwt -> {
-                            jwtService.revokeToken(jwt);
-                            SecurityContextHolder.clearContext();
-                        },
-                        () -> {
-                            throw new LogoutValidationException("Invalid refresh token");
-                        }
-                );
+    public void logout(RefreshTokenOperationsDto refreshTokenOperationsDto) {
+        validateAndExtractUserFromToken(refreshTokenOperationsDto.getRefreshToken());
+        jwtService.revokeToken(refreshTokenOperationsDto.getRefreshToken());
+        SecurityContextHolder.clearContext();
+    }
+
+    private User validateAndExtractUserFromToken(String refreshToken) {
+        User user = (User) jwtService.extractUser(refreshToken);
+        if (!jwtService.isRefreshTokenValid(refreshToken, user)) {
+            throw new RefreshTokenValidationException("Invalid refresh token");
+        }
+        return user;
     }
 
     private void authenticateUser(AuthenticateUserDto authenticateUserDto) {

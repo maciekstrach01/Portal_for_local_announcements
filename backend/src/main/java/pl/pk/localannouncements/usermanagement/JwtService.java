@@ -16,8 +16,8 @@ public interface JwtService {
 
     Optional<String> extractAndValidateAccessToken(HttpServletRequest request);
 
-    Optional<String> extractAndValidateRefreshToken(HttpServletRequest request);
-    
+    boolean isRefreshTokenValid(String refreshToken, UserDetails userDetails);
+
     void authenticateUser(String jwt, HttpServletRequest request);
 
     void revokeToken(String token);
