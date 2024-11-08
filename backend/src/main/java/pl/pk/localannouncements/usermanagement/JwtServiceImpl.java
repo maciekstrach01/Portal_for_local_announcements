@@ -48,7 +48,7 @@ class JwtServiceImpl implements JwtService {
             return userService.findUserByEmail(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         } catch (Exception e) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException(e.getMessage());
         }
     }
 
@@ -73,50 +73,32 @@ class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public Optional<String> extractAndValidateRefreshToken(HttpServletRequest request) {
-        return extractAndValidateToken(request, this::isRefreshToken);
-    }
-
-    private Optional<String> extractAndValidateToken(HttpServletRequest request, Predicate<String> tokenTypeChecker) {
-        try {
-            return Optional.ofNullable(extractJwtFromHeader(request))
-                    .filter(tokenTypeChecker)
-                    .flatMap(jwt -> {
-                        UserDetails userDetails = extractUser(jwt);
-                        return isTokenValid(jwt, userDetails) ? Optional.of(jwt) : Optional.empty();
-                    });
-        } catch (Exception e) {
-            return Optional.empty();
-        }
+    public boolean isRefreshTokenValid(String refreshToken, UserDetails userDetails) {
+        return isRefreshToken(refreshToken) && isTokenValid(refreshToken, userDetails);
     }
 
     @Override
     public void authenticateUser(String jwt, HttpServletRequest request) {
         UserDetails userDetails = extractUser(jwt);
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            UsernamePasswordAuthenticationToken authToken = createAuthToken(userDetails, request);
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+            setAuthenticationContext(userDetails, request);
         }
     }
 
     @Override
     public void revokeToken(String token) {
-        Token storedToken = tokenRepository.findByToken(token)
-                .orElse(null);
-        if (storedToken != null) {
+        tokenRepository.findByToken(token).ifPresent(storedToken -> {
             storedToken.setRevoked(true);
             tokenRepository.save(storedToken);
-        }
+        });
     }
 
-    private UsernamePasswordAuthenticationToken createAuthToken(UserDetails userDetails, HttpServletRequest request) {
+    private void setAuthenticationContext(UserDetails userDetails, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities()
+                userDetails, null, userDetails.getAuthorities()
         );
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        return authToken;
+        SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 
     private boolean isTokenExpired(String token) {
@@ -147,17 +129,20 @@ class JwtServiceImpl implements JwtService {
     }
 
     private String buildToken(String username, String type, Date expirationDate) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("type", type);
-        claims.put("jti", UUID.randomUUID().toString());
-
         return Jwts.builder()
-                .setClaims(claims)
+                .setClaims(createClaims(type))
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(expirationDate)
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    private Map<String, Object> createClaims(String type) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("type", type);
+        claims.put("jti", UUID.randomUUID().toString());
+        return claims;
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -174,6 +159,19 @@ class JwtServiceImpl implements JwtService {
                 .getBody();
     }
 
+    private Optional<String> extractAndValidateToken(HttpServletRequest request, Predicate<String> tokenTypeChecker) {
+        try {
+            return Optional.ofNullable(extractJwtFromHeader(request))
+                    .filter(tokenTypeChecker)
+                    .flatMap(jwt -> {
+                        UserDetails userDetails = extractUser(jwt);
+                        return isTokenValid(jwt, userDetails) ? Optional.of(jwt) : Optional.empty();
+                    });
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -184,11 +182,8 @@ class JwtServiceImpl implements JwtService {
     }
 
     private String extractJwtFromHeader(HttpServletRequest request) {
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authHeader == null || !authHeader.startsWith("Bearer")) {
-            return null;
-        }
-        return authHeader.substring(7);
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        return (authHeader != null && authHeader.startsWith("Bearer")) ? authHeader.substring(7) : null;
     }
 
     private boolean isAccessToken(String token) {
@@ -200,11 +195,7 @@ class JwtServiceImpl implements JwtService {
     }
 
     private boolean isTokenValid(String token, UserDetails userDetails) {
-        if (isTokenExpired(token)) {
-            return false;
-        }
-        String username = extractUsername(token);
-        return username.equals(userDetails.getUsername());
+        return !isTokenExpired(token) && extractUsername(token).equals(userDetails.getUsername());
     }
 
 }

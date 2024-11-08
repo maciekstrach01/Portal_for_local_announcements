@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.pk.localannouncements.exception.ErrorResponse;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticateUserDto;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationResponse;
+import pl.pk.localannouncements.usermanagement.model.dto.RefreshTokenOperationsDto;
 import pl.pk.localannouncements.usermanagement.model.dto.RegisterUserDto;
 
 @Validated
@@ -112,8 +112,8 @@ class AuthenticationController {
             }
     )
     @PostMapping(value = "/refresh-token", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request) {
-        AuthenticationResponse authenticationResponse = authenticationService.refreshToken(request);
+    public ResponseEntity<AuthenticationResponse> refreshToken(@Valid @RequestBody RefreshTokenOperationsDto refreshTokenOperationsDto) {
+        AuthenticationResponse authenticationResponse = authenticationService.refreshToken(refreshTokenOperationsDto);
         return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
     }
 
@@ -140,8 +140,8 @@ class AuthenticationController {
             }
     )
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request) {
-        authenticationService.logout(request);
+    public ResponseEntity<Void> logout(@Valid @RequestBody RefreshTokenOperationsDto refreshTokenOperationsDto) {
+        authenticationService.logout(refreshTokenOperationsDto);
         return ResponseEntity.noContent().build();
     }
 
