@@ -1,31 +1,34 @@
 import { apiSlice } from '@/redux/apiSlice';
 
-import type {
+import {
     ILoginRequest,
-    ITokenResponse,
-    IRegisterRequest
+    ITokensResponse,
+    IRegisterRequest,
 } from '@/types/api/auth';
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        register: builder.mutation<ITokenResponse, IRegisterRequest>({
+        register: builder.mutation<ITokensResponse, IRegisterRequest>({
             query: payload => ({
                 url: '/v1/auth/register',
                 method: 'POST',
                 body: payload
             })
         }),
-        login: builder.mutation<ITokenResponse, ILoginRequest>({
+        login: builder.mutation<ITokensResponse, ILoginRequest>({
             query: payload => ({
                 url: '/v1/auth/authenticate',
                 method: 'POST',
                 body: payload
             })
         }),
-        logout: builder.mutation<void, void>({
-            query: () => ({
+        logout: builder.mutation<void, string>({
+            query: (payload) => ({
                 url: '/v1/auth/logout',
-                method: 'POST'
+                method: 'POST',
+                body: {
+                    refreshToken: payload
+                }
             })
         })
     })

@@ -1,14 +1,12 @@
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
 import { Link, Form, useSubmit, useNavigation } from 'react-router-dom';
 
 import LoginSchema from '@/validators/auth/LoginSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
-import type { RootState } from '@/redux';
-import type { IErrorResponse } from '@/types/api/common';
 import type { ILoginRequest, ILoginRequestFields } from '@/types/api/auth';
 
+// @TODO Show you must login / session expired
 const Login = () => {
     const submit = useSubmit();
     const { state } = useNavigation();
@@ -29,9 +27,6 @@ const Login = () => {
 
     const getErrorMessage = (field: ILoginRequestFields): string =>
         formik.errors[field] || '';
-
-    const { error: rawError } = useSelector((state: RootState) => state.auth);
-    const error = rawError as IErrorResponse;
 
     return (
         <>
@@ -91,15 +86,6 @@ const Login = () => {
                 >
                     {state === 'submitting' ? 'Logging in...' : 'Login'}
                 </button>
-
-                {/*// @TODO What about it?*/}
-                {error?.error ? (
-                    <div className="text-xs mt-2 text-red-600 sm:text-sm sm:mt-4">
-                        {error.error}
-                    </div>
-                ) : (
-                    <div className="mt-6 sm:mt-9" />
-                )}
             </Form>
         </>
     );

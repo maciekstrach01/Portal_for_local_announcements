@@ -7,15 +7,11 @@ import {
 } from '@reduxjs/toolkit/query/react';
 import { StatusCodes as HTTP } from 'http-status-codes';
 
-import {
-    logoutUser,
-    setCredentials,
-    adjustUsedToken
-} from '@/redux/auth/authSlice';
 import config from '@/config';
+import { logoutUser, setCredentials } from '@/redux/auth/authSlice';
 
 import type { RootState } from '@/redux';
-import { ITokenResponse } from '@/types/api/auth.ts';
+import { ITokensResponse } from '@/types/api/auth.ts';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: config.apiUrl,
@@ -44,19 +40,20 @@ const baseQueryWithReauth: BaseQueryFn<
             return result;
         }
 
-        store.dispatch(adjustUsedToken(authState.refreshToken));
-
         const refreshResult = await baseQuery(
             {
                 url: '/v1/auth/refresh-token',
-                method: 'POST'
+                method: 'POST',
+                body: {
+                    refreshToken: authState.refreshToken
+                }
             },
             store,
             extraOptions
         );
 
         if (refreshResult.data) {
-            const tokenData = refreshResult.data as ITokenResponse;
+            const tokenData = refreshResult.data as ITokensResponse;
 
             store.dispatch(setCredentials(tokenData));
 

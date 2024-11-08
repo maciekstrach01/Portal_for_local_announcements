@@ -1,6 +1,11 @@
+import {
+    Link,
+    Form,
+    useSubmit,
+    useNavigation,
+    useActionData
+} from 'react-router-dom';
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
-import { Link, Form, useSubmit, useNavigation } from 'react-router-dom';
 
 import RegisterSchema from '@/validators/auth/RegisterSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
@@ -9,13 +14,12 @@ import type {
     IRegisterRequest,
     IRegisterRequestFields
 } from '@/types/api/auth';
-import type { RootState } from '@/redux';
-import type { IErrorResponse } from '@/types/api/common';
 
 // @TODO Show error from BE
 const Register = () => {
     const submit = useSubmit();
     const { state } = useNavigation();
+    const errorMessage = useActionData() as string;
 
     const formik = useFormik<IRegisterRequest>({
         initialValues: {
@@ -36,9 +40,6 @@ const Register = () => {
 
     const getErrorMessage = (field: IRegisterRequestFields): string =>
         formik.errors[field] || '';
-
-    const { error: rawError } = useSelector((state: RootState) => state.auth);
-    const error = rawError as IErrorResponse;
 
     return (
         <>
@@ -153,9 +154,9 @@ const Register = () => {
                     {state === 'submitting' ? 'Registering...' : 'Register'}
                 </button>
 
-                {error?.error ? (
+                {errorMessage ? (
                     <div className="text-xs mt-2 text-red-600 sm:text-sm sm:mt-4">
-                        {error.error}
+                        {errorMessage}
                     </div>
                 ) : (
                     <div className="mt-6 sm:mt-9" />

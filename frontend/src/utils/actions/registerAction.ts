@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { StatusCodes as HTTP } from 'http-status-codes';
 import { redirect, ActionFunctionArgs } from 'react-router-dom';
 
 import { store } from '@/redux';
@@ -6,10 +7,11 @@ import { setCredentials } from '@/redux/auth/authSlice';
 import { authApiSlice } from '@/redux/auth/authApiSlice';
 
 import type { IRegisterRequest } from '@/types/api/auth';
+import { IErrorResponse } from '@/types/api/common.ts';
 
 export const registerAction = async ({
     request
-}: ActionFunctionArgs<IRegisterRequest>): Promise<Response | null> => {
+}: ActionFunctionArgs<IRegisterRequest>): Promise<Response | string | null> => {
     const formData = await request.formData();
 
     const firstName = formData.get('firstName') as string;
@@ -18,7 +20,7 @@ export const registerAction = async ({
     const password = formData.get('password') as string;
     const confirmPassword = formData.get('confirmPassword') as string;
 
-    const data: IRegisterRequest = {
+    const registerData: IRegisterRequest = {
         firstName,
         lastName,
         email,
@@ -27,26 +29,28 @@ export const registerAction = async ({
     };
 
     try {
-        const response = await store.dispatch(
-            authApiSlice.endpoints.register.initiate(data)
+        const { data, error } = await store.dispatch(
+            authApiSlice.endpoints.register.initiate(registerData)
         );
 
-        console.log({ response });
+        if (error) {
+            if ('status' in error) {
+                const apiErrorResponse = error.data as IErrorResponse;
 
-        if ('error' in response) {
-            // @TODO
-            toast.error('Error response!');
+                if (apiErrorResponse.status === HTTP.BAD_REQUEST) {
+                    return apiErrorResponse.error;
+                }
+            }
 
-            return null;
+            throw Error();
         }
 
-        store.dispatch(setCredentials(response.data));
+        store.dispatch(setCredentials(data));
 
         toast.success("You've been registered successfully!");
 
         return redirect('/');
     } catch {
-        // @TODO
         toast.error('Something went wrong...');
 
         return null;

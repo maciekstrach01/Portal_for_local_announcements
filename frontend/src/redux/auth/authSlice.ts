@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import type { ITokenResponse } from '@/types/api/auth';
+import type { ITokensResponse } from '@/types/api/auth';
 
 const initialState = {
     loggedIn: !!localStorage.getItem('accessToken'),
@@ -13,7 +13,7 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setCredentials: (state, action: PayloadAction<ITokenResponse>) => {
+        setCredentials: (state, action: PayloadAction<ITokensResponse>) => {
             localStorage.setItem('accessToken', action.payload.accessToken);
             localStorage.setItem('refreshToken', action.payload.refreshToken);
             state.loggedIn = true;
@@ -28,14 +28,10 @@ export const authSlice = createSlice({
             state.accessToken = null;
             state.refreshToken = null;
             state.usedToken = null;
-        },
-        adjustUsedToken: (state, action: PayloadAction<string | null>) => {
-            state.usedToken = action.payload;
         }
     }
 });
 
-export const { setCredentials, logoutUser, adjustUsedToken } =
-    authSlice.actions;
+export const { setCredentials, logoutUser } = authSlice.actions;
 
 export default authSlice.reducer;

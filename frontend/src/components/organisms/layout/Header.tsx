@@ -5,8 +5,8 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 import { store, RootState } from '@/redux';
 
+import { logoutUser } from '@/redux/auth/authSlice';
 import { useLogoutMutation } from '@/redux/auth/authApiSlice';
-import { adjustUsedToken, logoutUser } from '@/redux/auth/authSlice';
 
 const Header = () => {
     const [logout] = useLogoutMutation();
@@ -20,9 +20,9 @@ const Header = () => {
         try {
             const authState = (store.getState() as RootState).auth;
 
-            dispatch(adjustUsedToken(authState.refreshToken));
-
-            await logout().unwrap();
+            if (authState.refreshToken) {
+                await logout(authState.refreshToken).unwrap();
+            }
 
             dispatch(logoutUser());
 

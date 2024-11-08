@@ -17,7 +17,11 @@ interface IRegisterRequest extends ILoginRequest {
     confirmPassword: string;
 }
 
-interface ITokenResponse {
+interface IRefreshTokenRequest {
+    refreshToken: string;
+}
+
+interface ITokensResponse {
     accessToken: string;
     refreshToken: string;
 }
@@ -27,5 +31,6 @@ export type {
     ILoginRequest,
     IRegisterRequestFields,
     IRegisterRequest,
-    ITokenResponse
+    IRefreshTokenRequest,
+    ITokensResponse
 };
