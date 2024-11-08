@@ -20,23 +20,24 @@ public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    public UUID id;
+    private UUID id;
 
     @Column(name = "token", nullable = false, unique = true)
-    public String token;
+    private String token;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "token_type", nullable = false)
-    public TokenType tokenType = TokenType.BEARER;
+    private TokenType tokenType = TokenType.BEARER;
 
     @Column(nullable = false)
     private Instant expirationDate;
 
     @Column(name = "revoked", nullable = false)
-    public boolean revoked;
+    private boolean revoked;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    public User user;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
 }

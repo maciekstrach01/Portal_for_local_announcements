@@ -74,7 +74,6 @@ public class ApplicationConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, ex) -> writeErrorResponse(
