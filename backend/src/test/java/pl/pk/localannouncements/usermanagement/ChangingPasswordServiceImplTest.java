@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 @UnitTest
 @ExtendWith(MockitoExtension.class)
-class UserProfileServiceImplTest {
+class ChangingPasswordServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
