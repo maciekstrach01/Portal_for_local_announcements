@@ -29,8 +29,8 @@ const Header = () => {
             toast.success("You've been logged out!");
 
             navigate('/');
-        } catch (error) {
-            console.error(error);
+        } catch {
+            toast.error('Something went wrong on logout!');
         }
     };
 

@@ -60,9 +60,6 @@ const baseQueryWithReauth: BaseQueryFn<
             result = await baseQuery(args, store, extraOptions);
         } else {
             store.dispatch(logoutUser());
-
-            // @TODO Change if possible
-            window.location.replace('/login');
         }
     }
 

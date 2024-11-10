@@ -12,11 +12,11 @@ import Login from '@/views/pages/Login';
 import AuthLayout from '@/views/layouts/Auth';
 import NotFound from '@/views/pages/NotFound';
 import Register from '@/views/pages/Register';
-import { requireAuth } from '@/utils/requireAuth';
 import DefaultLayout from '@/views/layouts/Default';
 import { loginAction } from '@/utils/actions/loginAction';
 import { loginLoader } from '@/utils/loaders/loginLoader';
 import { registerAction } from '@/utils/actions/registerAction';
+import ProtectedRoute from '@/components/organisms/ProtectedRoute';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,11 +26,9 @@ const router = createBrowserRouter(
             <Route path="/" element={<DefaultLayout />}>
                 <Route index element={<Index />} />
 
-                <Route
-                    path="/demo"
-                    element={<Demo />}
-                    loader={async ({ request }) => await requireAuth(request)}
-                />
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/demo" element={<Demo />} />
+                </Route>
 
                 <Route path="*" element={<NotFound />} />
             </Route>

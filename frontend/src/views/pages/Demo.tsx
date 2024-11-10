@@ -33,8 +33,6 @@ const Demo = () => {
     }
 
     if (isSuccess) {
-        console.log(data);
-
         return showTemplate(<p>{data.msg}</p>);
     }
 };

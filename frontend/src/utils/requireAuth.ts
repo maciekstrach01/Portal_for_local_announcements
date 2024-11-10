@@ -2,6 +2,7 @@ import { redirect } from 'react-router-dom';
 
 import { RootState, store } from '@/redux';
 
+// @TODO Delete
 export const requireAuth = async (request: Request): Promise<null> => {
     const pathname = new URL(request.url).pathname;
     const authState = (store.getState() as RootState).auth;
