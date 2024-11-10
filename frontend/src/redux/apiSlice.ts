@@ -11,7 +11,7 @@ import config from '@/config';
 import { logoutUser, setCredentials } from '@/redux/auth/authSlice';
 
 import type { RootState } from '@/redux';
-import { ITokensResponse } from '@/types/api/auth.ts';
+import { ITokensResponse } from '@/types/api/auth';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: config.apiUrl,
@@ -61,7 +61,7 @@ const baseQueryWithReauth: BaseQueryFn<
         } else {
             store.dispatch(logoutUser());
 
-            // @TODO Redirect to login
+            // @TODO Redirect to Login
         }
     }
 

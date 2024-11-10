@@ -1,12 +1,13 @@
 import { redirect } from 'react-router-dom';
 
+import { RootState, store } from '@/redux';
+
 export const requireAuth = async (): Promise<null> => {
-    console.log('requireAuth');
+    const authState = (store.getState() as RootState).auth;
 
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (!accessToken) {
-        throw redirect('/login?message=You must login first');
+    // @TODO You must login first
+    if (!authState.loggedIn) {
+        throw redirect('/login');
     }
 
     return null;
