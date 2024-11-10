@@ -9,11 +9,11 @@ import { logoutUser } from '@/redux/auth/authSlice';
 import { useLogoutMutation } from '@/redux/auth/authApiSlice';
 
 const Header = () => {
-    const [logout] = useLogoutMutation();
     const dispatch = useDispatch();
-    const { loggedIn } = useSelector((state: RootState) => state.auth);
-
     const navigate = useNavigate();
+
+    const [logout] = useLogoutMutation();
+    const { loggedIn } = useSelector((state: RootState) => state.auth);
 
     // @TODO Refactor
     const doLogout = async () => {
@@ -49,7 +49,7 @@ const Header = () => {
                     to="/demo"
                     className="flex items-center gap-2 hover:text-gray-600"
                 >
-                    Demo
+                    Demo (auth)
                 </Link>
 
                 {loggedIn ? (

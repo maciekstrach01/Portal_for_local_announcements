@@ -9,3 +9,5 @@ export const demoApiSlice = apiSlice.injectEndpoints({
         })
     })
 });
+
+export const { useDemoQuery } = demoApiSlice;

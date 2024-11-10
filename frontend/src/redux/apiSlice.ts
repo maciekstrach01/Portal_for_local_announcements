@@ -61,7 +61,8 @@ const baseQueryWithReauth: BaseQueryFn<
         } else {
             store.dispatch(logoutUser());
 
-            // @TODO Redirect to Login
+            // @TODO Change if possible
+            window.location.replace('/login');
         }
     }
 

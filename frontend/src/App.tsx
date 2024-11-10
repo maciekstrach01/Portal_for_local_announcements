@@ -14,7 +14,6 @@ import NotFound from '@/views/pages/NotFound';
 import Register from '@/views/pages/Register';
 import { requireAuth } from '@/utils/requireAuth';
 import DefaultLayout from '@/views/layouts/Default';
-import { demoLoader } from '@/utils/loaders/demoLoader';
 import { loginAction } from '@/utils/actions/loginAction';
 import { registerAction } from '@/utils/actions/registerAction';
 
@@ -29,11 +28,7 @@ const router = createBrowserRouter(
                 <Route
                     path="/demo"
                     element={<Demo />}
-                    loader={async () => {
-                        await requireAuth();
-
-                        return demoLoader();
-                    }}
+                    loader={async () => await requireAuth()}
                 />
 
                 <Route path="*" element={<NotFound />} />
