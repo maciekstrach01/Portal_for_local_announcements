@@ -6,8 +6,8 @@ import { store } from '@/redux';
 import { setCredentials } from '@/redux/auth/authSlice';
 import { authApiSlice } from '@/redux/auth/authApiSlice';
 
+import { IErrorResponse } from '@/types/api/common';
 import type { IRegisterRequest } from '@/types/api/auth';
-import { IErrorResponse } from '@/types/api/common.ts';
 
 export const registerAction = async ({
     request
@@ -20,7 +20,7 @@ export const registerAction = async ({
     const password = formData.get('password') as string;
     const confirmPassword = formData.get('confirmPassword') as string;
 
-    const registerData: IRegisterRequest = {
+    const registerPayload: IRegisterRequest = {
         firstName,
         lastName,
         email,
@@ -30,7 +30,7 @@ export const registerAction = async ({
 
     try {
         const { data, error } = await store.dispatch(
-            authApiSlice.endpoints.register.initiate(registerData)
+            authApiSlice.endpoints.register.initiate(registerPayload)
         );
 
         if (error) {
