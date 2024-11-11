@@ -12,7 +12,6 @@ import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
 const Header = () => {
     const dispatch = useDispatch();
-
     const [logout] = useLogoutMutation();
     const { loggedIn } = useSelector((state: RootState) => state.auth);
 

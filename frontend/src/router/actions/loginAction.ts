@@ -43,9 +43,7 @@ export const loginAction = async ({
         toast.success("You've been logged in successfully");
 
         return redirect(pathname);
-    } catch (error) {
-        console.error('error', error);
-
+    } catch {
         toast.error('Something went wrong...');
 
         return null;

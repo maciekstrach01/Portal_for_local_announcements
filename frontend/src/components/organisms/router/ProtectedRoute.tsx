@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
-import { RootState } from '@/redux';
+import type { RootState } from '@/redux';
 
 const ProtectedRoute = () => {
     const location = useLocation();
