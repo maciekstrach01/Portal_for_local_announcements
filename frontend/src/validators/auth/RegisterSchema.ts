@@ -1,4 +1,5 @@
 import { string, ref } from 'yup';
+
 import LoginSchema from '@/validators/auth/LoginSchema';
 
 const RegisterSchema = LoginSchema.shape({
