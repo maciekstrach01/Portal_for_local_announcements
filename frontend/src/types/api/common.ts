@@ -1,7 +1,3 @@
-type IResponse = {
-    data: unknown;
-};
-
 type IErrorResponse = {
     timestamp: string;
     status: number;
@@ -9,4 +5,4 @@ type IErrorResponse = {
     path: string;
 };
 
-export type { IResponse, IErrorResponse };
+export type { IErrorResponse };
