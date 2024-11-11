@@ -1,15 +1,17 @@
 import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 import { store, RootState } from '@/redux';
 import { logoutUser } from '@/redux/auth/authSlice';
 import { useLogoutMutation } from '@/redux/auth/authApiSlice';
+import { StatusCodes as HTTP } from 'http-status-codes/build/cjs/status-codes';
+
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
 const Header = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const [logout] = useLogoutMutation();
     const { loggedIn } = useSelector((state: RootState) => state.auth);
@@ -24,11 +26,19 @@ const Header = () => {
 
             dispatch(logoutUser());
 
-            toast.success("You've been logged out!");
+            toast.success("You've been logged out");
+        } catch (error) {
+            const apiError = error as FetchBaseQueryError;
 
-            navigate('/');
-        } catch {
-            toast.error('Something went wrong on logout!');
+            if ('status' in apiError) {
+                if (apiError.status === HTTP.UNAUTHORIZED) {
+                    toast.success("You've been logged out");
+
+                    return;
+                }
+            }
+
+            toast.error('Error on logging out!');
         }
     };
 

@@ -45,7 +45,7 @@ export const loginAction = async ({
 
         store.dispatch(setCredentials(data));
 
-        toast.success("You've been logged in successfully!");
+        toast.success("You've been logged in successfully");
 
         return redirect(pathname);
     } catch {

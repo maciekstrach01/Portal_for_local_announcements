@@ -47,7 +47,7 @@ export const registerAction = async ({
 
         store.dispatch(setCredentials(data));
 
-        toast.success("You've been registered successfully!");
+        toast.success("You've been registered successfully");
 
         return redirect('/');
     } catch {
