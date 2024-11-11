@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 import { store, RootState } from '@/redux';
-
 import { logoutUser } from '@/redux/auth/authSlice';
 import { useLogoutMutation } from '@/redux/auth/authApiSlice';
 
@@ -15,7 +14,6 @@ const Header = () => {
     const [logout] = useLogoutMutation();
     const { loggedIn } = useSelector((state: RootState) => state.auth);
 
-    // @TODO Refactor
     const doLogout = async () => {
         try {
             const authState = (store.getState() as RootState).auth;
@@ -53,10 +51,7 @@ const Header = () => {
                 </Link>
 
                 {loggedIn ? (
-                    <button
-                        className="hover:text-gray-600"
-                        onClick={async () => doLogout()}
-                    >
+                    <button className="hover:text-gray-600" onClick={doLogout}>
                         Logout
                     </button>
                 ) : (

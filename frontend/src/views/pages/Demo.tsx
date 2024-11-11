@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { IErrorResponse } from '@/types/api/common';
 import { useDemoQuery } from '@/redux/demo/demoApiSlice';
+
+import type { IErrorResponse } from '@/types/api/common';
 
 const Demo = () => {
     const { data, error, isLoading, isSuccess } = useDemoQuery(undefined, {
@@ -25,7 +26,7 @@ const Demo = () => {
             return showTemplate(<p>{`Error: ${apiErrorResponse.error}`}</p>);
         }
 
-        return showTemplate(<p>Unknown error!</p>);
+        return showTemplate(<p>Error!</p>);
     }
 
     if (isLoading) {

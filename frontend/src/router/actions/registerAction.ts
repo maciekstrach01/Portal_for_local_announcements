@@ -6,37 +6,39 @@ import { store } from '@/redux';
 import { setCredentials } from '@/redux/auth/authSlice';
 import { authApiSlice } from '@/redux/auth/authApiSlice';
 
-import { IErrorResponse } from '@/types/api/common';
-import type { ILoginRequest } from '@/types/api/auth';
+import type { IErrorResponse } from '@/types/api/common';
+import type { IRegisterRequest } from '@/types/api/auth';
 
-export const loginAction = async ({
+export const registerAction = async ({
     request
-}: ActionFunctionArgs<ILoginRequest>): Promise<Response | null> => {
+}: ActionFunctionArgs<IRegisterRequest>): Promise<Response | string | null> => {
     const formData = await request.formData();
 
+    const firstName = formData.get('firstName') as string;
+    const lastName = formData.get('lastName') as string;
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
+    const confirmPassword = formData.get('confirmPassword') as string;
 
-    const loginPayload: ILoginRequest = {
+    const registerPayload: IRegisterRequest = {
+        firstName,
+        lastName,
         email,
-        password
+        password,
+        confirmPassword
     };
-
-    const pathname = new URL(request.url).searchParams.get('redirectTo') || '/';
 
     try {
         const { data, error } = await store.dispatch(
-            authApiSlice.endpoints.login.initiate(loginPayload)
+            authApiSlice.endpoints.register.initiate(registerPayload)
         );
 
         if (error) {
             if ('status' in error) {
                 const apiErrorResponse = error.data as IErrorResponse;
 
-                if (apiErrorResponse.status === HTTP.UNAUTHORIZED) {
-                    toast.error('Mismatching credentials');
-
-                    return null;
+                if (apiErrorResponse.status === HTTP.BAD_REQUEST) {
+                    return apiErrorResponse.error;
                 }
             }
 
@@ -45,9 +47,9 @@ export const loginAction = async ({
 
         store.dispatch(setCredentials(data));
 
-        toast.success("You've been logged in successfully!");
+        toast.success("You've been registered successfully!");
 
-        return redirect(pathname);
+        return redirect('/');
     } catch {
         toast.error('Something went wrong...');
 

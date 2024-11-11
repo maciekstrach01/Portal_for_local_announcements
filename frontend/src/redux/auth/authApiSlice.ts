@@ -1,9 +1,9 @@
 import { apiSlice } from '@/redux/apiSlice';
 
-import {
+import type {
     ILoginRequest,
     ITokensResponse,
-    IRegisterRequest,
+    IRegisterRequest
 } from '@/types/api/auth';
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -23,7 +23,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
             })
         }),
         logout: builder.mutation<void, string>({
-            query: (payload) => ({
+            query: payload => ({
                 url: '/v1/auth/logout',
                 method: 'POST',
                 body: {

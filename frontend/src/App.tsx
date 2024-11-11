@@ -13,9 +13,9 @@ import AuthLayout from '@/views/layouts/Auth';
 import NotFound from '@/views/pages/NotFound';
 import Register from '@/views/pages/Register';
 import DefaultLayout from '@/views/layouts/Default';
-import { loginAction } from '@/utils/actions/loginAction';
-import { loginLoader } from '@/utils/loaders/loginLoader';
-import { registerAction } from '@/utils/actions/registerAction';
+import { loginAction } from '@/router/actions/loginAction';
+import { loginLoader } from '@/router/loaders/loginLoader';
+import { registerAction } from '@/router/actions/registerAction';
 import ProtectedRoute from '@/components/organisms/ProtectedRoute';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,7 +27,7 @@ const router = createBrowserRouter(
                 <Route index element={<Index />} />
 
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/demo" element={<Demo />} />
+                    <Route path="demo" element={<Demo />} />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />

@@ -5,8 +5,7 @@ import type { ITokensResponse } from '@/types/api/auth';
 const initialState = {
     loggedIn: !!localStorage.getItem('accessToken'),
     accessToken: localStorage.getItem('accessToken'),
-    refreshToken: localStorage.getItem('refreshToken'),
-    usedToken: localStorage.getItem('accessToken')
+    refreshToken: localStorage.getItem('refreshToken')
 };
 
 export const authSlice = createSlice({
@@ -19,7 +18,6 @@ export const authSlice = createSlice({
             state.loggedIn = true;
             state.accessToken = action.payload.accessToken;
             state.refreshToken = action.payload.refreshToken;
-            state.usedToken = action.payload.accessToken;
         },
         logoutUser: state => {
             localStorage.removeItem('accessToken');
@@ -27,7 +25,6 @@ export const authSlice = createSlice({
             state.loggedIn = false;
             state.accessToken = null;
             state.refreshToken = null;
-            state.usedToken = null;
         }
     }
 });

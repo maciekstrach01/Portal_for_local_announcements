@@ -11,15 +11,15 @@ import config from '@/config';
 import { logoutUser, setCredentials } from '@/redux/auth/authSlice';
 
 import type { RootState } from '@/redux';
-import { ITokensResponse } from '@/types/api/auth';
+import type { ITokensResponse } from '@/types/api/auth';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: config.apiUrl,
     prepareHeaders: (headers, { getState }) => {
-        const usedToken = (getState() as RootState).auth.usedToken;
+        const accessToken = (getState() as RootState).auth.accessToken;
 
-        if (usedToken) {
-            headers.set('Authorization', `Bearer ${usedToken}`);
+        if (accessToken) {
+            headers.set('Authorization', `Bearer ${accessToken}`);
         }
 
         return headers;

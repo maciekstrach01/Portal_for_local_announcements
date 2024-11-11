@@ -15,7 +15,6 @@ import type {
     IRegisterRequestFields
 } from '@/types/api/auth';
 
-// @TODO Show error from BE
 const Register = () => {
     const submit = useSubmit();
     const { state } = useNavigation();
