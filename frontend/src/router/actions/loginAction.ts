@@ -7,7 +7,6 @@ import { setCredentials } from '@/redux/auth/authSlice';
 import { authApiSlice } from '@/redux/auth/authApiSlice';
 
 import type { ILoginRequest } from '@/types/api/auth';
-import type { IErrorResponse } from '@/types/api/common';
 
 export const loginAction = async ({
     request
@@ -30,14 +29,10 @@ export const loginAction = async ({
         );
 
         if (error) {
-            if ('status' in error) {
-                const apiErrorResponse = error.data as IErrorResponse;
+            if ('status' in error && error.status === HTTP.UNAUTHORIZED) {
+                toast.error('Mismatching credentials');
 
-                if (apiErrorResponse.status === HTTP.UNAUTHORIZED) {
-                    toast.error('Mismatching credentials');
-
-                    return null;
-                }
+                return null;
             }
 
             throw Error();
@@ -48,7 +43,9 @@ export const loginAction = async ({
         toast.success("You've been logged in successfully");
 
         return redirect(pathname);
-    } catch {
+    } catch (error) {
+        console.error('error', error);
+
         toast.error('Something went wrong...');
 
         return null;

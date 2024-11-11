@@ -34,12 +34,10 @@ export const registerAction = async ({
         );
 
         if (error) {
-            if ('status' in error) {
+            if ('status' in error && error.status === HTTP.BAD_REQUEST) {
                 const apiErrorResponse = error.data as IErrorResponse;
 
-                if (apiErrorResponse.status === HTTP.BAD_REQUEST) {
-                    return apiErrorResponse.error;
-                }
+                return apiErrorResponse.error;
             }
 
             throw Error();

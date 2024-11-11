@@ -20,13 +20,17 @@ const Demo = () => {
     );
 
     if (error) {
+        let errorMessage = 'Error!';
+
         if ('status' in error) {
             const apiErrorResponse = error.data as IErrorResponse;
 
-            return showTemplate(<p>{`Error: ${apiErrorResponse.error}`}</p>);
+            if (apiErrorResponse?.error) {
+                errorMessage = `Error: ${apiErrorResponse.error}`;
+            }
         }
 
-        return showTemplate(<p>Error!</p>);
+        return showTemplate(<p>{errorMessage}</p>);
     }
 
     if (isLoading) {

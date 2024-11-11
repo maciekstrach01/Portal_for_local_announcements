@@ -28,14 +28,15 @@ const Header = () => {
 
             toast.success("You've been logged out");
         } catch (error) {
-            const apiError = error as FetchBaseQueryError;
+            const fetchError = error as FetchBaseQueryError;
 
-            if ('status' in apiError) {
-                if (apiError.status === HTTP.UNAUTHORIZED) {
-                    toast.success("You've been logged out");
+            if (
+                'status' in fetchError &&
+                fetchError.status === HTTP.UNAUTHORIZED
+            ) {
+                toast.success("You've been logged out");
 
-                    return;
-                }
+                return;
             }
 
             toast.error('Error on logging out!');
