@@ -9,25 +9,25 @@ import type {
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         register: builder.mutation<ITokensResponse, IRegisterRequest>({
-            query: payload => ({
+            query: body => ({
                 url: '/v1/auth/register',
                 method: 'POST',
-                body: payload
+                body
             })
         }),
         login: builder.mutation<ITokensResponse, ILoginRequest>({
-            query: payload => ({
+            query: body => ({
                 url: '/v1/auth/authenticate',
                 method: 'POST',
-                body: payload
+                body
             })
         }),
         logout: builder.mutation<void, string>({
-            query: payload => ({
+            query: refreshToken => ({
                 url: '/v1/auth/logout',
                 method: 'POST',
                 body: {
-                    refreshToken: payload
+                    refreshToken
                 }
             })
         })

@@ -1,12 +1,12 @@
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { StatusCodes as HTTP } from 'http-status-codes';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 import { store, RootState } from '@/redux';
 import { logoutUser } from '@/redux/auth/authSlice';
 import { useLogoutMutation } from '@/redux/auth/authApiSlice';
-import { StatusCodes as HTTP } from 'http-status-codes/build/cjs/status-codes';
 
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
