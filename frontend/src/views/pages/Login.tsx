@@ -1,11 +1,5 @@
-import {
-    Link,
-    Form,
-    useSubmit,
-    useLoaderData,
-    useNavigation
-} from 'react-router-dom';
 import { useFormik } from 'formik';
+import { Link, Form, useSubmit, useNavigation } from 'react-router-dom';
 
 import LoginSchema from '@/validators/auth/LoginSchema';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
@@ -15,7 +9,6 @@ import type { ILoginRequest, ILoginRequestFields } from '@/types/api/auth';
 const Login = () => {
     const submit = useSubmit();
     const { state } = useNavigation();
-    const message = useLoaderData() as string;
 
     const formik = useFormik<ILoginRequest>({
         initialValues: {
@@ -92,14 +85,6 @@ const Login = () => {
                 >
                     {state === 'submitting' ? 'Logging in...' : 'Login'}
                 </button>
-
-                {message ? (
-                    <div className="text-xs mt-2 text-red-600 sm:text-sm sm:mt-4">
-                        {message}
-                    </div>
-                ) : (
-                    <div className="mt-6 sm:mt-9" />
-                )}
             </Form>
         </>
     );
