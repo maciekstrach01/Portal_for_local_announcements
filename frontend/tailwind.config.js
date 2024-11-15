@@ -13,6 +13,9 @@ export default {
                     500: '#4D47C3',
                     600: '#37329a'
                 }
+            },
+            spacing: {
+                128: '32rem'
             }
         }
     },

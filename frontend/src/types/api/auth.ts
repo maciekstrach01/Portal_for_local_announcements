@@ -1,24 +1,31 @@
-import type { IResponse } from '@/types/api/common';
+type ILoginRequestFields = 'email' | 'password';
 
-type IRegisterRequestFields =
-    | 'firstName'
-    | 'lastName'
-    | 'email'
-    | 'password'
-    | 'confirmPassword';
-
-interface IRegisterRequest {
-    firstName: string;
-    lastName: string;
+interface ILoginRequest {
     email: string;
     password: string;
+}
+
+type IRegisterRequestFields =
+    | ILoginRequestFields
+    | 'firstName'
+    | 'lastName'
+    | 'confirmPassword';
+
+interface IRegisterRequest extends ILoginRequest {
+    firstName: string;
+    lastName: string;
     confirmPassword: string;
 }
 
-interface IRegisterResponse extends IResponse {
-    data: {
-        token: string;
-    };
+interface ITokensResponse {
+    accessToken: string;
+    refreshToken: string;
 }
 
-export type { IRegisterRequestFields, IRegisterRequest, IRegisterResponse };
+export type {
+    ILoginRequestFields,
+    ILoginRequest,
+    IRegisterRequestFields,
+    IRegisterRequest,
+    ITokensResponse
+};
