@@ -1,16 +1,20 @@
 package pl.pk.localannouncements.usermanagement;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.pk.localannouncements.usermanagement.exception.AuthValidationException;
+import pl.pk.localannouncements.usermanagement.exception.RefreshTokenValidationException;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticateUserDto;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationResponse;
+import pl.pk.localannouncements.usermanagement.model.dto.RefreshTokenOperationsDto;
+import pl.pk.localannouncements.usermanagement.model.dto.RegisterUserDto;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
+import pl.pk.localannouncements.utils.UnitTest;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -20,17 +24,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@UnitTest
 class AuthenticationServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
 
     @Mock
-    private JwtService jwtService;
+    private PasswordEncoder passwordEncoder;
 
     @Mock
-    private PasswordEncoder passwordEncoder;
+    private JwtService jwtService;
 
     @Mock
     private AuthenticationManager authenticationManager;
@@ -42,121 +46,180 @@ class AuthenticationServiceImplTest {
     void authenticateUser_Success() {
         User user = mockUser();
         AuthenticateUserDto authenticateUserDto = mockAuthenticateUserDto();
+        AuthenticationResponse expectedResponse = AuthenticationResponse.builder()
+                .accessToken("generated-access-token")
+                .refreshToken("generated-refresh-token")
+                .build();
 
-        when(userRepository.findUserByEmail(authenticateUserDto.getEmail())).thenReturn(Optional.of(user));
-        doAnswer(invocation -> null).when(authenticationManager).authenticate(any());
-        when(jwtService.generateAccessToken(user)).thenReturn("mockAccessToken");
-        when(jwtService.generateRefreshToken(user)).thenReturn("mockRefreshToken");
+        // Arrange
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(null); // simulate successful authentication
+        when(userRepository.findUserByEmail(authenticateUserDto.getEmail()))
+                .thenReturn(Optional.of(user));
+        when(jwtService.generateAccessToken(user)).thenReturn("generated-access-token");
+        when(jwtService.generateRefreshToken(user)).thenReturn("generated-refresh-token");
 
+        // Act
         AuthenticationResponse response = authenticationService.authenticate(authenticateUserDto);
 
-        assertEquals("mockAccessToken", response.getAccessToken());
-        assertEquals("mockRefreshToken", response.getRefreshToken());
+        // Assert
+        assertEquals(expectedResponse, response);
+        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(userRepository).findUserByEmail(authenticateUserDto.getEmail());
+        verify(jwtService).generateAccessToken(user);
+        verify(jwtService).generateRefreshToken(user);
     }
 
     @Test
     void authenticateUser_InvalidPassword_ThrowsBadCredentialsException() {
         AuthenticateUserDto authenticateUserDto = mockAuthenticateUserDto();
+        // Arrange
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenThrow(new BadCredentialsException("Invalid credentials"));
 
-        lenient().when(userRepository.findUserByEmail(authenticateUserDto.getEmail())).thenReturn(Optional.of(mockUser()));
-        doThrow(new BadCredentialsException("Bad credentials")).when(authenticationManager).authenticate(any());
-
-        BadCredentialsException exception = assertThrows(
-                BadCredentialsException.class,
-                () -> authenticationService.authenticate(authenticateUserDto)
-        );
-
-        assertEquals("Bad credentials", exception.getMessage());
+        // Act & Assert
+        assertThrows(BadCredentialsException.class, () -> authenticationService.authenticate(authenticateUserDto));
+        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(userRepository, never()).findUserByEmail(anyString());
+        verify(jwtService, never()).generateAccessToken(any());
+        verify(jwtService, never()).generateRefreshToken(any());
     }
 
     @Test
     void authenticateUser_UserNotFound_ThrowsNoSuchElementException() {
+        // Arrange
         AuthenticateUserDto authenticateUserDto = mockAuthenticateUserDto();
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(null); // simulate successful authentication
+        when(userRepository.findUserByEmail(authenticateUserDto.getEmail()))
+                .thenReturn(Optional.empty());
 
-        when(userRepository.findUserByEmail(authenticateUserDto.getEmail())).thenReturn(Optional.empty());
-
-        NoSuchElementException exception = assertThrows(
-                NoSuchElementException.class,
-                () -> authenticationService.authenticate(authenticateUserDto)
-        );
-
-        assertEquals("No value present", exception.getMessage());
+        // Act & Assert
+        assertThrows(NoSuchElementException.class, () -> authenticationService.authenticate(authenticateUserDto));
+        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(userRepository).findUserByEmail(authenticateUserDto.getEmail());
+        verify(jwtService, never()).generateAccessToken(any());
+        verify(jwtService, never()).generateRefreshToken(any());
     }
 
     @Test
-    void authenticateUser_EmptyEmail_ThrowsIllegalArgumentException() {
-        // Create a spy on `authenticationService`
-        AuthenticationServiceImpl authenticationServiceSpy = spy(authenticationService);
-
-        AuthenticateUserDto emptyEmailDto = AuthenticateUserDto.builder()
-                .email("") // Empty email
-                .password("password")
+    void registerUser_Success() {
+        RegisterUserDto registerUserDto = mockRegisterUserDto();
+        User newUser = mockUser();
+        AuthenticationResponse expectedResponse = AuthenticationResponse.builder()
+                .accessToken("generated-access-token")
+                .refreshToken("generated-refresh-token")
                 .build();
 
-        // Simulate validation failure for empty email
-        doThrow(new IllegalArgumentException("Email cannot be empty"))
-                .when(authenticationServiceSpy).authenticate(emptyEmailDto);
+        // Arrange
+        when(userRepository.existsByEmail(registerUserDto.getEmail())).thenReturn(false);
+        when(passwordEncoder.encode(registerUserDto.getPassword())).thenReturn("encodedPassword");
+        when(userRepository.save(any(User.class))).thenReturn(newUser);
+        when(jwtService.generateAccessToken(newUser)).thenReturn("generated-access-token");
+        when(jwtService.generateRefreshToken(newUser)).thenReturn("generated-refresh-token");
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> authenticationServiceSpy.authenticate(emptyEmailDto)
-        );
+        // Act
+        AuthenticationResponse response = authenticationService.register(registerUserDto);
 
-        assertEquals("Email cannot be empty", exception.getMessage());
-        verify(userRepository, never()).findUserByEmail(anyString());
+        // Assert
+        assertEquals(expectedResponse, response);
+        verify(userRepository).existsByEmail(registerUserDto.getEmail());
+        verify(passwordEncoder).encode(registerUserDto.getPassword());
+        verify(userRepository).save(any(User.class));
+        verify(jwtService).generateAccessToken(newUser);
+        verify(jwtService).generateRefreshToken(newUser);
     }
 
     @Test
-    void authenticateUser_EmptyPassword_ThrowsIllegalArgumentException() {
-        // Create a spy on `authenticationService`
-        AuthenticationServiceImpl authenticationServiceSpy = spy(authenticationService);
+    void registerUser_UserAlreadyExists_ThrowsAuthValidationException() {
+        RegisterUserDto registerUserDto = mockRegisterUserDto();
 
-        AuthenticateUserDto emptyPasswordDto = AuthenticateUserDto.builder()
-                .email("john.doe@example.com")
-                .password("") // Empty password
-                .build();
+        // Arrange
+        when(userRepository.existsByEmail(registerUserDto.getEmail())).thenReturn(true);
 
-        // Simulate validation failure for empty password
-        doThrow(new IllegalArgumentException("Password cannot be empty"))
-                .when(authenticationServiceSpy).authenticate(emptyPasswordDto);
-
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> authenticationServiceSpy.authenticate(emptyPasswordDto)
-        );
-
-        assertEquals("Password cannot be empty", exception.getMessage());
-        verify(userRepository, never()).findUserByEmail(anyString());
+        // Act & Assert
+        assertThrows(AuthValidationException.class, () -> authenticationService.register(registerUserDto));
+        verify(userRepository).existsByEmail(registerUserDto.getEmail());
+        verify(userRepository, never()).save(any(User.class));
+        verify(jwtService, never()).generateAccessToken(any());
+        verify(jwtService, never()).generateRefreshToken(any());
     }
 
     @Test
-    void authenticateUser_InvalidEmailFormat_ThrowsIllegalArgumentException() {
-        // Create a spy on `authenticationService`
-        AuthenticationServiceImpl authenticationServiceSpy = spy(authenticationService);
-
-        AuthenticateUserDto invalidEmailDto = AuthenticateUserDto.builder()
-                .email("invalid-email") // Invalid email format
-                .password("password")
+    void refreshToken_Success() {
+        String validToken = "valid-refresh-token";
+        User user = mockUser();
+        AuthenticationResponse expectedResponse = AuthenticationResponse.builder()
+                .accessToken("new-access-token")
+                .refreshToken("new-refresh-token")
                 .build();
 
-        // Simulate validation failure for invalid email format
-        doThrow(new IllegalArgumentException("Invalid email format"))
-                .when(authenticationServiceSpy).authenticate(invalidEmailDto);
+        // Arrange
+        when(jwtService.extractUser(validToken)).thenReturn(user);
+        when(jwtService.isRefreshTokenValid(validToken, user)).thenReturn(true);
+        when(jwtService.generateAccessToken(user)).thenReturn("new-access-token");
+        when(jwtService.generateRefreshToken(user)).thenReturn("new-refresh-token");
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> authenticationServiceSpy.authenticate(invalidEmailDto)
-        );
+        RefreshTokenOperationsDto refreshTokenOperationsDto = new RefreshTokenOperationsDto();
+        refreshTokenOperationsDto.setRefreshToken(validToken);
 
-        assertEquals("Invalid email format", exception.getMessage());
-        verify(userRepository, never()).findUserByEmail(anyString());
+        // Act
+        AuthenticationResponse response = authenticationService.refreshToken(refreshTokenOperationsDto);
+
+        // Assert
+        assertEquals(expectedResponse, response);
+        verify(jwtService).extractUser(validToken);
+        verify(jwtService).isRefreshTokenValid(validToken, user);
+        verify(jwtService).generateAccessToken(user);
+        verify(jwtService).generateRefreshToken(user);
     }
 
+    @Test
+    void refreshToken_InvalidToken_ThrowsRefreshTokenValidationException() {
+        String invalidToken = "invalid-refresh-token";
+
+        // Arrange
+        when(jwtService.extractUser(invalidToken)).thenThrow(new RefreshTokenValidationException("Invalid refresh token"));
+
+        RefreshTokenOperationsDto refreshTokenOperationsDto = new RefreshTokenOperationsDto();
+        refreshTokenOperationsDto.setRefreshToken(invalidToken);
+
+        // Act & Assert
+        assertThrows(RefreshTokenValidationException.class,
+                () -> authenticationService.refreshToken(refreshTokenOperationsDto));
+        verify(jwtService).extractUser(invalidToken);
+        verify(jwtService, never()).isRefreshTokenValid(any(), any());
+        verify(jwtService, never()).generateAccessToken(any());
+        verify(jwtService, never()).generateRefreshToken(any());
+    }
+
+    @Test
+    void logout_Success() {
+        String validToken = "valid-refresh-token";
+        User user = mockUser();
+
+        // Arrange
+        when(jwtService.extractUser(validToken)).thenReturn(user);
+        when(jwtService.isRefreshTokenValid(validToken, user)).thenReturn(true);
+
+        RefreshTokenOperationsDto refreshTokenOperationsDto = new RefreshTokenOperationsDto();
+        refreshTokenOperationsDto.setRefreshToken(validToken);
+
+        // Act
+        authenticationService.logout(refreshTokenOperationsDto);
+
+        // Assert
+        verify(jwtService).extractUser(validToken);
+        verify(jwtService).revokeToken(validToken);
+        verifyNoMoreInteractions(jwtService);
+    }
 
     private User mockUser() {
         return User.builder()
                 .id(UUID.fromString("5ddece39-3206-441f-aced-307f5c353405"))
                 .email("john.doe@example.com")
+                .firstName("John")
+                .lastName("Doe")
                 .password("encodedPassword")
                 .build();
     }
@@ -167,8 +230,14 @@ class AuthenticationServiceImplTest {
                 .password("password")
                 .build();
     }
+
+    private RegisterUserDto mockRegisterUserDto() {
+        return RegisterUserDto.builder()
+                .email("john.doe@example.com")
+                .password("password")
+                .firstName("John")
+                .lastName("Doe")
+                .build();
+    }
+
 }
-
-
-
-
