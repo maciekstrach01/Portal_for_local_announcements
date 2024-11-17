@@ -59,7 +59,6 @@ class JwtServiceImplTest {
                 .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode("Y29tcGxleC1zZWN1cmUta2V5LXdpdGgtYS1zdWZmaWNpZW50LWxlbmd0aA==")), SignatureAlgorithm.HS256)
                 .compact();
 
-        // Mockowanie zachowania userService.findUserByEmail
         when(userService.findUserByEmail(username)).thenReturn(Optional.of(user));
 
         // Act
@@ -104,13 +103,12 @@ class JwtServiceImplTest {
     void generateRefreshToken_SavesTokenInRepository() {
         User user = mockUser();
         String secretKey = "Y29tcGxleC1zZWN1cmUta2V5LXdpdGgtYS1zdWZmaWNpZW50LWxlbmd0aA==";
-        ReflectionTestUtils.setField(jwtService, "jwtRefreshTokenExpiration", 1000 * 60 * 60); // 1 godzina
+        ReflectionTestUtils.setField(jwtService, "jwtRefreshTokenExpiration", 1000 * 60 * 60);
         ReflectionTestUtils.setField(jwtService, "secretKey", secretKey);
 
         // Arrange
-        Instant expectedExpirationInstant = Instant.now().plusSeconds(3600); // 1 godzina w przyszłości
+        Instant expectedExpirationInstant = Instant.now().plusSeconds(3600);
 
-        // Mockowanie wywołań związanych z revokeAllUserTokens
         when(tokenRepository.findAllValidTokenByUser(user.getId())).thenReturn(Collections.emptyList());
 
         // Act
@@ -119,17 +117,15 @@ class JwtServiceImplTest {
         // Assert
         assertNotNull(generatedToken);
 
-        // Sprawdzamy właściwości tokena zamiast dokładnej wartości tokena
         verify(tokenRepository).save(argThat(savedToken ->
-                savedToken.getToken().equals(generatedToken) && // Token powinien być identyczny
+                savedToken.getToken().equals(generatedToken) &&
                         !savedToken.isRevoked() &&
                         savedToken.getTokenType() == TokenType.BEARER &&
-                        savedToken.getExpirationDate().isBefore(expectedExpirationInstant.plusMillis(1000)) && // Elastyczne porównanie czasu
-                        savedToken.getExpirationDate().isAfter(expectedExpirationInstant.minusMillis(1000)) && // Elastyczne porównanie czasu
-                        savedToken.getUser().equals(user) // Użytkownik powinien być poprawnie ustawiony
+                        savedToken.getExpirationDate().isBefore(expectedExpirationInstant.plusMillis(1000)) &&
+                        savedToken.getExpirationDate().isAfter(expectedExpirationInstant.minusMillis(1000)) &&
+                        savedToken.getUser().equals(user)
         ));
 
-        // Sprawdzamy, czy revokeAllUserTokens zostało poprawnie wywołane
         verify(tokenRepository).findAllValidTokenByUser(user.getId());
     }
 
@@ -138,12 +134,11 @@ class JwtServiceImplTest {
         String username = "john.doe@example.com";
         String secretKey = "Y29tcGxleC1zZWN1cmUta2V5LXdpdGgtYS1zdWZmaWNpZW50LWxlbmd0aA==";
 
-        // Generowanie prawidłowego tokenu
         String token = Jwts.builder()
                 .setSubject(username)
                 .claim("type", "refresh_token")
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 godzina
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey)), SignatureAlgorithm.HS256)
                 .compact();
 
@@ -156,7 +151,6 @@ class JwtServiceImplTest {
 
         UserDetails userDetails = mock(UserDetails.class);
 
-        // Mockowanie zachowań
         when(userDetails.getUsername()).thenReturn(username);
         when(tokenRepository.findByToken(token)).thenReturn(Optional.of(validToken));
 
@@ -164,8 +158,8 @@ class JwtServiceImplTest {
         boolean result = jwtService.isRefreshTokenValid(token, userDetails);
 
         // Assert
-        assertTrue(result); // Token powinien być ważny
-        verify(tokenRepository).findByToken(token); // Sprawdzenie, czy wywołano repozytorium
+        assertTrue(result);
+        verify(tokenRepository).findByToken(token);
     }
 
     @Test
@@ -267,7 +261,7 @@ class JwtServiceImplTest {
         HttpServletRequest request = mock(HttpServletRequest.class);
 
         // Arrange
-        when(userService.findUserByEmail(username)).thenReturn(Optional.of(mockUser())); // Mockowanie userService
+        when(userService.findUserByEmail(username)).thenReturn(Optional.of(mockUser()));
 
         // Act
         jwtService.authenticateUser(token, request);
