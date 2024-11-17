@@ -3,10 +3,10 @@ import { Outlet, Navigate } from 'react-router-dom';
 
 import type { RootState } from '@/redux';
 
-const ProtectedRoute = () => {
+const AnonymousRoute = () => {
     const { loggedIn } = useSelector((state: RootState) => state.auth);
 
-    return loggedIn ? <Outlet /> : <Navigate to="/login" />;
+    return loggedIn ? <Navigate to="/" /> : <Outlet />;
 };
 
-export default ProtectedRoute;
+export default AnonymousRoute;
