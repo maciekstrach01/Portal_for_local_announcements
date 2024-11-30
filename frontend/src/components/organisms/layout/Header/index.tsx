@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     HomeIcon,
     UserIcon,
@@ -7,19 +8,20 @@ import {
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import Menu from './Menu';
 import { RootState } from '@/redux';
-import AuthMenu from '@/components/organisms/layout/header/AuthMenu';
-
-import { useState } from 'react';
 
 // @TODO Remove all demo related stuff - not necessary anymore
-const Index = () => {
+// @TODO Close menu on item click
+// @TODO Close menu on click outside
+
+const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const { loggedIn } = useSelector((state: RootState) => state.auth);
 
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
+        setIsMenuOpen(oldValue => !oldValue);
     };
 
     return (
@@ -51,7 +53,7 @@ const Index = () => {
                             <UserIcon className="h-5 w-5 text-slate-700" />
                         </button>
 
-                        {isMenuOpen && <AuthMenu />}
+                        {isMenuOpen && <Menu />}
                     </div>
                 ) : (
                     <Link
@@ -66,4 +68,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default Header;

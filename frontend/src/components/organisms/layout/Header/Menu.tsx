@@ -6,9 +6,10 @@ import { StatusCodes as HTTP } from 'http-status-codes';
 import { RootState, store } from '@/redux';
 import { logoutUser } from '@/redux/auth/authSlice';
 import { useLogoutMutation } from '@/redux/auth/authApiSlice';
+
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
-const AuthMenu = () => {
+const Menu = () => {
     const dispatch = useDispatch();
     const [logout] = useLogoutMutation();
 
@@ -43,12 +44,12 @@ const AuthMenu = () => {
         <div className="absolute right-0 flex flex-col items-center gap-2 p-3 mt-2 w-72 bg-white rounded-b-2xl shadow-lg">
             <Link
                 to="profile/change-password"
-                className="w-48 p-2 bg-gray-200 hover:bg-gray-300 rounded-2xl"
+                className="w-48 p-2 bg-gray-200 text-center rounded-2xl hover:bg-gray-300"
             >
                 Change Password
             </Link>
             <button
-                className="w-48 p-2 bg-gray-200 hover:bg-gray-300 rounded-2xl"
+                className="w-48 p-2 bg-gray-200 rounded-2xl hover:bg-gray-300"
                 onClick={doLogout}
             >
                 Logout
@@ -57,4 +58,4 @@ const AuthMenu = () => {
     );
 };
 
-export default AuthMenu;
+export default Menu;
