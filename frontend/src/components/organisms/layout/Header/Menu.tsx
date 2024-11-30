@@ -9,7 +9,11 @@ import { useLogoutMutation } from '@/redux/auth/authApiSlice';
 
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
-const Menu = () => {
+interface MenuProps {
+    closeMenu: () => void;
+}
+
+const Menu = ({ closeMenu }: MenuProps) => {
     const dispatch = useDispatch();
     const [logout] = useLogoutMutation();
 
@@ -37,6 +41,8 @@ const Menu = () => {
             }
 
             toast.error('Error on logging out!');
+        } finally {
+            closeMenu();
         }
     };
 
@@ -45,6 +51,7 @@ const Menu = () => {
             <Link
                 to="profile/change-password"
                 className="w-48 p-2 bg-gray-200 text-center rounded-2xl hover:bg-gray-300"
+                onClick={closeMenu}
             >
                 Change Password
             </Link>
