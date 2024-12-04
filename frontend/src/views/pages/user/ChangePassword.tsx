@@ -14,7 +14,6 @@ import type {
     IChangePasswordRequestFields
 } from '@/types/api/user';
 
-// @TODO Change style
 const ChangePassword = () => {
     const submit = useSubmit();
     const { state } = useNavigation();
@@ -39,25 +38,24 @@ const ChangePassword = () => {
         formik.errors[field] || '';
 
     return (
-        <>
-            <h1 className="text-lg text-center font-medium sm:text-xl">
-                Change password
+        <div className="max-w-96 mx-auto">
+            <h1 className="mb-4 text-lg text-center font-medium sm:text-xl">
+                Change Password
             </h1>
 
             <Form method="post" onSubmit={formik.handleSubmit}>
+                <label htmlFor="currentPassword" className="text-sm">
+                    Current password
+                </label>
                 <input
                     type="password"
                     id="currentPassword"
                     name="currentPassword"
-                    placeholder="Current password"
                     value={formik.values.currentPassword}
                     onChange={formik.handleChange}
-                    className={
-                        'block w-full p-2 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 sm:p-4 ' +
-                        (hasError('currentPassword')
-                            ? '!border-red-600'
-                            : 'mb-5 sm:mb-7')
-                    }
+                    className={`block w-full p-2 rounded-lg outline-2 border-2 border-slate-400 focus:outline-black sm:p-4 ${
+                        hasError('currentPassword') ? '!border-red-600' : 'mb-7'
+                    }`}
                 />
                 {hasError('currentPassword') && (
                     <ValidationMessage
@@ -65,19 +63,18 @@ const ChangePassword = () => {
                     />
                 )}
 
+                <label htmlFor="newPassword" className="text-sm">
+                    New password
+                </label>
                 <input
                     type="password"
                     id="newPassword"
                     name="newPassword"
-                    placeholder="New password"
                     value={formik.values.newPassword}
                     onChange={formik.handleChange}
-                    className={
-                        'block w-full p-2 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 sm:p-4 ' +
-                        (hasError('newPassword')
-                            ? '!border-red-600'
-                            : 'mb-5 sm:mb-7')
-                    }
+                    className={`block w-full p-2 rounded-lg outline-2 border-2 border-slate-400 focus:outline-black sm:p-4 ${
+                        hasError('newPassword') ? '!border-red-600' : 'mb-7'
+                    }`}
                 />
                 {hasError('newPassword') && (
                     <ValidationMessage
@@ -85,19 +82,20 @@ const ChangePassword = () => {
                     />
                 )}
 
+                <label htmlFor="confirmNewPassword" className="text-sm">
+                    Confirm new password
+                </label>
                 <input
                     type="password"
                     id="confirmNewPassword"
                     name="confirmNewPassword"
-                    placeholder="Confirm new password"
                     value={formik.values.confirmNewPassword}
                     onChange={formik.handleChange}
-                    className={
-                        'block w-full p-2 bg-primary-50 rounded-lg text-primary-500 outline-2 border-2 border-primary-50 placeholder:text-primary-200 focus:outline-primary-500 sm:p-4 ' +
-                        (hasError('confirmNewPassword')
+                    className={`block w-full p-2 rounded-lg outline-2 border-2 border-slate-400 focus:outline-black sm:p-4 ${
+                        hasError('confirmNewPassword')
                             ? '!border-red-600'
-                            : 'mb-5 sm:mb-7')
-                    }
+                            : 'mb-7'
+                    }`}
                 />
                 {hasError('confirmNewPassword') && (
                     <ValidationMessage
@@ -108,7 +106,7 @@ const ChangePassword = () => {
                 <button
                     type="submit"
                     disabled={state === 'submitting'}
-                    className="block w-full p-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 disabled:bg-primary-200 disabled:hover:bg-primary-200 sm:p-4"
+                    className="block w-full p-2 bg-green-500 rounded-lg text-white font-medium hover:bg-green-600 disabled:bg-green-200 disabled:hover:bg-green-200 sm:p-4"
                 >
                     {state === 'submitting'
                         ? 'Processing...'
@@ -116,12 +114,12 @@ const ChangePassword = () => {
                 </button>
 
                 {errorMessage && (
-                    <div className="text-xs mt-2 text-red-600 sm:text-sm sm:mt-4">
+                    <div className="text-sm mt-4 text-red-600">
                         {errorMessage}
                     </div>
                 )}
             </Form>
-        </>
+        </div>
     );
 };
 

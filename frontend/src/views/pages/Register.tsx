@@ -71,7 +71,10 @@ const Register = () => {
                     }
                 />
                 {hasError('firstName') && (
-                    <ValidationMessage message={getErrorMessage('firstName')} />
+                    <ValidationMessage
+                        message={getErrorMessage('firstName')}
+                        mobileXsFont={true}
+                    />
                 )}
 
                 <input
@@ -88,7 +91,10 @@ const Register = () => {
                     }
                 />
                 {hasError('lastName') && (
-                    <ValidationMessage message={getErrorMessage('lastName')} />
+                    <ValidationMessage
+                        message={getErrorMessage('lastName')}
+                        mobileXsFont={true}
+                    />
                 )}
 
                 <input
@@ -104,7 +110,10 @@ const Register = () => {
                     }
                 />
                 {hasError('email') && (
-                    <ValidationMessage message={getErrorMessage('email')} />
+                    <ValidationMessage
+                        message={getErrorMessage('email')}
+                        mobileXsFont={true}
+                    />
                 )}
 
                 <input
@@ -122,7 +131,10 @@ const Register = () => {
                     }
                 />
                 {hasError('password') && (
-                    <ValidationMessage message={getErrorMessage('password')} />
+                    <ValidationMessage
+                        message={getErrorMessage('password')}
+                        mobileXsFont={true}
+                    />
                 )}
 
                 <input
@@ -142,6 +154,7 @@ const Register = () => {
                 {hasError('confirmPassword') && (
                     <ValidationMessage
                         message={getErrorMessage('confirmPassword')}
+                        mobileXsFont={true}
                     />
                 )}
 
