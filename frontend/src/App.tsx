@@ -13,10 +13,12 @@ import AuthLayout from '@/views/layouts/Auth';
 import NotFound from '@/views/pages/NotFound';
 import Register from '@/views/pages/Register';
 import DefaultLayout from '@/views/layouts/Default';
-import { loginAction } from '@/router/actions/loginAction';
-import { registerAction } from '@/router/actions/registerAction';
+import ChangePassword from '@/views/pages/user/ChangePassword';
+import { loginAction } from '@/router/actions/auth/loginAction';
+import { registerAction } from '@/router/actions/auth/registerAction';
 import AnonymousRoute from '@/components/organisms/router/AnonymousRoute';
 import ProtectedRoute from '@/components/organisms/router/ProtectedRoute';
+import { changePasswordAction } from '@/router/actions/user/changePasswordAction';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -28,6 +30,13 @@ const router = createBrowserRouter(
 
                 <Route element={<ProtectedRoute />}>
                     <Route path="demo" element={<Demo />} />
+                    <Route path="user">
+                        <Route
+                            path="change-password"
+                            element={<ChangePassword />}
+                            action={changePasswordAction}
+                        />
+                    </Route>
                 </Route>
 
                 <Route path="*" element={<NotFound />} />

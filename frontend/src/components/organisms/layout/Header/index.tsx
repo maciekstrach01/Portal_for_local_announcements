@@ -12,7 +12,6 @@ import { useOnClickOutside } from 'usehooks-ts';
 import Menu from './Menu';
 import { RootState } from '@/redux';
 
-// @TODO Show labes on Desktop
 // @TODO Remove all demo related stuff - not necessary anymore
 const Header = () => {
     const profileRef = useRef<HTMLDivElement>(null);
@@ -35,9 +34,11 @@ const Header = () => {
             <div className="flex gap-2.5">
                 <Link
                     to="/"
-                    className="p-2 rounded-full bg-slate-100 hover:bg-slate-200"
+                    className="flex items-center p-2 rounded-full text-slate-700 bg-slate-100 hover:bg-slate-200"
                 >
-                    <HomeIcon className="h-5 w-5 text-slate-700" />
+                    <HomeIcon className="h-5 w-5" />
+
+                    <div className="hidden md:block px-2.5">Home</div>
                 </Link>
             </div>
 
@@ -45,18 +46,24 @@ const Header = () => {
                 {/*// @TODO Temporary link*/}
                 <Link
                     to="demo"
-                    className="p-2 rounded-full bg-yellow-400 hover:bg-yellow-500"
+                    className="flex items-center p-2 rounded-full bg-yellow-400 hover:bg-yellow-500"
                 >
                     <PlusCircleIcon className="h-5 w-5" />
+
+                    <div className="hidden md:block px-2.5">New Ann.</div>
                 </Link>
 
                 {loggedIn ? (
                     <div ref={profileRef} className="relative">
                         <button
-                            className="p-2 rounded-full bg-slate-100 hover:bg-slate-200"
+                            className="flex items-center p-2 rounded-full text-slate-700 bg-slate-100 hover:bg-slate-200"
                             onClick={openMenu}
                         >
-                            <UserIcon className="h-5 w-5 text-slate-700" />
+                            <UserIcon className="h-5 w-5" />
+
+                            <div className="hidden md:block px-2.5">
+                                Account
+                            </div>
                         </button>
 
                         {isMenuOpen && <Menu closeMenu={closeMenu} />}
@@ -64,9 +71,11 @@ const Header = () => {
                 ) : (
                     <Link
                         to="login"
-                        className="p-2 rounded-full bg-slate-100 hover:bg-slate-200"
+                        className="flex items-center p-2 rounded-full bg-slate-100 hover:bg-slate-200"
                     >
                         <ArrowRightEndOnRectangleIcon className="h-5 w-5 text-slate-700" />
+
+                        <div className="hidden md:block px-2.5">Login</div>
                     </Link>
                 )}
             </div>

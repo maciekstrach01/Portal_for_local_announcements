@@ -49,7 +49,7 @@ const Menu = ({ closeMenu }: MenuProps) => {
     return (
         <div className="absolute right-0 flex flex-col items-center gap-2 p-3 mt-2 w-72 bg-white rounded-b-2xl shadow-lg">
             <Link
-                to="profile/change-password"
+                to="user/change-password"
                 className="w-48 p-2 bg-gray-200 text-center rounded-2xl hover:bg-gray-300"
                 onClick={closeMenu}
             >
