@@ -12,7 +12,6 @@ import { useOnClickOutside } from 'usehooks-ts';
 import Menu from './Menu';
 import { RootState } from '@/redux';
 
-// @TODO Remove all demo related stuff - not necessary anymore
 const Header = () => {
     const profileRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,15 +42,11 @@ const Header = () => {
             </div>
 
             <div className="flex gap-2.5">
-                {/*// @TODO Temporary link*/}
-                <Link
-                    to="demo"
-                    className="flex items-center p-2 rounded-full bg-yellow-400 hover:bg-yellow-500"
-                >
+                <button className="flex items-center p-2 rounded-full bg-yellow-400 hover:bg-yellow-500">
                     <PlusCircleIcon className="h-5 w-5" />
 
                     <div className="hidden md:block px-2.5">New Ann.</div>
-                </Link>
+                </button>
 
                 {loggedIn ? (
                     <div ref={profileRef} className="relative">

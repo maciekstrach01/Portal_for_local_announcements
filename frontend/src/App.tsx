@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import Demo from '@/views/pages/Demo';
 import Index from '@/views/pages/Index';
 import Login from '@/views/pages/Login';
 import AuthLayout from '@/views/layouts/Auth';
@@ -29,7 +28,6 @@ const router = createBrowserRouter(
                 <Route index element={<Index />} />
 
                 <Route element={<ProtectedRoute />}>
-                    <Route path="demo" element={<Demo />} />
                     <Route path="user">
                         <Route
                             path="change-password"
