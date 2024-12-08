@@ -13,3 +13,5 @@ export const userApiSlice = apiSlice.injectEndpoints({
         })
     })
 });
+
+export const { useChangePasswordMutation } = userApiSlice;

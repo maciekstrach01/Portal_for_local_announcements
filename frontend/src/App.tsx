@@ -17,7 +17,6 @@ import { loginAction } from '@/router/actions/auth/loginAction';
 import { registerAction } from '@/router/actions/auth/registerAction';
 import AnonymousRoute from '@/components/organisms/router/AnonymousRoute';
 import ProtectedRoute from '@/components/organisms/router/ProtectedRoute';
-import { changePasswordAction } from '@/router/actions/user/changePasswordAction';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,7 +31,6 @@ const router = createBrowserRouter(
                         <Route
                             path="change-password"
                             element={<ChangePassword />}
-                            action={changePasswordAction}
                         />
                     </Route>
                 </Route>
