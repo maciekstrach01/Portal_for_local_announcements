@@ -9,6 +9,7 @@ import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
 import type { IErrorResponse } from '@/types/api/common';
 import type { IChangePasswordRequest } from '@/types/api/user';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
 const ChangePassword = () => {
     const initialValues: IChangePasswordRequest = {
@@ -27,11 +28,20 @@ const ChangePassword = () => {
     ) => {
         setErrorMessage(null);
 
-        const { error } = await changePassword(values);
+        try {
+            await changePassword(values).unwrap();
 
-        if (error) {
-            if ('status' in error && error.status === HTTP.BAD_REQUEST) {
-                const apiErrorResponse = error.data as IErrorResponse;
+            toast.success('Password changed successfully');
+
+            resetForm();
+        } catch (error) {
+            const fetchError = error as FetchBaseQueryError;
+
+            if (
+                'status' in fetchError &&
+                fetchError.status === HTTP.BAD_REQUEST
+            ) {
+                const apiErrorResponse = fetchError.data as IErrorResponse;
 
                 setErrorMessage(apiErrorResponse.error);
 
@@ -39,13 +49,7 @@ const ChangePassword = () => {
             }
 
             toast.error('Something went wrong...');
-
-            return;
         }
-
-        toast.success('Password changed successfully');
-
-        resetForm();
     };
 
     return (
