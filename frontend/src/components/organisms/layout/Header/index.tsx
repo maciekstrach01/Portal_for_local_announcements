@@ -33,32 +33,30 @@ const Header = () => {
             <div className="flex gap-2.5">
                 <Link
                     to="/"
-                    className="flex items-center p-2 rounded-full text-slate-700 bg-slate-100 hover:bg-slate-200"
+                    className="flex items-center justify-between gap-2.5 p-2 rounded-full text-slate-700 bg-slate-100 hover:bg-slate-200 md:px-4"
                 >
                     <HomeIcon className="h-5 w-5" />
 
-                    <div className="hidden md:block px-2.5">Home</div>
+                    <div className="hidden md:block">Home</div>
                 </Link>
             </div>
 
             <div className="flex gap-2.5">
-                <button className="flex items-center p-2 rounded-full bg-yellow-400 hover:bg-yellow-500">
+                <button className="flex items-center justify-between gap-2.5 p-2 rounded-full bg-yellow-400 hover:bg-yellow-500 md:px-4">
                     <PlusCircleIcon className="h-5 w-5" />
 
-                    <div className="hidden md:block px-2.5">New Ann.</div>
+                    <div className="hidden md:block">New Ann.</div>
                 </button>
 
                 {loggedIn ? (
                     <div ref={profileRef} className="relative">
                         <button
-                            className="flex items-center p-2 rounded-full text-slate-700 bg-slate-100 hover:bg-slate-200"
+                            className="flex items-center justify-between gap-2.5 p-2 rounded-full text-slate-700 bg-slate-100 hover:bg-slate-200 md:px-4"
                             onClick={openMenu}
                         >
                             <UserIcon className="h-5 w-5" />
 
-                            <div className="hidden md:block px-2.5">
-                                Account
-                            </div>
+                            <div className="hidden md:block">Account</div>
                         </button>
 
                         {isMenuOpen && <Menu closeMenu={closeMenu} />}
@@ -66,11 +64,11 @@ const Header = () => {
                 ) : (
                     <Link
                         to="login"
-                        className="flex items-center p-2 rounded-full bg-slate-100 hover:bg-slate-200"
+                        className="flex items-center justify-between gap-2.5 p-2 rounded-full bg-slate-100 hover:bg-slate-200 md:px-4"
                     >
                         <ArrowRightEndOnRectangleIcon className="h-5 w-5 text-slate-700" />
 
-                        <div className="hidden md:block px-2.5">Login</div>
+                        <div className="hidden md:block">Login</div>
                     </Link>
                 )}
             </div>
