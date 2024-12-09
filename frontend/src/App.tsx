@@ -27,12 +27,10 @@ const router = createBrowserRouter(
                 <Route index element={<Index />} />
 
                 <Route element={<ProtectedRoute />}>
-                    <Route path="user">
-                        <Route
-                            path="change-password"
-                            element={<ChangePassword />}
-                        />
-                    </Route>
+                    <Route
+                        path="user/change-password"
+                        element={<ChangePassword />}
+                    />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />

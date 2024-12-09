@@ -33,7 +33,7 @@ const Header = () => {
             <div className="flex gap-2.5">
                 <Link
                     to="/"
-                    className="flex items-center justify-between gap-2.5 p-2 rounded-full text-slate-700 bg-slate-100 hover:bg-slate-200 md:px-4"
+                    className="flex items-center justify-between gap-2.5 p-2 rounded-full bg-slate-100 hover:bg-slate-200 md:px-4"
                 >
                     <HomeIcon className="h-5 w-5" />
 
@@ -51,7 +51,7 @@ const Header = () => {
                 {loggedIn ? (
                     <div ref={profileRef} className="relative">
                         <button
-                            className="flex items-center justify-between gap-2.5 p-2 rounded-full text-slate-700 bg-slate-100 hover:bg-slate-200 md:px-4"
+                            className="flex items-center justify-between gap-2.5 p-2 rounded-full bg-slate-100 hover:bg-slate-200 md:px-4"
                             onClick={openMenu}
                         >
                             <UserIcon className="h-5 w-5" />
