@@ -66,7 +66,7 @@ const Header = () => {
                         to="login"
                         className="flex items-center justify-between gap-2.5 p-2 rounded-full bg-slate-100 hover:bg-slate-200 md:px-4"
                     >
-                        <ArrowRightEndOnRectangleIcon className="h-5 w-5 text-slate-700" />
+                        <ArrowRightEndOnRectangleIcon className="h-5 w-5" />
 
                         <div className="hidden md:block">Login</div>
                     </Link>
