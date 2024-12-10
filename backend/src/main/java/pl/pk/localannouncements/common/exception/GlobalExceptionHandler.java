@@ -1,4 +1,4 @@
-package pl.pk.localannouncements.exception;
+package pl.pk.localannouncements.common.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.support.DefaultMessageSourceResolvable;

@@ -1,4 +1,4 @@
-package pl.pk.localannouncements.exception;
+package pl.pk.localannouncements.common.exception;
 
 public class ValidationException extends RuntimeException {
 

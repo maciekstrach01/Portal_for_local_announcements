@@ -1,29 +1,26 @@
 package pl.pk.localannouncements.usermanagement.model.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.pk.localannouncements.common.model.BaseEntity;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "users")
-public class User implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
