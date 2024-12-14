@@ -1,17 +1,14 @@
 package pl.pk.localannouncements.usermanagement.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.pk.localannouncements.common.model.BaseEntity;
+import pl.pk.localannouncements.usermanagement.model.enums.Role;
 
 import java.util.Collection;
-import java.util.Collections;
 
 @Getter
 @Setter
@@ -34,9 +31,14 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role = Role.USER;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        return role.getAuthorities();
     }
 
     @Override

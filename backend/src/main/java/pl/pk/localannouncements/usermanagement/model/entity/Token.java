@@ -14,7 +14,7 @@ import java.time.Instant;
 @SuperBuilder
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "token")
+@Table(name = "tokens")
 public class Token extends BaseEntity {
 
     @Column(name = "token", nullable = false, unique = true)

@@ -112,7 +112,7 @@ class AuthenticationServiceImplTest {
                 .build();
 
         // Arrange
-        when(userRepository.existsByEmail(registerUserDto.getEmail())).thenReturn(false);
+        when(userRepository.existsByEmailIgnoreCase(registerUserDto.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(registerUserDto.getPassword())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(newUser);
         when(jwtService.generateAccessToken(newUser)).thenReturn("generated-access-token");
@@ -123,7 +123,7 @@ class AuthenticationServiceImplTest {
 
         // Assert
         assertEquals(expectedResponse, response);
-        verify(userRepository).existsByEmail(registerUserDto.getEmail());
+        verify(userRepository).existsByEmailIgnoreCase(registerUserDto.getEmail());
         verify(passwordEncoder).encode(registerUserDto.getPassword());
         verify(userRepository).save(any(User.class));
         verify(jwtService).generateAccessToken(newUser);
@@ -135,11 +135,11 @@ class AuthenticationServiceImplTest {
         RegisterUserDto registerUserDto = mockRegisterUserDto();
 
         // Arrange
-        when(userRepository.existsByEmail(registerUserDto.getEmail())).thenReturn(true);
+        when(userRepository.existsByEmailIgnoreCase(registerUserDto.getEmail())).thenReturn(true);
 
         // Act & Assert
         assertThrows(AuthValidationException.class, () -> authenticationService.register(registerUserDto));
-        verify(userRepository).existsByEmail(registerUserDto.getEmail());
+        verify(userRepository).existsByEmailIgnoreCase(registerUserDto.getEmail());
         verify(userRepository, never()).save(any(User.class));
         verify(jwtService, never()).generateAccessToken(any());
         verify(jwtService, never()).generateRefreshToken(any());
