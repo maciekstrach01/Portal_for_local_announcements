@@ -3,6 +3,7 @@ package pl.pk.localannouncements.announcementmanagement;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,13 @@ class AnnouncementController {
     @Operation(
             operationId = "create-announcement", summary = "Create a new announcement", tags = {"Announcements"},
             description = "Service used to create a new announcement for logged-in users.",
+            requestBody = @RequestBody(
+                    description = "Form data for creating an announcement",
+                    content = @Content(
+                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                            schema = @Schema(implementation = CreateAnnouncementDto.class)
+                    )
+            ),
             responses = {
                     @ApiResponse(
                             responseCode = "201",
