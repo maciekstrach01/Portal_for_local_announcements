@@ -57,7 +57,10 @@ const Login = () => {
                     }
                 />
                 {hasError('email') && (
-                    <ValidationMessage message={getErrorMessage('email')} />
+                    <ValidationMessage
+                        message={getErrorMessage('email')}
+                        mobileXsFont={true}
+                    />
                 )}
 
                 <input
@@ -75,7 +78,10 @@ const Login = () => {
                     }
                 />
                 {hasError('password') && (
-                    <ValidationMessage message={getErrorMessage('password')} />
+                    <ValidationMessage
+                        message={getErrorMessage('password')}
+                        mobileXsFont={true}
+                    />
                 )}
 
                 <button
