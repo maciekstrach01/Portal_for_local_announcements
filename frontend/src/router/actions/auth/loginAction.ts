@@ -21,8 +21,6 @@ export const loginAction = async ({
         password
     };
 
-    const pathname = new URL(request.url).searchParams.get('redirectTo') || '/';
-
     try {
         const { data, error } = await store.dispatch(
             authApiSlice.endpoints.login.initiate(loginPayload)
@@ -42,7 +40,7 @@ export const loginAction = async ({
 
         toast.success("You've been logged in successfully");
 
-        return redirect(pathname);
+        return redirect('/');
     } catch {
         toast.error('Something went wrong...');
 
