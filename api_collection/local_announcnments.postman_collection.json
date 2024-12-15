@@ -556,7 +556,7 @@
 					"response": []
 				},
 				{
-					"name": "Patch Category By Id Copy",
+					"name": "Delete Category By Id",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -635,17 +635,17 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "Title",
+									"key": "title",
 									"value": "Used Bike for Sale",
 									"type": "text"
 								},
 								{
-									"key": "CategoryId",
+									"key": "categoryId",
 									"value": "e22031b3-4bd9-49e7-b985-a4eb81f3a9ba",
 									"type": "text"
 								},
 								{
-									"key": "Description",
+									"key": "description",
 									"value": "A well-maintained used bike in excellent condition.",
 									"type": "text"
 								},
