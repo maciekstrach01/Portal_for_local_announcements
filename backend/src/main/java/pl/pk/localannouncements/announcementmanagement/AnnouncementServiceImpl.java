@@ -9,7 +9,7 @@ import pl.pk.localannouncements.announcementmanagement.exception.AnnouncementVal
 import pl.pk.localannouncements.announcementmanagement.model.dto.AnnouncementResponseDto;
 import pl.pk.localannouncements.announcementmanagement.model.dto.CreateAnnouncementDto;
 import pl.pk.localannouncements.announcementmanagement.model.entity.Announcement;
-import pl.pk.localannouncements.announcementmanagement.model.entity.ork;
+import pl.pk.localannouncements.announcementmanagement.model.entity.Category;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
 import java.io.IOException;
