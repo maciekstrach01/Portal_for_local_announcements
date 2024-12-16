@@ -46,7 +46,7 @@ class AnnouncementServiceImpl implements AnnouncementService {
     private Announcement prepareAnnouncementToSave(CreateAnnouncementDto createAnnouncementDto, User user) {
         createAnnouncementDto.trimFields();
         if (!categoryRepository.existsById(createAnnouncementDto.getCategoryId())) {
-            throw new AnnouncementValidationException("Category not found with id: " + createAnnouncementDto.getCategoryId());
+            throw new AnnouncementValidationException("Announcement not found with id: " + createAnnouncementDto.getCategoryId());
         }
         Category category = categoryRepository.getReferenceById(createAnnouncementDto.getCategoryId());
         return AnnouncementMapper.INSTANCE.toAnnouncement(createAnnouncementDto, category, user);
@@ -55,7 +55,7 @@ class AnnouncementServiceImpl implements AnnouncementService {
     private AnnouncementResponseDto saveAndMapAnnouncement(Announcement newAnnouncement) {
         try {
             Announcement savedAnnouncement = announcementRepository.save(newAnnouncement);
-            log.info("Successfully performed create operation for category with id = {}", savedAnnouncement.getId());
+            log.info("Successfully performed create operation for announcement with id = {}", savedAnnouncement.getId());
             return AnnouncementMapper.INSTANCE.toAnnouncementResponseDto(savedAnnouncement);
         } catch (Exception e) {
             log.error("Failed to create announcement in repository", e);

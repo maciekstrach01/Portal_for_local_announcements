@@ -29,13 +29,16 @@ public class CreateAnnouncementDto {
     @Schema(description = "Detailed description of the announcement", example = "A well-maintained used bike in excellent condition.")
     private String description;
 
-    @DecimalMin(value = "0.0", message = "Price must be a positive number")
+    @Positive(message = "Price must be a positive number")
     @Digits(integer = 10, fraction = 2, message = "Price can have up to 10 digits and 2 decimal places")
     @Schema(description = "Price of the item or service (optional)", example = "150.00")
     private BigDecimal price;
 
-    @Pattern(regexp = "^\\+?[0-9]{9,15}$", message = "Provide a valid phone number, example: +48123123123")
-    @Schema(description = "Contact phone number (optional)", example = "+48123123123")
+    @Pattern(
+            regexp = "^(\\+?[0-9\\s\\-()]{9,20})?$",
+            message = "Provide a valid phone number, example: +48 123 123 123 or +48123123123"
+    )
+    @Schema(description = "Contact phone number (optional)", example = "+48 123 123 123")
     private String phoneNumber;
 
     @ValidImage
