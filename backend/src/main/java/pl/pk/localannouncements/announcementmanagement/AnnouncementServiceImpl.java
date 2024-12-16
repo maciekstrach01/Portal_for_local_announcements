@@ -9,7 +9,7 @@ import pl.pk.localannouncements.announcementmanagement.exception.AnnouncementVal
 import pl.pk.localannouncements.announcementmanagement.model.dto.AnnouncementResponseDto;
 import pl.pk.localannouncements.announcementmanagement.model.dto.CreateAnnouncementDto;
 import pl.pk.localannouncements.announcementmanagement.model.entity.Announcement;
-import pl.pk.localannouncements.announcementmanagement.model.entity.Category;
+import pl.pk.localannouncements.announcementmanagement.model.entity.ork;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
 import java.io.IOException;
@@ -46,7 +46,7 @@ class AnnouncementServiceImpl implements AnnouncementService {
     private Announcement prepareAnnouncementToSave(CreateAnnouncementDto createAnnouncementDto, User user) {
         createAnnouncementDto.trimFields();
         if (!categoryRepository.existsById(createAnnouncementDto.getCategoryId())) {
-            throw new AnnouncementValidationException("Announcement not found with id: " + createAnnouncementDto.getCategoryId());
+            throw new AnnouncementValidationException("Category not found with id: " + createAnnouncementDto.getCategoryId());
         }
         Category category = categoryRepository.getReferenceById(createAnnouncementDto.getCategoryId());
         return AnnouncementMapper.INSTANCE.toAnnouncement(createAnnouncementDto, category, user);
