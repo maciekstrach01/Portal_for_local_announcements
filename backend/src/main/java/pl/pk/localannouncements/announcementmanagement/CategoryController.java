@@ -1,6 +1,7 @@
 package pl.pk.localannouncements.announcementmanagement;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,15 +32,15 @@ class CategoryController {
                             responseCode = "201",
                             description = "Category created successfully",
                             content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = CategoryRequestDto.class)
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = CategoryResponseDto.class)
                             )
                     ),
                     @ApiResponse(
                             responseCode = "400",
                             description = "Bad Request",
                             content = @Content(
-                                    mediaType = "application/json",
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorResponse.class)
                             )
                     ),
@@ -74,8 +75,8 @@ class CategoryController {
                             responseCode = "200",
                             description = "Categories retrieved successfully",
                             content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = CategoryResponseDto.class)
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array = @ArraySchema(schema = @Schema(implementation = CategoryResponseDto.class))
                             )
                     )
             }
@@ -93,15 +94,23 @@ class CategoryController {
                             responseCode = "200",
                             description = "Category updated successfully",
                             content = @Content(
-                                    mediaType = "application/json",
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = CategoryResponseDto.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ErrorResponse.class)
                             )
                     ),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Category not found",
                             content = @Content(
-                                    mediaType = "application/json",
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorResponse.class)
                             )
                     )
@@ -132,7 +141,7 @@ class CategoryController {
                             responseCode = "404",
                             description = "Category not found",
                             content = @Content(
-                                    mediaType = "application/json",
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorResponse.class)
                             )
                     )

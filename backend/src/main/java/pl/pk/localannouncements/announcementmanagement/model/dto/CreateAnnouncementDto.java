@@ -48,7 +48,12 @@ public class CreateAnnouncementDto {
     public void trimFields() {
         this.title = (title != null) ? title.trim() : null;
         this.description = (description != null) ? description.trim() : null;
-        this.phoneNumber = (phoneNumber != null) ? phoneNumber.trim() : null;
+        if (this.phoneNumber != null) {
+            this.phoneNumber = this.phoneNumber.trim();
+            if (this.phoneNumber.isEmpty()) {
+                this.phoneNumber = null;
+            }
+        }
     }
 
 }
