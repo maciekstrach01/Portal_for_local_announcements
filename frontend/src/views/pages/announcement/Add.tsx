@@ -5,17 +5,37 @@ import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 
 import type { IAddEditAnnouncementRequest } from '@/types/api/announcement';
 import AddEditAnnouncementSchema from '@/validators/announcement/AddEditAnnouncementSchema.ts';
+import { ICategory } from '@/types/api/category.ts';
 
 const AddAnnouncement = () => {
-    // @TODO Category
+    // @TODO Picture
     const initialValues: IAddEditAnnouncementRequest = {
         title: '',
+        categoryId: '',
         description: '',
         price: '',
         phoneNumber: ''
     };
 
     // @TODO Get categories from API
+    const categories: ICategory[] = [
+        {
+            id: 'e22031b3-4bd9-49e7-b985-a4eb81f3a9ba1',
+            name: 'For Sale'
+        },
+        {
+            id: '0f0bf160-79d5-4370-880d-c066efc023be',
+            name: 'Services'
+        },
+        {
+            id: 'ec232c26-480d-4d86-9eb6-56905b804fbb',
+            name: 'Community'
+        },
+        {
+            id: '343f9cc7-df08-4343-bc9a-2aefd31f9608',
+            name: 'Events'
+        }
+    ];
 
     const [isLoading] = useState<boolean>(false);
     // @TODO Error logic
@@ -80,6 +100,32 @@ const AddAnnouncement = () => {
                             <ValidationMessage message={errors.title} />
                         )}
 
+                        {/*// @TODO Style*/}
+                        <label htmlFor="categoryId" className="text-sm">
+                            Category
+                        </label>
+                        <Field
+                            as="select"
+                            id="categoryId"
+                            name="categoryId"
+                            className={`block w-full p-2 rounded-lg outline-2 border-2 border-slate-400 focus:outline-black sm:p-4 ${
+                                touched.categoryId && errors.categoryId
+                                    ? '!border-red-600'
+                                    : 'mb-7'
+                            }`}
+                        >
+                            <option disabled>Select Category</option>
+                            <>
+                                {categories.map(({ id, name }) => (
+                                    <option key={id} value={id}>
+                                        {name}
+                                    </option>
+                                ))}
+                            </>
+                        </Field>
+                        {touched.categoryId && errors.categoryId && (
+                            <ValidationMessage message={errors.categoryId} />
+                        )}
                         <label htmlFor="description" className="text-sm">
                             Description
                         </label>
@@ -96,7 +142,6 @@ const AddAnnouncement = () => {
                         {touched.description && errors.description && (
                             <ValidationMessage message={errors.description} />
                         )}
-
                         <label htmlFor="price" className="text-sm">
                             Price
                         </label>
@@ -112,7 +157,6 @@ const AddAnnouncement = () => {
                         {touched.price && errors.price && (
                             <ValidationMessage message={errors.price} />
                         )}
-
                         <label htmlFor="phoneNumber" className="text-sm">
                             Phone number
                         </label>
@@ -128,7 +172,6 @@ const AddAnnouncement = () => {
                         {touched.phoneNumber && errors.phoneNumber && (
                             <ValidationMessage message={errors.phoneNumber} />
                         )}
-
                         <button
                             type="submit"
                             disabled={isLoading}
@@ -136,7 +179,6 @@ const AddAnnouncement = () => {
                         >
                             {isLoading ? 'Saving...' : 'Save'}
                         </button>
-
                         {/*// @TODO Error message */}
                     </Form>
                 )}
