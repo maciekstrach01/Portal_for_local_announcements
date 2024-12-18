@@ -2,9 +2,9 @@ interface IAddEditAnnouncementRequest {
     title: string;
     categoryId: string;
     description: string;
-    price: string; // Optional @TODO What type
-    phoneNumber: string; // Optional
-    image?: string; // Optional
+    price: '' | number;
+    phoneNumber: string;
+    image: '' | File;
 }
 
 interface IAddEditAnnouncementResponse {
@@ -12,7 +12,7 @@ interface IAddEditAnnouncementResponse {
     title: string;
     categoryName: string;
     description: string;
-    price: string | null;
+    price: number | null;
     phoneNumber: string | null;
     imagePath: string | null;
     userData: {

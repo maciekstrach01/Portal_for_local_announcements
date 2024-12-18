@@ -2,19 +2,19 @@ import { useState } from 'react';
 import { Form, Field, Formik } from 'formik';
 
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
+import AddEditAnnouncementSchema from '@/validators/announcement/AddEditAnnouncementSchema';
 
+import type { ICategory } from '@/types/api/category';
 import type { IAddEditAnnouncementRequest } from '@/types/api/announcement';
-import AddEditAnnouncementSchema from '@/validators/announcement/AddEditAnnouncementSchema.ts';
-import { ICategory } from '@/types/api/category.ts';
 
 const AddAnnouncement = () => {
-    // @TODO Picture
     const initialValues: IAddEditAnnouncementRequest = {
         title: '',
         categoryId: '',
         description: '',
-        price: '',
-        phoneNumber: ''
+        price: '', // Optional
+        phoneNumber: '', // Optional
+        image: '' // Optional
     };
 
     // @TODO Get categories from API
@@ -82,7 +82,7 @@ const AddAnnouncement = () => {
                 validationSchema={AddEditAnnouncementSchema}
                 onSubmit={handleSubmit}
             >
-                {({ errors, touched }) => (
+                {({ errors, touched, setFieldValue }) => (
                     <Form>
                         <label htmlFor="title" className="text-sm">
                             Title
@@ -100,7 +100,7 @@ const AddAnnouncement = () => {
                             <ValidationMessage message={errors.title} />
                         )}
 
-                        {/*// @TODO Style*/}
+                        {/*// @TODO Fix on default, improve style and behaviour*/}
                         <label htmlFor="categoryId" className="text-sm">
                             Category
                         </label>
@@ -108,13 +108,13 @@ const AddAnnouncement = () => {
                             as="select"
                             id="categoryId"
                             name="categoryId"
-                            className={`block w-full p-2 rounded-lg outline-2 border-2 border-slate-400 focus:outline-black sm:p-4 ${
+                            className={`block w-full p-2 rounded-lg outline-2 bg-white border-2 border-slate-400 focus:outline-black sm:p-4 ${
                                 touched.categoryId && errors.categoryId
                                     ? '!border-red-600'
                                     : 'mb-7'
                             }`}
                         >
-                            <option disabled>Select Category</option>
+                            <option disabled value="">Select Category</option>
                             <>
                                 {categories.map(({ id, name }) => (
                                     <option key={id} value={id}>
@@ -126,6 +126,7 @@ const AddAnnouncement = () => {
                         {touched.categoryId && errors.categoryId && (
                             <ValidationMessage message={errors.categoryId} />
                         )}
+
                         <label htmlFor="description" className="text-sm">
                             Description
                         </label>
@@ -142,12 +143,15 @@ const AddAnnouncement = () => {
                         {touched.description && errors.description && (
                             <ValidationMessage message={errors.description} />
                         )}
+
                         <label htmlFor="price" className="text-sm">
-                            Price
+                            Price (optional)
                         </label>
                         <Field
                             id="price"
                             name="price"
+                            type="number"
+                            step="0.01"
                             className={`block w-full p-2 rounded-lg outline-2 border-2 border-slate-400 focus:outline-black sm:p-4 ${
                                 touched.price && errors.price
                                     ? '!border-red-600'
@@ -157,8 +161,9 @@ const AddAnnouncement = () => {
                         {touched.price && errors.price && (
                             <ValidationMessage message={errors.price} />
                         )}
+
                         <label htmlFor="phoneNumber" className="text-sm">
-                            Phone number
+                            Phone number (optional)
                         </label>
                         <Field
                             id="phoneNumber"
@@ -172,6 +177,25 @@ const AddAnnouncement = () => {
                         {touched.phoneNumber && errors.phoneNumber && (
                             <ValidationMessage message={errors.phoneNumber} />
                         )}
+
+                        <label htmlFor="image" className="text-sm">
+                            Image (optional)
+                        </label>
+                        <input
+                            type="file"
+                            name="image"
+                            accept="image/png, image/jpeg, image/gif"
+                            className={
+                                !(touched.image && errors.image) ? 'mb-7' : ''
+                            }
+                            onChange={e => {
+                                setFieldValue('image', e.target.files[0]);
+                            }}
+                        />
+                        {touched.image && errors.image && (
+                            <ValidationMessage message={errors.image} />
+                        )}
+
                         <button
                             type="submit"
                             disabled={isLoading}

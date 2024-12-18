@@ -26,6 +26,8 @@ const ChangePassword = () => {
         values: IChangePasswordRequest,
         { resetForm }: FormikHelpers<IChangePasswordRequest>
     ) => {
+        console.log(values);
+
         setErrorMessage(null);
 
         try {
