@@ -12,10 +12,15 @@ const AddAnnouncement = () => {
         title: '',
         categoryId: '',
         description: '',
-        price: '', // Optional
-        phoneNumber: '', // Optional
-        image: '' // Optional
+        price: '',
+        phoneNumber: '',
+        image: ''
     };
+
+    // @TODO Loading logic
+    const [isLoading] = useState<boolean>(false);
+    // @TODO Add function to change
+    const [errorMessage] = useState<string | null>(null);
 
     // @TODO Get categories from API
     const categories: ICategory[] = [
@@ -36,9 +41,6 @@ const AddAnnouncement = () => {
             name: 'Events'
         }
     ];
-
-    const [isLoading] = useState<boolean>(false);
-    // @TODO Error logic
 
     // @TODO Submit logic
     const handleSubmit = async (values: IAddEditAnnouncementRequest) => {
@@ -100,7 +102,7 @@ const AddAnnouncement = () => {
                             <ValidationMessage message={errors.title} />
                         )}
 
-                        {/*// @TODO Fix on default, improve style and behaviour*/}
+                        {/*// @TODO Improve style and behaviour*/}
                         <label htmlFor="categoryId" className="text-sm">
                             Category
                         </label>
@@ -114,7 +116,9 @@ const AddAnnouncement = () => {
                                     : 'mb-7'
                             }`}
                         >
-                            <option disabled value="">Select Category</option>
+                            <option disabled value="">
+                                Select Category
+                            </option>
                             <>
                                 {categories.map(({ id, name }) => (
                                     <option key={id} value={id}>
@@ -168,12 +172,17 @@ const AddAnnouncement = () => {
                         <Field
                             id="phoneNumber"
                             name="phoneNumber"
-                            className={`block w-full p-2 rounded-lg outline-2 border-2 border-slate-400 focus:outline-black sm:p-4 ${
+                            className="block w-full p-2 rounded-lg outline-2 border-2 border-slate-400 focus:outline-black sm:p-4"
+                        />
+                        <div
+                            className={`text-sm text-slate-700 ${
                                 touched.phoneNumber && errors.phoneNumber
                                     ? '!border-red-600'
                                     : 'mb-7'
                             }`}
-                        />
+                        >
+                            Examples: +48 123 123 123 or +48123123123
+                        </div>
                         {touched.phoneNumber && errors.phoneNumber && (
                             <ValidationMessage message={errors.phoneNumber} />
                         )}
@@ -181,6 +190,7 @@ const AddAnnouncement = () => {
                         <label htmlFor="image" className="text-sm">
                             Image (optional)
                         </label>
+                        {/*// @TODO Fix eslint issue*/}
                         <input
                             type="file"
                             name="image"
@@ -189,7 +199,7 @@ const AddAnnouncement = () => {
                                 !(touched.image && errors.image) ? 'mb-7' : ''
                             }
                             onChange={e => {
-                                setFieldValue('image', e.target.files[0]);
+                                setFieldValue('image', e.target.files[0] || '');
                             }}
                         />
                         {touched.image && errors.image && (
@@ -203,7 +213,12 @@ const AddAnnouncement = () => {
                         >
                             {isLoading ? 'Saving...' : 'Save'}
                         </button>
-                        {/*// @TODO Error message */}
+
+                        {errorMessage && (
+                            <div className="text-sm mt-4 text-red-600">
+                                {errorMessage}
+                            </div>
+                        )}
                     </Form>
                 )}
             </Formik>

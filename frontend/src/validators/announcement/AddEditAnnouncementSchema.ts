@@ -12,33 +12,28 @@ const AddEditAnnouncementSchema = object({
     // @TODO Entered 2.99999 - nothing!
     price: number()
         .positive('This field must be a positive number')
-        .min(0.01, 'This field must have value greater than or equal 0.01')
-        .max(
-            9999999999.99,
-            'This field must have value less than or equal 9999999999.99'
-        ),
-    // @TODO Optional, regex
-    phoneNumber: string(),
+        .min(0.01, 'Minimal value accepted: 0.01')
+        .max(9999999999.99, 'Maximal value accepted: 9999999999.99'),
+    phoneNumber: string().matches(
+        /^(\+?[0-9\s\-()]{9,20})$/,
+        'Invalid phone number format'
+    ),
     image: mixed()
-        .test(
-            'fileFormat',
-            'Only these file types are allowed: JPEG, PNG and GIF',
-            value => {
-                const file = value as File;
+        .test('fileFormat', 'Accepted file types: JPEG, PNG, GIF', value => {
+            const file = value as File;
 
-                if (file) {
-                    const supportedFormats = [
-                        'image/jpeg',
-                        'image/png',
-                        'image/gif'
-                    ];
+            if (file) {
+                const supportedFormats = [
+                    'image/jpeg',
+                    'image/png',
+                    'image/gif'
+                ];
 
-                    return supportedFormats.includes(file.type);
-                }
-
-                return true;
+                return supportedFormats.includes(file.type);
             }
-        )
+
+            return true;
+        })
         .test('fileSize', 'File size must be less than 5MB', value => {
             const file = value as File;
 
