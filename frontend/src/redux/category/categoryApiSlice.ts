@@ -1,6 +1,6 @@
 import { apiSlice } from '@/redux/apiSlice';
 
-import { ICategory } from '@/types/api/category';
+import type { ICategory } from '@/types/api/category';
 
 export const categoryApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({

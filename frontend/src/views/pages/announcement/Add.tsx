@@ -81,9 +81,9 @@ const AddAnnouncement = () => {
 
             <AddEditForm
                 initialValues={initialValues}
+                onSubmit={handleSubmit}
                 categories={categories}
                 fileInputRef={fileInputRef}
-                onSubmit={handleSubmit}
                 isLoading={isLoading}
                 errorMessage={errorMessage}
             />

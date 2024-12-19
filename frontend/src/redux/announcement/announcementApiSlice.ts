@@ -1,6 +1,6 @@
 import { apiSlice } from '@/redux/apiSlice';
 
-import { IAddEditAnnouncementResponse } from '@/types/api/announcement';
+import type { IAddEditAnnouncementResponse } from '@/types/api/announcement';
 
 export const announcementApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
