@@ -1,11 +1,20 @@
 import { useState } from 'react';
+import { FormikHelpers } from 'formik';
+import { toast } from 'react-toastify';
+import { useLoaderData } from 'react-router';
+import { StatusCodes as HTTP } from 'http-status-codes';
 
 import AddEditForm from '@/components/organisms/announcement/AddEditForm';
+import { useStoreMutation } from '@/redux/announcement/announcementApiSlice';
 
 import type { ICategory } from '@/types/api/category';
+import type { IErrorResponse } from '@/types/api/common';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import type { IAddEditAnnouncementRequest } from '@/types/api/announcement';
 
 const AddAnnouncement = () => {
+    const categories = useLoaderData() as ICategory[];
+
     const initialValues: IAddEditAnnouncementRequest = {
         title: '',
         categoryId: '',
@@ -15,60 +24,46 @@ const AddAnnouncement = () => {
         image: ''
     };
 
-    // @TODO Loading logic
-    const [isLoading] = useState<boolean>(false);
-    // @TODO Add function to change
-    const [errorMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    // @TODO Get categories from API
-    const categories: ICategory[] = [
-        {
-            id: 'e22031b3-4bd9-49e7-b985-a4eb81f3a9ba1',
-            name: 'For Sale'
-        },
-        {
-            id: '0f0bf160-79d5-4370-880d-c066efc023be',
-            name: 'Services'
-        },
-        {
-            id: 'ec232c26-480d-4d86-9eb6-56905b804fbb',
-            name: 'Community'
-        },
-        {
-            id: '343f9cc7-df08-4343-bc9a-2aefd31f9608',
-            name: 'Events'
+    const [store, { isLoading }] = useStoreMutation();
+
+    const handleSubmit = async (
+        values: IAddEditAnnouncementRequest,
+        { resetForm }: FormikHelpers<IAddEditAnnouncementRequest>
+    ) => {
+        setErrorMessage(null);
+
+        const formData = new FormData();
+
+        Object.entries(values).forEach(([key, value]) => {
+            if (value !== null && value !== undefined && value !== '') {
+                formData.append(key, value);
+            }
+        });
+
+        try {
+            await store(formData).unwrap();
+
+            toast.success('Announcement added successfully');
+
+            resetForm();
+        } catch (error) {
+            const fetchError = error as FetchBaseQueryError;
+
+            if (
+                'status' in fetchError &&
+                fetchError.status === HTTP.BAD_REQUEST
+            ) {
+                const apiErrorResponse = fetchError.data as IErrorResponse;
+
+                setErrorMessage(apiErrorResponse.error);
+
+                return;
+            }
+
+            toast.error('Something went wrong...');
         }
-    ];
-
-    // @TODO Submit logic
-    const handleSubmit = async (values: IAddEditAnnouncementRequest) => {
-        // @TODO Tmp
-        console.log(values);
-
-        // setErrorMessage(null);
-        //
-        // try {
-        //     await changePassword(values).unwrap();
-        //
-        //     toast.success('Password changed successfully');
-        //
-        //     resetForm();
-        // } catch (error) {
-        //     const fetchError = error as FetchBaseQueryError;
-        //
-        //     if (
-        //         'status' in fetchError &&
-        //         fetchError.status === HTTP.BAD_REQUEST
-        //     ) {
-        //         const apiErrorResponse = fetchError.data as IErrorResponse;
-        //
-        //         setErrorMessage(apiErrorResponse.error);
-        //
-        //         return;
-        //     }
-        //
-        //     toast.error('Something went wrong...');
-        // }
     };
 
     return (
@@ -82,11 +77,8 @@ const AddAnnouncement = () => {
                 categories={categories}
                 onSubmit={handleSubmit}
                 isLoading={isLoading}
+                errorMessage={errorMessage}
             />
-
-            {errorMessage && (
-                <div className="text-sm mt-4 text-red-600">{errorMessage}</div>
-            )}
         </div>
     );
 };

@@ -18,6 +18,7 @@ import { loginAction } from '@/router/actions/auth/loginAction';
 import { registerAction } from '@/router/actions/auth/registerAction';
 import AnonymousRoute from '@/components/organisms/router/AnonymousRoute';
 import ProtectedRoute from '@/components/organisms/router/ProtectedRoute';
+import { addEditAnnouncementLoader } from '@/router/loaders/announcement/addEditAnnouncementLoader';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
                     />
                     <Route
                         path="announcements/add"
+                        loader={addEditAnnouncementLoader}
                         element={<AddAnnouncement />}
                     />
                 </Route>
