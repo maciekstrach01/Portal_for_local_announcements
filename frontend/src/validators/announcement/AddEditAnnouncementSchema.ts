@@ -4,12 +4,13 @@ const AddEditAnnouncementSchema = object({
     title: string()
         .required('This field is required')
         .max(100, 'This field must have max 100 characters'),
-    categoryId: string().required('This field is required'),
+    categoryId: string()
+        .required('This field is required')
+        .uuid('This field must have category ID'),
     description: string()
         .required('This field is required')
         .min(20, 'This field must have at least 20 characters')
         .max(1000, 'This field must have max 1000 characters'),
-    // @TODO Entered 2.99999 - nothing!
     price: number()
         .positive('This field must be a positive number')
         .min(0.01, 'Minimal value accepted: 0.01')
