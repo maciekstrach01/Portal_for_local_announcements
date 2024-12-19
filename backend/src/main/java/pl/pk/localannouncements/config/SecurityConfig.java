@@ -14,7 +14,9 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import static pl.pk.localannouncements.usermanagement.model.enums.Role.ADMIN;
 
 @Configuration
 @EnableWebSecurity
@@ -50,6 +52,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST_URL).permitAll()
+                        .requestMatchers(GET, "/api/v1/category").permitAll()
+                        .requestMatchers(POST, "/api/v1/category").hasRole(ADMIN.name())
+                        .requestMatchers(PATCH, "/api/v1/category/**").hasRole(ADMIN.name())
+                        .requestMatchers(DELETE, "/api/v1/category/**").hasRole(ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(handling -> handling

@@ -8,9 +8,13 @@ import pl.pk.localannouncements.usermanagement.model.entity.User;
 
 @Mapper(componentModel = "spring")
 interface UserMapper {
+
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "creationTimestamp", ignore = true)
+    @Mapping(target = "updateTimestamp", ignore = true)
     User toUser(RegisterUserDto registerUserDto);
 
 }

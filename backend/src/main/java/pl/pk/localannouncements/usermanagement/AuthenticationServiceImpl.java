@@ -15,6 +15,7 @@ import pl.pk.localannouncements.usermanagement.model.dto.AuthenticationResponse;
 import pl.pk.localannouncements.usermanagement.model.dto.RefreshTokenOperationsDto;
 import pl.pk.localannouncements.usermanagement.model.dto.RegisterUserDto;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
+import pl.pk.localannouncements.usermanagement.model.enums.Role;
 
 @Slf4j
 @Service
@@ -29,9 +30,10 @@ class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public AuthenticationResponse register(RegisterUserDto registerUserDto) {
-        validateUserDoesNotExist(registerUserDto.getEmail());
-
         User newUser = prepareUserToSave(registerUserDto);
+
+        validateUserDoesNotExist(newUser.getEmail());
+
         User createdUser = saveNewUser(newUser);
 
         return generateAuthenticationResponse(createdUser);
@@ -83,7 +85,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private void validateUserDoesNotExist(String email) {
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmailIgnoreCase(email)) {
             throw new AuthValidationException("User with this email already exists");
         }
     }
@@ -93,6 +95,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
         User newUser = UserMapper.INSTANCE.toUser(registerUserDto);
         String hashedPassword = passwordEncoder.encode(registerUserDto.getPassword());
         newUser.setPassword(hashedPassword);
+        newUser.setRole(Role.USER);
         return newUser;
     }
 

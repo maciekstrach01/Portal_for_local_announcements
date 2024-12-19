@@ -1,4 +1,4 @@
-package pl.pk.localannouncements.exception;
+package pl.pk.localannouncements.common.exception;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

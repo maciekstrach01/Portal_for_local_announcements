@@ -1,6 +1,6 @@
 package pl.pk.localannouncements.usermanagement.exception;
 
-import pl.pk.localannouncements.exception.ValidationException;
+import pl.pk.localannouncements.common.exception.ValidationException;
 
 public class InvalidPasswordException extends ValidationException {
 
