@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.pk.localannouncements.exception.ErrorResponse;
+import pl.pk.localannouncements.common.exception.ErrorResponse;
 import pl.pk.localannouncements.usermanagement.model.dto.ChangePasswordDto;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 

@@ -42,14 +42,25 @@ This command generates a 256-bit key in base64 encoding.
 
 Note: The `application-local.properties` file is listed in `.gitignore`, so it won’t be committed to version control. Keep this file secure.
 
-### 2. Install dependencies
+### 2. Configure Database Init
+
+In the backend/src/main/resources directory, you'll need to create `data.sql` file for the database initialization.
+
+You can start by copying the provided `data-example` file:
+```
+cp data-example data.sql
+```
+
+- Make sure to customize values in the `data.sql` file to suit your local setup.
+
+### 3. Install dependencies
 Once inside the project's `backend` directory, install the required dependencies by running:
 ```
 mvn clean install
 ```
 This command will clean up any previous builds, resolve all necessary dependencies, and prepare the application for running.
 
-### 3. Running the Application
+### 4. Running the Application
 To run the Spring Boot application, use the following Maven command:
 ```
 mvn spring-boot:run -D spring.profiles.active=local
