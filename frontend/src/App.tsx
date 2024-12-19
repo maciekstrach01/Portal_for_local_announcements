@@ -35,8 +35,8 @@ const router = createBrowserRouter(
                     />
                     <Route
                         path="announcements/add"
-                        loader={addEditAnnouncementLoader}
                         element={<AddAnnouncement />}
+                        loader={addEditAnnouncementLoader}
                     />
                 </Route>
 

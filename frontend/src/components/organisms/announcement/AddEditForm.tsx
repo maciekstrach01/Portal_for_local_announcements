@@ -3,6 +3,7 @@ import { Field, Form, Formik, FormikHelpers } from 'formik';
 import ValidationMessage from '@/components/atoms/forms/ValidationMessage';
 import AddEditAnnouncementSchema from '@/validators/announcement/AddEditAnnouncementSchema';
 
+import type { LegacyRef } from 'react';
 import type { ICategory } from '@/types/api/category';
 import type { IAddEditAnnouncementRequest } from '@/types/api/announcement';
 
@@ -13,6 +14,7 @@ interface AddEditFormProps {
         { resetForm }: FormikHelpers<IAddEditAnnouncementRequest>
     ) => Promise<void>;
     categories: ICategory[];
+    fileInputRef: LegacyRef<HTMLInputElement> | undefined;
     isLoading: boolean;
     errorMessage: string | null;
 }
@@ -21,6 +23,7 @@ const AddEditForm = ({
     initialValues,
     onSubmit,
     categories,
+    fileInputRef,
     isLoading,
     errorMessage
 }: AddEditFormProps) => {
@@ -48,7 +51,6 @@ const AddEditForm = ({
                         <ValidationMessage message={errors.title} />
                     )}
 
-                    {/*// @TODO Improve style and behaviour*/}
                     <label htmlFor="categoryId" className="text-sm">
                         Category
                     </label>
@@ -136,16 +138,19 @@ const AddEditForm = ({
                     <label htmlFor="image" className="text-sm">
                         Image (optional)
                     </label>
-                    {/*// @TODO Fix eslint issue*/}
                     <input
                         type="file"
                         name="image"
                         accept="image/png, image/jpeg, image/gif"
-                        className={
+                        ref={fileInputRef}
+                        className={`block w-full ${
                             !(touched.image && errors.image) ? 'mb-7' : ''
-                        }
-                        onChange={e => {
-                            setFieldValue('image', e.target.files[0] || '');
+                        }`}
+                        onChange={async e => {
+                            await setFieldValue(
+                                'image',
+                                e.target.files?.[0] || ''
+                            );
                         }}
                     />
                     {touched.image && errors.image && (

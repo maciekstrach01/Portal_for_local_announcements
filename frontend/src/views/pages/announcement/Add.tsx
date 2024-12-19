@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { FormikHelpers } from 'formik';
 import { toast } from 'react-toastify';
+import { useRef, useState } from 'react';
 import { useLoaderData } from 'react-router';
 import { StatusCodes as HTTP } from 'http-status-codes';
 
@@ -14,6 +14,9 @@ import type { IAddEditAnnouncementRequest } from '@/types/api/announcement';
 
 const AddAnnouncement = () => {
     const categories = useLoaderData() as ICategory[];
+
+    // @TODO Reset file input inside Add Edit Form element
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const initialValues: IAddEditAnnouncementRequest = {
         title: '',
@@ -48,6 +51,10 @@ const AddAnnouncement = () => {
             toast.success('Announcement added successfully');
 
             resetForm();
+
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
         } catch (error) {
             const fetchError = error as FetchBaseQueryError;
 
@@ -75,6 +82,7 @@ const AddAnnouncement = () => {
             <AddEditForm
                 initialValues={initialValues}
                 categories={categories}
+                fileInputRef={fileInputRef}
                 onSubmit={handleSubmit}
                 isLoading={isLoading}
                 errorMessage={errorMessage}
