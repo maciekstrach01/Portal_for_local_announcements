@@ -66,6 +66,8 @@ const AddAnnouncement = () => {
 
                 setErrorMessage(apiErrorResponse.error);
 
+                toast.error('Recheck your form');
+
                 return;
             }
 

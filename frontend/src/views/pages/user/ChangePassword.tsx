@@ -45,6 +45,8 @@ const ChangePassword = () => {
 
                 setErrorMessage(apiErrorResponse.error);
 
+                toast.error('Recheck your form');
+
                 return;
             }
 
