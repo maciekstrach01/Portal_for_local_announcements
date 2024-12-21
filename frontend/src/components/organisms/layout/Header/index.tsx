@@ -42,11 +42,14 @@ const Header = () => {
             </div>
 
             <div className="flex gap-2.5">
-                <button className="flex items-center justify-between gap-2.5 p-2 rounded-full bg-yellow-400 hover:bg-yellow-500 md:px-4">
+                <Link
+                    to="announcements/add"
+                    className="flex items-center justify-between gap-2.5 p-2 rounded-full bg-yellow-400 hover:bg-yellow-500 md:px-4"
+                >
                     <PlusCircleIcon className="h-5 w-5" />
 
-                    <div className="hidden md:block">New Ann.</div>
-                </button>
+                    <div className="hidden md:block">Add Ann.</div>
+                </Link>
 
                 {loggedIn ? (
                     <div ref={profileRef} className="relative">

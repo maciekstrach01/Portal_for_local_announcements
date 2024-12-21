@@ -12,11 +12,13 @@ import AuthLayout from '@/views/layouts/Auth';
 import NotFound from '@/views/pages/NotFound';
 import Register from '@/views/pages/Register';
 import DefaultLayout from '@/views/layouts/Default';
+import AddAnnouncement from '@/views/pages/announcement/Add';
 import ChangePassword from '@/views/pages/user/ChangePassword';
 import { loginAction } from '@/router/actions/auth/loginAction';
 import { registerAction } from '@/router/actions/auth/registerAction';
 import AnonymousRoute from '@/components/organisms/router/AnonymousRoute';
 import ProtectedRoute from '@/components/organisms/router/ProtectedRoute';
+import { addEditAnnouncementLoader } from '@/router/loaders/announcement/addEditAnnouncementLoader';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -30,6 +32,11 @@ const router = createBrowserRouter(
                     <Route
                         path="user/change-password"
                         element={<ChangePassword />}
+                    />
+                    <Route
+                        path="announcements/add"
+                        element={<AddAnnouncement />}
+                        loader={addEditAnnouncementLoader}
                     />
                 </Route>
 
