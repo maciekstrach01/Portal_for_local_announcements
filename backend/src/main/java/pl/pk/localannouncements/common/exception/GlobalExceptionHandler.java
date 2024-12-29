@@ -10,9 +10,11 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +43,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+        String message = determineMethodArgumentTypeMismatchExceptionErrorMessage(ex);
+        ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, message, request);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex, HttpServletRequest request) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.PAYLOAD_TOO_LARGE, ex.getMessage(), request);
@@ -66,6 +75,22 @@ public class GlobalExceptionHandler {
                 message,
                 request.getRequestURI()
         );
+    }
+
+    private String determineMethodArgumentTypeMismatchExceptionErrorMessage(MethodArgumentTypeMismatchException ex) {
+        if (ex.getRequiredType() != null && ex.getRequiredType().isEnum()) {
+            String enumValues = Arrays.stream(ex.getRequiredType().getEnumConstants())
+                    .map(Object::toString)
+                    .collect(Collectors.joining(", "));
+
+            return String.format(
+                    "Invalid value '%s' for parameter '%s'. Allowed values are: [%s].",
+                    ex.getValue(),
+                    ex.getName(),
+                    enumValues
+            );
+        }
+        return ex.getMessage();
     }
 
 }

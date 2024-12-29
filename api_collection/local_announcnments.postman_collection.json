@@ -524,22 +524,9 @@
 				},
 				{
 					"name": "Get All Categories",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "data",
-									"value": "{}",
-									"type": "text"
-								}
-							]
-						},
 						"url": {
 							"raw": "{{base_url}}:{{port}}/api/v1/category",
 							"host": [
@@ -676,6 +663,48 @@
 								"api",
 								"v1",
 								"announcement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Announcements",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/announcement",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"announcement"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "sortField",
+									"value": "TITLE",
+									"disabled": true
+								},
+								{
+									"key": "sortDirection",
+									"value": "ASC",
+									"disabled": true
+								}
 							]
 						}
 					},

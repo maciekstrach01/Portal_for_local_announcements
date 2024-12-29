@@ -7,8 +7,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.pk.localannouncements.announcementmanagement.model.dto.AnnouncementResponseDto;
 import pl.pk.localannouncements.announcementmanagement.model.dto.CreateAnnouncementDto;
 import pl.pk.localannouncements.announcementmanagement.model.dto.PaginatedAnnouncementResponseDto;
+import pl.pk.localannouncements.announcementmanagement.model.enums.AnnouncementSortableFields;
 import pl.pk.localannouncements.common.exception.ErrorResponse;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
@@ -95,9 +95,10 @@ class AnnouncementController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PaginatedAnnouncementResponseDto> getAllAnnouncements(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        PaginatedAnnouncementResponseDto announcements = announcementService.getAll(pageable);
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "CREATION_TIMESTAMP") AnnouncementSortableFields sortField,
+            @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection) {
+        PaginatedAnnouncementResponseDto announcements = announcementService.getAll(page, size, sortField, sortDirection);
         return new ResponseEntity<>(announcements, HttpStatus.OK);
     }
 

@@ -4,7 +4,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.pk.localannouncements.announcementmanagement.exception.AnnouncementValidationException;
@@ -13,6 +15,7 @@ import pl.pk.localannouncements.announcementmanagement.model.dto.CreateAnnouncem
 import pl.pk.localannouncements.announcementmanagement.model.dto.PaginatedAnnouncementResponseDto;
 import pl.pk.localannouncements.announcementmanagement.model.entity.Announcement;
 import pl.pk.localannouncements.announcementmanagement.model.entity.Category;
+import pl.pk.localannouncements.announcementmanagement.model.enums.AnnouncementSortableFields;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
 import java.io.IOException;
@@ -47,7 +50,9 @@ class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public PaginatedAnnouncementResponseDto getAll(Pageable pageable) {
+    public PaginatedAnnouncementResponseDto getAll(int page, int size, AnnouncementSortableFields sortField, Sort.Direction sortDirection) {
+        Sort sort = Sort.by(sortDirection, sortField.getFieldName());
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<AnnouncementResponseDto> announcements = announcementRepository.findAll(pageable)
                 .map(AnnouncementMapper.INSTANCE::toAnnouncementResponseDto);
         return new PaginatedAnnouncementResponseDto(announcements);
