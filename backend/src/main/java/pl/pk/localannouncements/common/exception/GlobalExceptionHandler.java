@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import pl.pk.localannouncements.common.utils.OffsetDateTimeUtils;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
 
     private ErrorResponse createErrorResponse(HttpStatus status, String message, HttpServletRequest request) {
         return new ErrorResponse(
-                OffsetDateTime.now().toString(),
+                OffsetDateTimeUtils.getCurrentUtcTimestamp(),
                 status.value(),
                 message,
                 request.getRequestURI()
