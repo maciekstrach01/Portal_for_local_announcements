@@ -3,6 +3,8 @@ package pl.pk.localannouncements.usermanagement.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.pk.localannouncements.common.model.BaseEntity;
@@ -17,6 +19,8 @@ import java.util.Collection;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "users")
+@SQLRestriction("deleted = false")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "first_name", nullable = false)

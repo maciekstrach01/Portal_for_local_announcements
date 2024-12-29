@@ -1,6 +1,7 @@
 package pl.pk.localannouncements.common.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -29,5 +30,9 @@ public abstract class BaseEntity {
     @UpdateTimestamp
     @Column(nullable = false, name = "update_timestamp")
     private LocalDateTime updateTimestamp;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean deleted = false;
 
 }

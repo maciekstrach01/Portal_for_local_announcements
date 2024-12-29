@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import pl.pk.localannouncements.common.model.BaseEntity;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
@@ -18,6 +20,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "announcements")
+@SQLRestriction("deleted = false")
+@SQLDelete(sql = "UPDATE announcements SET deleted = true WHERE id=?")
 public class Announcement extends BaseEntity {
 
     @Column(name = "title", nullable = false, length = 100)

@@ -1,5 +1,5 @@
 services:
-  db:
+  local-announcements-db:
     image: postgres:17
     container_name: local-announcements-db
     env_file:

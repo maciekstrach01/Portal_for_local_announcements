@@ -34,5 +34,6 @@ public class AnnouncementResponseDto {
     private String imagePath;
 
     @Schema(description = "Data of the user who created the announcement")
-    private UserDataDto userData;
+    private AnnouncementCreatorDetailsDto creatorDetails;
+
 }

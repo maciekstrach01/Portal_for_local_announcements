@@ -18,10 +18,11 @@ interface AnnouncementMapper {
     @Mapping(target = "imagePath", ignore = true)
     @Mapping(target = "creationTimestamp", ignore = true)
     @Mapping(target = "updateTimestamp", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     Announcement toAnnouncement(CreateAnnouncementDto createAnnouncementDto, Category category, User user);
 
     @Mapping(target = "categoryName", source = "announcement.category.name")
-    @Mapping(target = "userData", source = "announcement.user")
+    @Mapping(target = "creatorDetails", source = "announcement.user")
     AnnouncementResponseDto toAnnouncementResponseDto(Announcement announcement);
 
 }
