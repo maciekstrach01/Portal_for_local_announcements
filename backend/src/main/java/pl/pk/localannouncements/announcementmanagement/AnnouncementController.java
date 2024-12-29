@@ -7,16 +7,16 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.pk.localannouncements.announcementmanagement.model.dto.AnnouncementResponseDto;
 import pl.pk.localannouncements.announcementmanagement.model.dto.CreateAnnouncementDto;
+import pl.pk.localannouncements.announcementmanagement.model.dto.PaginatedAnnouncementResponseDto;
 import pl.pk.localannouncements.common.exception.ErrorResponse;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
@@ -76,6 +76,29 @@ class AnnouncementController {
     public ResponseEntity<AnnouncementResponseDto> createAnnouncement(@AuthenticationPrincipal User user, @Valid @ModelAttribute CreateAnnouncementDto createAnnouncementDto) {
         AnnouncementResponseDto announcementResponseDto = announcementService.create(user, createAnnouncementDto);
         return new ResponseEntity<>(announcementResponseDto, HttpStatus.CREATED);
+    }
+
+    @Operation(
+            operationId = "get-all-announcements", summary = "Get all announcements with pagination", tags = {"Announcements"},
+            description = "Service used to retrieve all announcements with pagination support.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "List of announcements retrieved successfully",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = PaginatedAnnouncementResponseDto.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PaginatedAnnouncementResponseDto> getAllAnnouncements(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        PaginatedAnnouncementResponseDto announcements = announcementService.getAll(pageable);
+        return new ResponseEntity<>(announcements, HttpStatus.OK);
     }
 
 }

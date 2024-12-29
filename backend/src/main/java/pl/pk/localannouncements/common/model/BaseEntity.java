@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Getter
@@ -25,11 +25,11 @@ public abstract class BaseEntity {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false, name = "creation_timestamp")
-    private LocalDateTime creationTimestamp;
+    private OffsetDateTime creationTimestamp;
 
     @UpdateTimestamp
     @Column(nullable = false, name = "update_timestamp")
-    private LocalDateTime updateTimestamp;
+    private OffsetDateTime updateTimestamp;
 
     @Builder.Default
     @Column(nullable = false)

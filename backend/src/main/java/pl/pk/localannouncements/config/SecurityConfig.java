@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST_URL).permitAll()
+                        .requestMatchers(GET, "/api/v1/announcement").permitAll()
                         .requestMatchers(GET, "/api/v1/category").permitAll()
                         .requestMatchers(POST, "/api/v1/category").hasRole(ADMIN.name())
                         .requestMatchers(PATCH, "/api/v1/category/**").hasRole(ADMIN.name())
