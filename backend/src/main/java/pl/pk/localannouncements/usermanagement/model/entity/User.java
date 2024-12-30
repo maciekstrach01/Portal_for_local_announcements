@@ -20,7 +20,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @Table(name = "users")
 @SQLRestriction("deleted = false")
-@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE users SET deleted = true, update_timestamp = NOW() WHERE id=?")
 public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "first_name", nullable = false)

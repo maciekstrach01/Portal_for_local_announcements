@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Table(name = "categories")
 @SQLRestriction("deleted = false")
-@SQLDelete(sql = "UPDATE categories SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE categories SET deleted = true, update_timestamp = NOW() WHERE id=?")
 public class Category extends BaseEntity {
 
     @Column(name = "name", nullable = false, length = 100)

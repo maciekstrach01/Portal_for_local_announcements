@@ -18,7 +18,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 @Table(name = "tokens")
 @SQLRestriction("deleted = false")
-@SQLDelete(sql = "UPDATE tokens SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE tokens SET deleted = true, update_timestamp = NOW() WHERE id=?")
 public class Token extends BaseEntity {
 
     @Column(name = "token", nullable = false, unique = true)

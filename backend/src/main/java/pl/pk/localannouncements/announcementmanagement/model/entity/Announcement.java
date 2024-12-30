@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 @Table(name = "announcements")
 @SQLRestriction("deleted = false")
-@SQLDelete(sql = "UPDATE announcements SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE announcements SET deleted = true, update_timestamp = NOW() WHERE id=?")
 public class Announcement extends BaseEntity {
 
     @Column(name = "title", nullable = false, length = 100)
