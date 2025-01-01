@@ -20,10 +20,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Table(name = "categories")
 @SQLRestriction("deleted = false")
-@SQLDelete(sql = "UPDATE categories SET deleted = true, update_timestamp = NOW() WHERE id=?")
+@SQLDelete(sql = "UPDATE categories SET deleted = true, name = CONCAT(name, '_', EXTRACT(EPOCH FROM NOW())), update_timestamp = NOW() WHERE id=?")
 public class Category extends BaseEntity {
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
