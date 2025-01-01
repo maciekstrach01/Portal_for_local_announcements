@@ -1,10 +1,10 @@
-INSERT INTO public.categories (id, creation_timestamp, update_timestamp, name)
+INSERT INTO public.categories (id, creation_timestamp, update_timestamp, name, deleted)
 VALUES
-    ('e22031b3-4bd9-49e7-b985-a4eb81f3a9ba', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'For Sale'),
-    ('0f0bf160-79d5-4370-880d-c066efc023be', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Services'),
-    ('ec232c26-480d-4d86-9eb6-56905b804fbb', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Community'),
-    ('343f9cc7-df08-4343-bc9a-2aefd31f9608', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Events');
+    ('e22031b3-4bd9-49e7-b985-a4eb81f3a9ba', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'For Sale', false),
+    ('0f0bf160-79d5-4370-880d-c066efc023be', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Services', false),
+    ('ec232c26-480d-4d86-9eb6-56905b804fbb', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Community', false),
+    ('343f9cc7-df08-4343-bc9a-2aefd31f9608', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Events', false);
 
-INSERT INTO public.users (id, email, first_name, last_name, password, creation_timestamp, update_timestamp, role)
+INSERT INTO public.users (id, email, first_name, last_name, password, creation_timestamp, update_timestamp, role, deleted)
 VALUES
-    ('488965ba-1619-4999-bb44-8a6a6c9281a2', 'admin@example.com', 'admin', 'admin', '$2a$10$xgmeYMuupnrYsKbnb6.xUu6vmAnOUcTUiM0tJ6ZdPE0Sxf7cqr5LK', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ADMIN');
+    ('488965ba-1619-4999-bb44-8a6a6c9281a2', 'admin@example.com', 'admin', 'admin', '$2a$10$xgmeYMuupnrYsKbnb6.xUu6vmAnOUcTUiM0tJ6ZdPE0Sxf7cqr5LK', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ADMIN', false);

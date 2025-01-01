@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @Schema(description = "Data Transfer Object representing the details of an announcement creator")
-public class UserDataDto {
+public class AnnouncementCreatorDetailsDto {
 
     @Schema(description = "User's first name", example = "John")
     private String firstName;

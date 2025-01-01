@@ -15,6 +15,7 @@ interface UserMapper {
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "creationTimestamp", ignore = true)
     @Mapping(target = "updateTimestamp", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     User toUser(RegisterUserDto registerUserDto);
 
 }

@@ -3,6 +3,8 @@ package pl.pk.localannouncements.usermanagement.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import pl.pk.localannouncements.common.model.BaseEntity;
 import pl.pk.localannouncements.usermanagement.model.enums.TokenType;
 
@@ -15,6 +17,8 @@ import java.time.Instant;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "tokens")
+@SQLRestriction("deleted = false")
+@SQLDelete(sql = "UPDATE tokens SET deleted = true, update_timestamp = NOW() WHERE id=?")
 public class Token extends BaseEntity {
 
     @Column(name = "token", nullable = false, unique = true)

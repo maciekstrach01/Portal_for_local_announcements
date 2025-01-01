@@ -15,6 +15,8 @@ interface CategoryMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "creationTimestamp", ignore = true)
     @Mapping(target = "updateTimestamp", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "announcements", ignore = true)
     Category toCategory(CategoryRequestDto categoryRequestDto);
 
     CategoryResponseDto toCategoryResponseDto(Category category);
