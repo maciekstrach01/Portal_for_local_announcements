@@ -43,7 +43,7 @@ const Item = ({ announcement }: Props) => {
                 <img
                     src={fullImagePath || noPreviewAvailableImg}
                     alt={title}
-                    className="block size-20 object-cover md:size-50"
+                    className="block size-20 object-cover rounded-md md:size-50 md:rounded-xl"
                 />
 
                 <div className="flex-grow">
@@ -62,7 +62,7 @@ const Item = ({ announcement }: Props) => {
                         {title}
                     </h2>
 
-                    {price && <div>{price.toFixed(2)}&nbsp;$</div>}
+                    {price && <div>{price.toFixed(2)}&nbsp;PLN</div>}
 
                     <div className="hidden whitespace-pre-wrap mt-2 md:block md:!line-clamp-5">
                         {description}

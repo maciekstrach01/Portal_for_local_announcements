@@ -20,6 +20,7 @@ interface IAnnouncement {
         lastName: string;
     };
     creationTimestamp: string;
+    updateTimestamp: string;
 }
 
 interface IAnnouncementIndexResponse {

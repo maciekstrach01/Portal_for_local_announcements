@@ -68,7 +68,7 @@ const Index = () => {
                     <div>
                         {data?.totalPages && page < data.totalPages - 1 && (
                             <button
-                                className="px-4 py-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 disabled:bg-primary-200 disabled:hover:bg-primary-200 sm:px-8 sm:py-4"
+                                className="px-4 py-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 md:px-8 md:py-4"
                                 onClick={loadMore}
                             >
                                 Load more
