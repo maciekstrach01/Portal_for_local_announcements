@@ -7,7 +7,7 @@ type Props = {
 const ItemHeader = ({ categoryName, timeInfo, className = '' }: Props) => {
     return (
         <div
-            className={`flex items-center justify-between text-sm ${className}`}
+            className={`flex items-center justify-between text-sm md:text-base ${className}`}
         >
             <div className="text-primary-500">{categoryName}</div>
 

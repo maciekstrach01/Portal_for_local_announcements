@@ -50,7 +50,7 @@ const Item = ({ announcement }: Props) => {
                     <ItemHeader
                         categoryName={categoryName}
                         timeInfo={fullTimeDifference}
-                        className="hidden md:flex md:text-base"
+                        className="hidden md:flex"
                     />
 
                     <div className="flex items-center gap-1 text-sm md:text-base">

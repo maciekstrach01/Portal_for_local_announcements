@@ -65,7 +65,7 @@ const Index = () => {
                 {isFetching && <p>Loading...</p>}
 
                 {!isLoading && !isFetching && !error && (
-                    <div>
+                    <>
                         {data?.totalPages && page < data.totalPages - 1 && (
                             <button
                                 className="px-4 py-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 md:px-8 md:py-4"
@@ -74,7 +74,7 @@ const Index = () => {
                                 Load more
                             </button>
                         )}
-                    </div>
+                    </>
                 )}
             </div>
         </div>
