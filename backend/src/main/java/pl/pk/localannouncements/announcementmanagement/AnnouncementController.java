@@ -45,7 +45,7 @@ class AnnouncementController {
                             description = "Announcement created successfully",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = CreateAnnouncementDto.class)
+                                    schema = @Schema(implementation = AnnouncementResponseDto.class)
                             )
                     ),
                     @ApiResponse(
