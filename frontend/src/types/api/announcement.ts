@@ -7,7 +7,7 @@ interface IAddEditAnnouncementRequest {
     image: '' | File;
 }
 
-interface IAddEditAnnouncementResponse {
+interface IAnnouncement {
     id: string;
     title: string;
     categoryName: string;
@@ -15,10 +15,23 @@ interface IAddEditAnnouncementResponse {
     price: number | null;
     phoneNumber: string | null;
     imagePath: string | null;
-    userData: {
+    creatorDetails: {
         firstName: string;
         lastName: string;
     };
+    creationTimestamp: string;
 }
 
-export type { IAddEditAnnouncementRequest, IAddEditAnnouncementResponse };
+interface IAnnouncementIndexResponse {
+    content: IAnnouncement[];
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    pageSize: number;
+}
+
+export type {
+    IAnnouncement,
+    IAnnouncementIndexResponse,
+    IAddEditAnnouncementRequest
+};

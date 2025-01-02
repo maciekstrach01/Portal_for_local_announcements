@@ -41,3 +41,7 @@ Go to http://localhost:3000 (default settings)
 -   Tailwind CSS
 -   ESLint
 -   Prettier
+
+### Used media
+
+-   [no-preview-available](https://commons.wikimedia.org/wiki/File:No_Preview_image_2.png)

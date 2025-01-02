@@ -11,7 +11,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 body
             })
         })
-    })
+    }),
+    overrideExisting: 'throw'
 });
 
 export const { useChangePasswordMutation } = userApiSlice;

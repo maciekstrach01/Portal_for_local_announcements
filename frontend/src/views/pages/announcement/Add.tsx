@@ -5,7 +5,7 @@ import { useLoaderData } from 'react-router';
 import { StatusCodes as HTTP } from 'http-status-codes';
 
 import AddEditForm from '@/components/organisms/announcement/AddEditForm';
-import { useStoreMutation } from '@/redux/announcement/announcementApiSlice';
+import { useStoreAnnouncementMutation } from '@/redux/announcement/announcementApiSlice';
 
 import type { ICategory } from '@/types/api/category';
 import type { IErrorResponse } from '@/types/api/common';
@@ -29,7 +29,7 @@ const AddAnnouncement = () => {
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const [store, { isLoading }] = useStoreMutation();
+    const [store, { isLoading }] = useStoreAnnouncementMutation();
 
     const handleSubmit = async (
         values: IAddEditAnnouncementRequest,
