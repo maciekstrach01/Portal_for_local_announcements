@@ -35,7 +35,8 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "/error"
+            "/error",
+            "/public/uploads/**"
     };
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;

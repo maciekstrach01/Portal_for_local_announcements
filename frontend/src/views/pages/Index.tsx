@@ -1,36 +1,82 @@
-import { useGetAnnouncementsQuery } from '@/redux/announcement/announcementApiSlice';
+import { useState, useEffect } from 'react';
 
 import AnnouncementItem from '@/components/organisms/announcement/item';
+import { useGetAnnouncementsQuery } from '@/redux/announcement/announcementApiSlice';
 
-import type { IAnnouncementIndexResponse } from '@/types/api/announcement';
+import type { IAnnouncement } from '@/types/api/announcement';
 
 const Index = () => {
-    const { data, error, isLoading } = useGetAnnouncementsQuery(undefined, {
-        refetchOnMountOrArgChange: true
+    const [page, setPage] = useState(0);
+    const [announcements, setAnnouncements] = useState<IAnnouncement[]>([]);
+
+    const { data, error, isFetching, isLoading } = useGetAnnouncementsQuery({
+        page,
+        size: 10
     });
 
-    if (isLoading) {
-        return <h1>Loading...</h1>;
-    }
+    useEffect(() => {
+        if (data) {
+            setAnnouncements(oldAnnouncements => [
+                ...oldAnnouncements,
+                ...data.content
+            ]);
+        }
+    }, [data]);
 
-    if (error) {
-        return <h1>Error!</h1>;
-    }
+    useEffect(() => {
+        return () => setAnnouncements([]);
+    }, []);
 
-    const response = data as IAnnouncementIndexResponse;
-    const { content: announcements } = response;
+    const loadMore = () => {
+        setPage(prevPage => prevPage + 1);
+    };
 
     const announcementsList = announcements.map(announcement => (
         <AnnouncementItem key={announcement.id} announcement={announcement} />
     ));
 
+    if (error) {
+        return (
+            <div className="flex flex-col md:mx-auto md:max-w-170">
+                <h1>Error while loading announcements!</h1>
+            </div>
+        );
+    }
+
+    if (isLoading) {
+        return (
+            <div className="flex flex-col md:mx-auto md:max-w-170">
+                <h1>Loading...</h1>
+            </div>
+        );
+    }
+
     return (
-        <div className="flex flex-col gap-2 md:gap-4 md:max-w-170 md:mx-auto">
-            {announcements.length ? (
-                announcementsList
-            ) : (
-                <h1>No announcements found</h1>
-            )}
+        <div className="flex flex-col gap-4 md:mx-auto md:max-w-170">
+            <div className="flex flex-col gap-2 md:gap-4">
+                {announcements.length ? (
+                    announcementsList
+                ) : (
+                    <h1>No announcements found</h1>
+                )}
+            </div>
+
+            <div className="flex justify-center">
+                {isFetching && <p>Loading...</p>}
+
+                {!isLoading && !isFetching && !error && (
+                    <div>
+                        {data?.totalPages && page < data.totalPages - 1 && (
+                            <button
+                                className="px-4 py-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 disabled:bg-primary-200 disabled:hover:bg-primary-200 sm:px-8 sm:py-4"
+                                onClick={loadMore}
+                            >
+                                Load more
+                            </button>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

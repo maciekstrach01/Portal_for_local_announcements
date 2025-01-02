@@ -7,7 +7,8 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
         getCategories: builder.query<ICategory[], void>({
             query: () => ({
                 url: '/v1/category'
-            })
+            }),
+            providesTags: ['Category']
         })
     }),
     overrideExisting: 'throw'

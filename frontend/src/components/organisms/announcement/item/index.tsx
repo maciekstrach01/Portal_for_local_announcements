@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 
 import ItemHeader from './Header';
+import getFullImagePath from '@/helpers/getFullImagePath';
 import getFullTimeDifference from '@/helpers/getFullTimeDifference';
 
 import type { IAnnouncement } from '@/types/api/announcement';
@@ -12,12 +13,12 @@ type Props = {
     announcement: IAnnouncement;
 };
 
-// @TODO Get image from BE
 const Item = ({ announcement }: Props) => {
     const {
         id,
         price,
         title,
+        imagePath,
         description,
         categoryName,
         creationTimestamp,
@@ -25,10 +26,11 @@ const Item = ({ announcement }: Props) => {
     } = announcement;
     const fullName = `${firstName} ${lastName}`;
     const fullTimeDifference = getFullTimeDifference(creationTimestamp);
+    const fullImagePath = imagePath ? getFullImagePath(imagePath) : null;
 
     return (
         <Link
-            to={`/announcement/${id}`}
+            to={`/announcements/${id}`}
             className="flex flex-col gap-2 p-2 rounded-xl shadow-md hover:shadow-xl md:p-4"
         >
             <ItemHeader
@@ -39,19 +41,19 @@ const Item = ({ announcement }: Props) => {
 
             <div className="flex items-center gap-6">
                 <img
-                    src={noPreviewAvailableImg}
+                    src={fullImagePath || noPreviewAvailableImg}
                     alt={title}
                     className="block size-20 object-cover md:size-50"
                 />
 
-                <div>
+                <div className="flex-grow">
                     <ItemHeader
                         categoryName={categoryName}
                         timeInfo={fullTimeDifference}
                         className="hidden md:flex md:text-base"
                     />
 
-                    <div className="flex items-center text-sm md:text-base">
+                    <div className="flex items-center gap-1 text-sm md:text-base">
                         <UserCircleIcon className="size-4" />
                         <span className="line-clamp-1">{fullName}</span>
                     </div>
