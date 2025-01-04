@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.pk.localannouncements.announcementmanagement.exception.AnnouncementNotFoundException;
 import pl.pk.localannouncements.announcementmanagement.exception.AnnouncementValidationException;
 import pl.pk.localannouncements.announcementmanagement.model.dto.AnnouncementResponseDto;
 import pl.pk.localannouncements.announcementmanagement.model.dto.CreateAnnouncementDto;
@@ -62,7 +63,7 @@ class AnnouncementServiceImpl implements AnnouncementService {
     public AnnouncementResponseDto getById(UUID id) {
         return announcementRepository.findById(id)
                 .map(AnnouncementMapper.INSTANCE::toAnnouncementResponseDto)
-                .orElseThrow(() -> new AnnouncementValidationException("Announcement not found with id: " + id));
+                .orElseThrow(() -> new AnnouncementNotFoundException("Announcement not found with id: " + id));
     }
 
     private Announcement prepareAnnouncementToSave(CreateAnnouncementDto createAnnouncementDto, User user) {

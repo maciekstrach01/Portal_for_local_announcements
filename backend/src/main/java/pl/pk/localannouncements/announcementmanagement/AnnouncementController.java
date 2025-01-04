@@ -105,7 +105,7 @@ class AnnouncementController {
     }
 
     @Operation(operationId = "get-announcement", summary = "Get an announcement", tags = {"Announcements"},
-            description = "Service used to retrieve a category by its ID.",
+            description = "Service used to retrieve an announcement by its ID.",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -113,6 +113,14 @@ class AnnouncementController {
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = AnnouncementResponseDto.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ErrorResponse.class)
                             )
                     ),
                     @ApiResponse(
