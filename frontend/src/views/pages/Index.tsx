@@ -66,13 +66,15 @@ const Index = () => {
 
                 {!isLoading && !isFetching && !error && (
                     <>
-                        {data?.totalPages && page < data.totalPages - 1 && (
+                        {data?.totalPages && page < data.totalPages - 1 ? (
                             <button
                                 className="px-4 py-2 bg-primary-500 rounded-lg text-white font-medium hover:bg-primary-600 md:px-8 md:py-4"
                                 onClick={loadMore}
                             >
                                 Load more
                             </button>
+                        ) : (
+                            <></>
                         )}
                     </>
                 )}

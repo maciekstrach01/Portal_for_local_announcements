@@ -20,8 +20,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.pk.localannouncements.common.exception.ErrorResponse;
 import pl.pk.localannouncements.usermanagement.UserService;
 
@@ -31,7 +29,7 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class ApplicationConfig implements WebMvcConfigurer {
+public class ApplicationConfig {
 
     @Value("${application.frontend.url}")
     private String frontendUrl;
@@ -101,12 +99,6 @@ public class ApplicationConfig implements WebMvcConfigurer {
         );
 
         mapper.writeValue(response.getWriter(), responseBody);
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/public/uploads/**")
-                .addResourceLocations("file:uploads/");
     }
 
 }
