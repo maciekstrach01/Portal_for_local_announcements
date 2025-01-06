@@ -31,8 +31,13 @@ interface IAnnouncementIndexResponse {
     pageSize: number;
 }
 
+interface IAnnouncementShowResponse {
+    announcement: IAnnouncement;
+}
+
 export type {
     IAnnouncement,
+    IAnnouncementShowResponse,
     IAnnouncementIndexResponse,
     IAddEditAnnouncementRequest
 };

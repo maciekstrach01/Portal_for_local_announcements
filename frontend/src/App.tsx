@@ -15,10 +15,12 @@ import DefaultLayout from '@/views/layouts/Default';
 import AddAnnouncement from '@/views/pages/announcement/Add';
 import ChangePassword from '@/views/pages/user/ChangePassword';
 import { loginAction } from '@/router/actions/auth/loginAction';
+import SingleAnnouncement from '@/views/pages/announcement/Single';
 import { registerAction } from '@/router/actions/auth/registerAction';
 import AnonymousRoute from '@/components/organisms/router/AnonymousRoute';
 import ProtectedRoute from '@/components/organisms/router/ProtectedRoute';
 import { addEditAnnouncementLoader } from '@/router/loaders/announcement/addEditAnnouncementLoader';
+import { getAnnouncementByIdLoader } from '@/router/loaders/announcement/getAnnouncementByIdLoader';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -27,6 +29,12 @@ const router = createBrowserRouter(
         <>
             <Route path="/" element={<DefaultLayout />}>
                 <Route index element={<Index />} />
+
+                <Route
+                    path="announcements/:id"
+                    element={<SingleAnnouncement />}
+                    loader={getAnnouncementByIdLoader}
+                />
 
                 <Route element={<ProtectedRoute />}>
                     <Route

@@ -16,6 +16,10 @@ export const announcementApiSlice = apiSlice.injectEndpoints({
                 `/v1/announcement?page=${page}&size=${size}`,
             providesTags: ['Announcement']
         }),
+        getAnnouncementById: builder.query<IAnnouncement, string>({
+            query: (id: string) => `/v1/announcement/${id}`,
+            providesTags: ['Announcement']
+        }),
         storeAnnouncement: builder.mutation<IAnnouncement, FormData>({
             query: body => ({
                 url: '/v1/announcement',
