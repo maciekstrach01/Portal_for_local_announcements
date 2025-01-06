@@ -38,11 +38,11 @@ public class AnnouncementResponseDto {
     @Schema(description = "Data of the user who created the announcement")
     private AnnouncementCreatorDetailsDto creatorDetails;
 
-    @Schema(description = "Timestamp of when the announcement was created", example = "2024-12-29T11:00:00+01:00")
+    @Schema(description = "Timestamp of when the announcement was created", example = "2024-12-29T11:00:00Z")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "UTC")
     private OffsetDateTime creationTimestamp;
 
-    @Schema(description = "Timestamp of when the announcement was last updated", example = "2024-12-29T12:00:00+01:00")
+    @Schema(description = "Timestamp of when the announcement was last updated", example = "2024-12-29T12:00:00Z")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "UTC")
     private OffsetDateTime updateTimestamp;
 

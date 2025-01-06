@@ -615,6 +615,27 @@
 			"item": [
 				{
 					"name": "Create Announcement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response",
+									"var jsonData = pm.response.json();",
+									"",
+									"// Check if the access token exists in the response and save it into a collection variable",
+									"if (jsonData.id) {",
+									"    pm.collectionVariables.set(\"announcement_id\", jsonData.id);",
+									"    console.log(\"Announcement id saved to collection variable: \" + jsonData.id);",
+									"} else {",
+									"    console.log(\"Announcement id not found in response.\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -709,6 +730,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Announcements By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/announcement/:announcement_id",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"announcement",
+								":announcement_id"
+							],
+							"variable": [
+								{
+									"key": "announcement_id",
+									"value": "{{announcement_id}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -769,17 +817,20 @@
 	],
 	"variable": [
 		{
+			"key": "category_id",
+			"value": ""
+		},
+		{
+			"key": "announcement_id",
+			"value": ""
+		},
+		{
 			"key": "access_token",
 			"value": ""
 		},
 		{
 			"key": "refresh_token",
 			"value": ""
-		},
-		{
-			"key": "category_id",
-			"value": "",
-			"type": "string"
 		}
 	]
 }
