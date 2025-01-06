@@ -7,7 +7,6 @@ import getFullImagePath from '@/helpers/getFullImagePath';
 import BackButton from '@/components/atoms/common/BackButton';
 import AsyncError from '@/components/organisms/router/AsyncError';
 import getFullTimeDifference from '@/helpers/getFullTimeDifference';
-
 import ItemHeader from '@/components/organisms/announcement/item/Header';
 
 import type {
@@ -46,7 +45,7 @@ const Single = () => {
                     timeInfo={fullTimeDifference}
                 />
 
-                <div className="flex flex-col md:flex-row gap-4 justify-center">
+                <div className="flex flex-col gap-4 justify-center md:flex-row">
                     <img
                         src={fullImagePath || noPreviewAvailableImg}
                         alt={title}
