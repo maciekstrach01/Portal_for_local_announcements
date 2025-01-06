@@ -31,7 +31,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 }
             })
         })
-    })
+    }),
+    overrideExisting: 'throw'
 });
 
 export const { useLogoutMutation } = authApiSlice;

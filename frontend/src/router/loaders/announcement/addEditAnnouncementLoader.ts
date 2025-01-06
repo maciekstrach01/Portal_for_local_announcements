@@ -8,7 +8,7 @@ import type { ICategory } from '@/types/api/category';
 export const addEditAnnouncementLoader = async (): Promise<ICategory[]> => {
     try {
         const response = await store
-            .dispatch(categoryApiSlice.endpoints.index.initiate())
+            .dispatch(categoryApiSlice.endpoints.getCategories.initiate())
             .unwrap();
 
         return response;

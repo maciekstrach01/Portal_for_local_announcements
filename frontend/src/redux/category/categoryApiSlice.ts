@@ -4,12 +4,12 @@ import type { ICategory } from '@/types/api/category';
 
 export const categoryApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        index: builder.query<ICategory[], void>({
+        getCategories: builder.query<ICategory[], void>({
             query: () => ({
                 url: '/v1/category'
-            })
+            }),
+            providesTags: ['Category']
         })
-    })
+    }),
+    overrideExisting: 'throw'
 });
-
-export const { useIndexQuery } = categoryApiSlice;

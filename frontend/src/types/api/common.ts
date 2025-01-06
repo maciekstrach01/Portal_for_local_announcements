@@ -1,3 +1,8 @@
+type IIndexQuery = {
+    page?: number;
+    size?: number;
+};
+
 type IErrorResponse = {
     timestamp: string;
     status: number;
@@ -5,4 +10,4 @@ type IErrorResponse = {
     path: string;
 };
 
-export type { IErrorResponse };
+export type { IIndexQuery, IErrorResponse };

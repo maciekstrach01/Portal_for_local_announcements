@@ -6,7 +6,7 @@ const Default = () => (
     <div>
         <Header />
 
-        <main className="w-full min-h-[calc(100vh-64px)] p-4">
+        <main className="w-full md:max-w-250 mx-auto min-h-[calc(100vh-64px)] p-4">
             <Outlet />
         </main>
     </div>
