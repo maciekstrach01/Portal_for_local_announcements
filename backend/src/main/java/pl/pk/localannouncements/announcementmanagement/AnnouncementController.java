@@ -20,6 +20,8 @@ import pl.pk.localannouncements.announcementmanagement.model.enums.AnnouncementS
 import pl.pk.localannouncements.common.exception.ErrorResponse;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/announcement")
 @RequiredArgsConstructor
@@ -43,7 +45,7 @@ class AnnouncementController {
                             description = "Announcement created successfully",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = CreateAnnouncementDto.class)
+                                    schema = @Schema(implementation = AnnouncementResponseDto.class)
                             )
                     ),
                     @ApiResponse(
@@ -100,6 +102,41 @@ class AnnouncementController {
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection) {
         PaginatedAnnouncementResponseDto announcements = announcementService.getAll(page, size, sortField, sortDirection);
         return new ResponseEntity<>(announcements, HttpStatus.OK);
+    }
+
+    @Operation(operationId = "get-announcement", summary = "Get an announcement", tags = {"Announcements"},
+            description = "Service used to retrieve an announcement by its ID.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Announcement retrieved successfully",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AnnouncementResponseDto.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Announcement not found",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<AnnouncementResponseDto> getAnnouncementById(@PathVariable UUID id) {
+        AnnouncementResponseDto announcement = announcementService.getById(id);
+        return new ResponseEntity<>(announcement, HttpStatus.OK);
     }
 
 }

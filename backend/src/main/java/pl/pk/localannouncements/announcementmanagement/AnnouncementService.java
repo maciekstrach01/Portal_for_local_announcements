@@ -7,10 +7,14 @@ import pl.pk.localannouncements.announcementmanagement.model.dto.PaginatedAnnoun
 import pl.pk.localannouncements.announcementmanagement.model.enums.AnnouncementSortableFields;
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
+import java.util.UUID;
+
 public interface AnnouncementService {
 
     AnnouncementResponseDto create(User user, CreateAnnouncementDto createAnnouncementDto);
 
     PaginatedAnnouncementResponseDto getAll(int page, int size, AnnouncementSortableFields sortField, Sort.Direction sortDirection);
+
+    AnnouncementResponseDto getById(UUID id);
 
 }

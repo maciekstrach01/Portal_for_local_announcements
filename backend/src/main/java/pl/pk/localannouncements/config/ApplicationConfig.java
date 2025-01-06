@@ -21,10 +21,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.pk.localannouncements.common.exception.ErrorResponse;
+import pl.pk.localannouncements.common.utils.OffsetDateTimeUtils;
 import pl.pk.localannouncements.usermanagement.UserService;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 @Configuration
@@ -92,7 +92,7 @@ public class ApplicationConfig {
         response.setStatus(status.value());
 
         ErrorResponse responseBody = new ErrorResponse(
-                OffsetDateTime.now().toString(),
+                OffsetDateTimeUtils.getCurrentUtcTimestamp(),
                 status.value(),
                 message,
                 path

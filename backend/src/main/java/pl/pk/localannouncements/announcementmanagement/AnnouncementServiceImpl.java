@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.pk.localannouncements.announcementmanagement.exception.AnnouncementNotFoundException;
 import pl.pk.localannouncements.announcementmanagement.exception.AnnouncementValidationException;
 import pl.pk.localannouncements.announcementmanagement.model.dto.AnnouncementResponseDto;
 import pl.pk.localannouncements.announcementmanagement.model.dto.CreateAnnouncementDto;
@@ -58,18 +59,23 @@ class AnnouncementServiceImpl implements AnnouncementService {
         return new PaginatedAnnouncementResponseDto(announcements);
     }
 
+    @Override
+    public AnnouncementResponseDto getById(UUID id) {
+        return announcementRepository.findById(id)
+                .map(AnnouncementMapper.INSTANCE::toAnnouncementResponseDto)
+                .orElseThrow(() -> new AnnouncementNotFoundException("Announcement not found with id: " + id));
+    }
+
     private Announcement prepareAnnouncementToSave(CreateAnnouncementDto createAnnouncementDto, User user) {
         createAnnouncementDto.trimFields();
-        if (!categoryRepository.existsById(createAnnouncementDto.getCategoryId())) {
-            throw new AnnouncementValidationException("Category not found with id: " + createAnnouncementDto.getCategoryId());
-        }
-        Category category = categoryRepository.getReferenceById(createAnnouncementDto.getCategoryId());
+        Category category = categoryRepository.findById(createAnnouncementDto.getCategoryId())
+                .orElseThrow(() -> new AnnouncementValidationException("Category not found with id: " + createAnnouncementDto.getCategoryId()));
         return AnnouncementMapper.INSTANCE.toAnnouncement(createAnnouncementDto, category, user);
     }
 
     private AnnouncementResponseDto saveAndMapAnnouncement(Announcement newAnnouncement) {
         try {
-            Announcement savedAnnouncement = announcementRepository.save(newAnnouncement);
+            Announcement savedAnnouncement = announcementRepository.saveAndFlush(newAnnouncement);
             log.info("Successfully performed create operation for announcement with id = {}", savedAnnouncement.getId());
             return AnnouncementMapper.INSTANCE.toAnnouncementResponseDto(savedAnnouncement);
         } catch (Exception e) {

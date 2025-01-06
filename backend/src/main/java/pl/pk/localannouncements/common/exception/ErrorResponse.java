@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Error response")
 public class ErrorResponse {
 
-    @Schema(description = "Timestamp of the error occurrence", example = "2024-05-19T08:37:11.256+00:00")
+    @Schema(description = "Timestamp of the error occurrence", example = "2024-12-29T12:00:00Z")
     private String timestamp;
 
     @Schema(description = "HTTP status code", example = "400")
