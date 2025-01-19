@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import pl.pk.localannouncements.usermanagement.model.dto.AuthenticateUserDto;
 import pl.pk.localannouncements.usermanagement.model.dto.RegisterUserDto;
 import pl.pk.localannouncements.usermanagement.model.dto.RefreshTokenOperationsDto;
-import java.lang.reflect.Constructor;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,7 +30,7 @@ public class AuthenticationControllerTestIT {
     @Test
     public void shouldRegisterUserSuccessfully() throws Exception {
         // Given
-        RegisterUserDto registerUserDto = createRegisterUserDto("test1@example.com", "password123", "Test", "User", "password123");
+        RegisterUserDto registerUserDto = DtoTestHelper.createRegisterUserDto("test1@example.com", "password123", "Test", "User", "password123");
 
         // When & Then
         mockMvc.perform(post("/api/v1/auth/register")
@@ -43,8 +43,8 @@ public class AuthenticationControllerTestIT {
 
     @Test
     public void shouldAuthenticateUserSuccessfully() throws Exception {
-        // Given:
-        AuthenticateUserDto authenticateUserDto = createAuthenticateUserDto("admin@example.com", "password");
+        // Given
+        AuthenticateUserDto authenticateUserDto = DtoTestHelper.createAuthenticateUserDto("admin@example.com", "password");
 
         // When & Then
         mockMvc.perform(post("/api/v1/auth/authenticate")
@@ -58,7 +58,8 @@ public class AuthenticationControllerTestIT {
     @Test
     public void shouldRefreshTokenSuccessfully() throws Exception {
         // Given: Authenticate user and get refresh token
-        AuthenticateUserDto authenticateUserDto = createAuthenticateUserDto("admin@example.com", "password");
+        AuthenticateUserDto authenticateUserDto = DtoTestHelper.createAuthenticateUserDto("admin@example.com", "password");
+
         String responseBody = mockMvc.perform(post("/api/v1/auth/authenticate")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authenticateUserDto)))
@@ -84,7 +85,8 @@ public class AuthenticationControllerTestIT {
     @Test
     public void shouldLogoutUserSuccessfully() throws Exception {
         // Given: Authenticate user and get refresh token
-        AuthenticateUserDto authenticateUserDto = createAuthenticateUserDto("admin@example.com", "password");
+        AuthenticateUserDto authenticateUserDto = DtoTestHelper.createAuthenticateUserDto("admin@example.com", "password");
+
         String responseBody = mockMvc.perform(post("/api/v1/auth/authenticate")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authenticateUserDto)))
@@ -103,27 +105,6 @@ public class AuthenticationControllerTestIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(refreshTokenOperationsDto)))
                 .andExpect(status().isNoContent());
-    }
-
-
-    private RegisterUserDto createRegisterUserDto(String email, String password, String firstName, String lastName, String confirmPassword) {
-        try {
-            Constructor<RegisterUserDto> constructor = RegisterUserDto.class.getDeclaredConstructor(String.class, String.class, String.class, String.class, String.class);
-            constructor.setAccessible(true);
-            return constructor.newInstance(email, firstName, lastName, password, confirmPassword);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create RegisterUserDto instance", e);
-        }
-    }
-
-    private AuthenticateUserDto createAuthenticateUserDto(String email, String password) {
-        try {
-            Constructor<AuthenticateUserDto> constructor = AuthenticateUserDto.class.getDeclaredConstructor(String.class, String.class);
-            constructor.setAccessible(true);
-            return constructor.newInstance(email, password);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create AuthenticateUserDto instance", e);
-        }
     }
 
     private RefreshTokenOperationsDto createRefreshTokenOperationsDto(String refreshToken) {

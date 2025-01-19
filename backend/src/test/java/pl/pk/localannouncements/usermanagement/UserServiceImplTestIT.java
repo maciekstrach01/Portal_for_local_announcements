@@ -29,4 +29,5 @@ class UserServiceImplTestIT {
         Optional<User> user = userService.findUserByEmail("admin2@example.com");
         assertFalse(user.isPresent());
     }
+
 }

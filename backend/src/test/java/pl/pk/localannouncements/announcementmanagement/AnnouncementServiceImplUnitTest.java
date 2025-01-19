@@ -17,7 +17,6 @@ import pl.pk.localannouncements.announcementmanagement.model.enums.AnnouncementS
 import pl.pk.localannouncements.usermanagement.model.entity.User;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,7 +37,6 @@ class AnnouncementServiceImplUnitTest {
 
     @InjectMocks
     private AnnouncementServiceImpl announcementService;
-
 
     private CreateAnnouncementDto createValidCreateAnnouncementDto() {
         return CreateAnnouncementDto.builder()
@@ -79,18 +77,18 @@ class AnnouncementServiceImplUnitTest {
 
         AnnouncementResponseDto responseDto = createValidAnnouncementResponseDto(announcementId);
 
-        // Mockowanie
+        // Mock
         when(categoryRepository.findById(createAnnouncementDto.getCategoryId())).thenReturn(Optional.of(category));
         when(announcementRepository.saveAndFlush(any(Announcement.class))).thenReturn(announcement);
 
-        // Wywołanie
+        // Invocation
         AnnouncementResponseDto result = announcementService.create(user, createAnnouncementDto);
 
-        // Assercje
+        // Assertions
         assertNotNull(result);
         assertEquals(responseDto.getId(), result.getId());
 
-        // Weryfikacja
+        // Verification
         verify(categoryRepository).findById(createAnnouncementDto.getCategoryId());
         verify(announcementRepository).saveAndFlush(any(Announcement.class));
     }
@@ -100,14 +98,14 @@ class AnnouncementServiceImplUnitTest {
         // Mock data
         CreateAnnouncementDto createAnnouncementDto = createValidCreateAnnouncementDto();
 
-        // Mockowanie
+        // Mock
         when(categoryRepository.findById(createAnnouncementDto.getCategoryId())).thenReturn(Optional.empty());
 
-        // Wywołanie i assercje
+        // Invocation and Assertions
         assertThrows(AnnouncementValidationException.class, () ->
                 announcementService.create(new User(), createAnnouncementDto));
 
-        // Weryfikacja
+        // Verification
         verify(categoryRepository).findById(createAnnouncementDto.getCategoryId());
         verifyNoInteractions(announcementRepository);
     }
@@ -119,19 +117,17 @@ class AnnouncementServiceImplUnitTest {
         Announcement announcement = new Announcement();
         announcement.setId(id);
 
-        AnnouncementResponseDto responseDto = createValidAnnouncementResponseDto(id);
-
-        // Mockowanie
+        // Mock
         when(announcementRepository.findById(id)).thenReturn(Optional.of(announcement));
 
-        // Wywołanie
+        // Invocation
         AnnouncementResponseDto result = announcementService.getById(id);
 
-        // Assercje
+        // Assertions
         assertNotNull(result);
         assertEquals(id, result.getId());
 
-        // Weryfikacja
+        // Verification
         verify(announcementRepository).findById(id);
     }
 
@@ -140,13 +136,13 @@ class AnnouncementServiceImplUnitTest {
         // Mock data
         UUID id = UUID.randomUUID();
 
-        // Mockowanie
+        // Mock
         when(announcementRepository.findById(id)).thenReturn(Optional.empty());
 
-        // Wywołanie i assercje
+        // Invocation and Assertions
         assertThrows(AnnouncementNotFoundException.class, () -> announcementService.getById(id));
 
-        // Weryfikacja
+        // Verification
         verify(announcementRepository).findById(id);
     }
 
@@ -160,7 +156,6 @@ class AnnouncementServiceImplUnitTest {
         Sort sort = Sort.by(sortDirection, sortField.getFieldName());
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<AnnouncementResponseDto> emptyPage = new PageImpl<>(List.of());
         when(announcementRepository.findAll(pageable)).thenReturn(Page.empty());
 
         // Act
@@ -171,7 +166,7 @@ class AnnouncementServiceImplUnitTest {
         assertNotNull(result.getContent());
         assertTrue(result.getContent().isEmpty());
 
-        // Weryfikacja
+        // Verification
         verify(announcementRepository).findAll(pageable);
         verifyNoInteractions(announcementMapper);
     }
