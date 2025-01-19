@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @UnitTest
-class AuthenticationServiceImplTest {
+class AuthenticationServiceImplUnitTest {
 
     @Mock
     private UserRepository userRepository;

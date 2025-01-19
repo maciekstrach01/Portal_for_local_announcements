@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @UnitTest
-class UserServiceImplTest {
+class UserServiceImplUnitTest {
 
     @Mock
     private UserRepository userRepository;
